@@ -1,7 +1,9 @@
 PROGRAMA ::= 'programa' 'id' ':' DECLARACION FUNCION 'inicio' BLOQUE 'fin'
-DECLARACION ::= ('var' TIPO (ASIGNACION | DECLARACION2 ';'))*
-DECLARACION2 ::= ( | id '[' 'c_entero' ']')
-ASIGNACION ::= id ';' | id '=' (EXPRESION ';' | LLAMADA) 
+
+DECLARACION ::= ('var' TIPO (ASIGNACION ))*
+
+ASIGNACION ::= id ';' | id '=' (EXPRESION ';' | LLAMADA) | ( ';' | id '[' 'c_entero' ']' ';')
+
 FUNCION ::= 'funcion' TIPO_REGRESO 'id' '(' (PARAMETROS | ) ')' BLOQUEFUN
 BLOQUEFUN ::= '{' DECLARACION* (ESTATUTO)* REGRESO? '}'
 BLOQUE ::= '{' BLOQUE2
