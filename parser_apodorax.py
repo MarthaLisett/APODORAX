@@ -9,11 +9,10 @@
 #  Gramatica regular para el analisis sintactico con PLY
 # ------------------------------------------------------------
 
-import ply.lex as lex
-
-# ************************* GRAMATICAS ****************************
-import sys
 import ply.yacc as yacc
+import sys
+# obtenemos la lista de tokens generadas por el analizador lexico
+from scanner import tokens
 
 # Reglas Gramaticales
 def p_empty:
