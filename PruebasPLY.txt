@@ -1,0 +1,45 @@
+programa Martha0295:
+
+var entero hola;
+var flotante crayola = carro(4,-3.5);
+var cadena hello = alicia;
+var entero id[10] = 8; 
+var bool pregunta = falso;
+
+funcion entero carro (entero x, flotante y)
+{
+	var flotante resultadofinal;
+	var flotante resultado = x * y;
+	resultadofinal = resultado + 1;
+
+	regresar resultadofinal;
+}
+
+funcion vacio camioneta()
+{
+	desplegar (hola);
+}
+
+inicio
+{
+	entrada (hola, flores[9]);
+	insertaCirculo(4,4.5,7,8,3.2, amarillo, falso);
+
+	carro(5);
+
+	si ( 4 * 4 > (12)) entonces
+	{
+		desplegar (5);
+	}
+	sino entonces
+	{
+		desplegar (5-1);
+	}
+
+	mientras (10 < i)
+	{
+		entrada(palabra);
+	}
+}
+
+fin
