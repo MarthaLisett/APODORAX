@@ -2,7 +2,7 @@ programa Martha0295:
 
 var entero hola;
 var flotante crayola = carro(4,-3.5);
-var cadena hello = alicia;
+var cadena hello = "alicia";
 var entero id[10] = 8; 
 var bool pregunta = falso;
 
@@ -17,7 +17,7 @@ funcion entero carro (entero x, flotante y)
 
 funcion vacio camioneta()
 {
-	desplegar (hola);
+	desplegar ("hola");
 }
 
 inicio
@@ -38,7 +38,7 @@ inicio
 
 	mientras (10 < i)
 	{
-		entrada(palabra);
+		desplegar (5);
 	}
 }
 
