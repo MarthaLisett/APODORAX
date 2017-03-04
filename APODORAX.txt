@@ -19,7 +19,7 @@ CTE ::= CTE_ID | 'c_entero' | 'c_flotante' | 'c_cadena' | 'c_bool' | 'c_caracter
 CTE_ID ::= 'id' | 'id' '[' EXP ']'| 'id' '(' EXP ')'
 CONDICION ::= 'si' '(' EXPRESION ')' 'entonces' BLOQUE ( 'sino' 'entonces' BLOQUE | )
 COMPARACION ::= '<' | '>' | '!=' | '==' | '<=' | '>='
-PARAMETROS ::= TIPO 'id' | TIPO 'id' ',' PARAMETROS  
+PARAMETROS ::= 'var' TIPO 'id' | 'var' TIPO 'id' ',' PARAMETROS  
 LLAMADA ::= 'id' '(' LLAMADA2 ')' ';'
 LLAMADA2 ::= EXPRESION | EXPRESION ',' LLAMADA2
 ARGUMENTOS ::= ('id' | 'id' ',' ARGUMENTOS | 'id' '[' EXP ']' | 'id' '[' EXP ']' ',' ARGUMENTOS | CTE | CTE ',' ARGUMENTOS)*
