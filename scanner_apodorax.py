@@ -16,13 +16,17 @@ tokens = (
    'FIN',
    'FUNCION',
    'VAR',
-   'Y',
-   'O',
+   'CONJUNCION',
+   'DISYUNCION',
    'CENTERO',
+   'ENTERO',
    'CFLOTANTE',
+   'FLOTANTE',
+   'CCADENA',
    'CADENA',
    'CCARACTER',
-   'CBOOL',
+   'CARACTER',
+   'BOOL',
    'SI',
    'NO',
    'SINO',
@@ -48,14 +52,13 @@ tokens = (
    'INSERTATEXTO',
    'INSERTARECTANGULO',
    'INSERTACIRCULO',
-   'INSERTACURVA'
+   'INSERTACURVA',
    'INSERTAOVALO',
    'INSERTATRIANGULO',
    'INSERTAPUNTO',
    'INSERTALINEA',
-   'EQUIVALENTE',
+   'IGUAL',
    'SUMA',
-   'TERMINO',
    'RESTA',
    'MULTIPLICACION',
    'DIVISION',
@@ -74,7 +77,7 @@ tokens = (
 # expresiones regulares que definen los tokens
 t_CENTERO                      = r'[-]?[0-9]+'
 t_CFLOTANTE                    = r'[-]?[0-9]+.[0-9]+'
-t_CADENA                       = r'\"(\\.|[^"])*\"'
+t_CCADENA                       = r'\"(\\.|[^"])*\"'
 t_CCARACTER                    ='\'[a-z]\'|\'[A-Z]\''
 t_PUNTOYCOMA                   = r'\;'
 t_DOSPUNTOS                    = r'\:'
@@ -94,7 +97,7 @@ t_MAYORQUE                     = r'\>'
 t_MAYORIGUAL                   = r'\<\='
 t_MENORIGUAL                   = r'\>\='
 t_ASIGNACION                   = r'\='
-t_EQUIVALENTE                  = r'\=\='
+t_IGUAL                        = r'\=\='
 t_DIFERENTE                    = r'\!\='
 
 reserved = {
@@ -107,6 +110,8 @@ reserved = {
    'cadena'            : 'CADENA',
    'caracter'          : 'CARACTER',
    'bool'              : 'BOOL',
+   'verdadero'         : 'VERDADERO',
+   'falso'             : 'FALSO',
    'inicio'            : 'INICIO',
    'fin'               : 'FIN',
    'var'               : 'VAR',
@@ -123,7 +128,7 @@ reserved = {
    'verde'             : 'VERDE',
    'rojo'              : 'ROJO',
    'y'                 : 'CONJUNCION',
-   'o'                 : 'DISJUNCION',
+   'o'                 : 'DISYUNCION',
    'vacio'             : 'VACIO',
    'insertaTexto'      : 'INSERTATEXTO',
    'insertaRectangulo' : 'INSERTARECTANGULO',
@@ -136,7 +141,7 @@ reserved = {
 }
 # funcion con la regla para definir la identificacion de un ID TODO:regex para id comienza con mayusculas??
 def t_ID(t):
-    r'[A-Z](_?[a-z0-9])*'
+    r'[A-Z]([a-z0-9])*'
     t.type = reserved.get(t.value,'ID')
     return t
 # funcion para saber el numero de linea que se esta analizando

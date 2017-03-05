@@ -15,10 +15,6 @@ import sys
 from scanner_apodorax import tokens
 
 # Reglas Gramaticales
-def p_empty(p):
-  '''empty : '''
-  pass
-
 def p_program(p):
   '''program : PROGRAMA ID DOSPUNTOS declaracion function INICIO bloque FIN'''
 
@@ -27,10 +23,10 @@ def p_declaracion(p):
                | empty'''
 
 def p_asignacion(p):
-  '''asignacion : id asignacion2 '''
+  '''asignacion : ID asignacion2 '''
 
 def p_asignacion2(p):
-  '''asignacion2 : IGUAL asignacionaux
+  '''asignacion2 : ASIGNACION asignacionaux
                | CORCHETEIZQ CENTERO CORCHETEDER PUNTOYCOMA
                | PUNTOYCOMA
                | empty'''
@@ -77,20 +73,16 @@ def p_estatuto(p):
               | asignacion
               | condicion
               | ciclo
-              | escritura'''
+              | escritura
+              | curva'''
 
-def p_asignacionarreglo(p):
-    '''asignacionarreglo : ID CORCHETEIZQ exp CORCHETEDER IGUAL asignacionvalor'''
 
-def p_asignacionvalor(p): 
-    '''asignacionvalor : cte PUNTOYCOMA
-                      | llamada'''
 
 def p_discon(p):
     '''discon : CONJUNCION expresion
-            | DISJUNCION expresion
+            | DISYUNCION expresion
             | CONJUNCION expresion discon
-            | DISJUNCION expresion discon
+            | DISYUNCION expresion discon
             | empty'''
 
 def p_negacion(p):
@@ -106,18 +98,22 @@ def p_expresionaux(p) :
                    | comparacion exp'''
 
 def p_exp(p):
-    '''exp :  termino SUMARESTA exp
+    '''exp :  termino SUMA exp
+          | termino RESTA exp
           | termino'''
 
 def p_termino(p):
-    '''termino : factor MULTIPLICACIONDIVISION termino
+    '''termino : factor MULTIPLICACION termino
+             | factor DIVISION termino
              | factor'''
 
 def p_factor(p):
     '''factor : PARENIZQUIERDO expresion PARENDERECHO
             | expresion
             | cte
-            | SUMARESTA cte'''
+            | SUMA cte
+            | RESTA cte'''
+
 
 def p_cte(p):
     '''cte : cteid
@@ -125,7 +121,8 @@ def p_cte(p):
            | CFLOTANTE
            | CCADENA
            | CCARACTER
-           | CBOOL'''
+           | VERDADERO
+           | FALSO'''
 
 def p_cteid(p):
     '''cteid : ID cteidaux'''
@@ -143,8 +140,11 @@ def p_condicionaux(p):
                   | SINO ENTONCES bloque'''
 
 def p_comparacion(p):
-    '''comparacion : COMPARACION
-                  | IGUALDAD
+    '''comparacion : MENORQUE
+                  | MAYORQUE
+                  | MAYORIGUAL
+                  | MENORIGUAL
+                  | IGUAL
                   | DIFERENTE'''
 
 def p_llamada(p):
@@ -176,7 +176,7 @@ def p_ciclo(p):
 def p_escritura(p):
     '''escritura : DESPLEGAR PARENIZQUIERDO escritura2 PARENDERECHO PUNTOYCOMA'''
 
-def p_escritura(p):
+def p_escritura2(p):
     '''escritura2 : expresion
                  | expresion COMA escritura2'''
 
@@ -201,10 +201,6 @@ def p_ingreso(p):
 def p_ingreso2(p):
     '''ingreso2 : cteid
               | cteid COMA ingreso2'''
-
-def p_coordenada(p):
-    '''coordenada : CENTERO
-                  | CFLOTANTE'''
 
 def p_args(p):
     '''args : expresion
@@ -233,6 +229,10 @@ def p_linea(p):
 
 def p_curva(p):
     '''curva : INSERTACURVA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA'''
+
+def p_empty(p):
+  '''empty : '''
+  pass
 
 def p_error(p):
     print("Error de sintaxis: '%s'"  % t.value)
