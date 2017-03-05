@@ -136,7 +136,7 @@ reserved = {
 }
 # funcion con la regla para definir la identificacion de un ID TODO:regex para id comienza con mayusculas??
 def t_ID(t):
-    r'[a-zA-Z](_?[a-zA-Z0-9]+)*'
+    r'[A-Z](_?[a-z0-9])*'
     t.type = reserved.get(t.value,'ID')
     return t
 # funcion para saber el numero de linea que se esta analizando
