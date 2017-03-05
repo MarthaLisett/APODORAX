@@ -43,8 +43,8 @@ def p_function(p):
   '''function : FUNCION tiporegreso ID PARENIZQUIERDO funtionaux PARENDERECHO bloquefun'''
 
 def p_functionaux(p):
-   '''functionaux : tipo ID
-                 | tipo ID COMA functionaux
+   '''functionaux : VAR tipo ID
+                 | VAR tipo ID COMA functionaux
                  | empty'''
 
 def p_bloquefun(p):
@@ -105,6 +105,7 @@ def p_termino(p):
 
 def p_factor(p):
     '''factor: PARENIZQUIERDO expresion PARENDERECHO
+            | expresion
             | cte
             | SUMARESTA cte'''
 
@@ -121,7 +122,7 @@ def p_cteidaux(p):
                | PARENIZQUIERDO exp PARENDERECHO'''
 
 def p_condicion(p):
-    '''condicion : SI PARENIZQUIERDO expresion PARENDERECHO ENTONCES bloque condicionaux'''
+    '''condicion : SI PARENIZQUIERDO factor PARENDERECHO ENTONCES bloque condicionaux'''
 
 def p_condicionaux(p):
    '''condicionaux : empty
@@ -152,7 +153,7 @@ def p_color(p):
     '''color : NEGRO | GRIS | AZUL | AMARILLO | VERDE | ROJO'''
 
 def p_ciclo(p):
-    '''ciclo : MIENTRAS PARENIZQUIERDO expresion PARENDERECHO bloque'''
+    '''ciclo : MIENTRAS PARENIZQUIERDO factor PARENDERECHO bloque'''
 
 def p_escritura(p):
     '''entrada : DESPLEGAR PARENIZQUIERDO escritura2 PARENDERECHO PUNTOYCOMA'''
