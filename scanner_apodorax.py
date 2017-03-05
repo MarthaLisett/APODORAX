@@ -169,7 +169,7 @@ def t_eof(t):
 '''
 # construccion del lexer
 lexer = lex.lex()
-
+'''
 data = '''
 # comentario
 inicio
@@ -188,3 +188,4 @@ while True:
     if not tok: 
         break
     print(tok)  # se imprime el tipo de token que se encontro
+'''
