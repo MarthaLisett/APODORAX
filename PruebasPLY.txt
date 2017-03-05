@@ -1,33 +1,33 @@
 programa Martha0295:
 
-var entero Hola;
-var flotante Crayola = Carro(4,-3.5);
-var cadena Hello = "alicia";
-var caracter Letra = 'b';
-var entero Arrs[10] = 8; 
-var bool Pregunta = falso;
+var entero hola;
+var flotante crayola = carro(4,-3.5);
+var cadena hello = "alicia";
+var caracter letra = 'b';
+var entero arrs[10] = 8; 
+var bool pregunta = falso;
 var entero I = 30;
 
-funcion entero Carro (var entero X, var flotante Y)
+funcion entero carro (var entero x, var flotante y)
 {
-	var flotante Resultadofinal;
-	var flotante Resultado = X * Y;
-	Resultadofinal = Resultado + 1;
+	var flotante resultadofinal;
+	var flotante resultado = X * Y;
+	resultadofinal = resultado + 1;
 
-	regresar Resultadofinal;
+	regresar resultadofinal;
 }
 
-funcion vacio Camioneta()
+funcion vacio camioneta()
 {
 	desplegar ("hola");
 }
 
 inicio
 {
-	entrada (Hola, Flores[9]);
+	entrada (hola, flores[9]);
 	insertaCirculo(4,4.5,7,8,3.2, amarillo, falso);
 
-	Carro(5, 3.2);
+	carro(5, 3.2);
 
 	si ( 4 * 4 > (12)) entonces
 	{

@@ -20,14 +20,14 @@ def p_program(p):
   '''program : PROGRAMA ID DOSPUNTOS declaracion function INICIO bloque FIN'''
 
 def p_declaracion(p):
-  '''declaracion : VAR tipo asignacion declaracionaux'''
+  '''declaracion : VAR tipo ID asignacion declaracionaux'''
 
 def p_declaracionaux(p):
     '''declaracionaux : declaracion
                     | '''
 
 def p_asignacion(p):
-  '''asignacion : ID asignacion2'''
+  '''asignacion : asignacion2'''
 
 def p_asignacion2(p):
   '''asignacion2 : ASIGNACION asignacionaux
@@ -35,10 +35,15 @@ def p_asignacion2(p):
                | PUNTOYCOMA'''
 
 def p_asignacionaux(p):
-  '''asignacionaux : expresion PUNTOYCOMA
-                  | ID CORCHETEIZQ CENTERO CORCHETEDER PUNTOYCOMA
-                  | ID PUNTOYCOMA
+  '''asignacionaux : ID factor PUNTOYCOMA
+                  | ID asignacionaux2
+                  | cte
                   | llamada'''
+
+def p_asignacionaux2(p):
+  ''' asignacionaux2 : CORCHETEIZQ CENTERO CORCHETEDER PUNTOYCOMA
+                    | PUNTOYCOMA
+                    | '''
 
 def p_function(p):
   '''function : FUNCION tiporegreso ID PARENIZQUIERDO functionaux PARENDERECHO bloquefun'''
@@ -135,9 +140,17 @@ def p_factor(p):
     '''factor : PARENIZQUIERDO expresion PARENDERECHO
             | expresion
             | cte
-            | SUMA cte
-            | RESTA cte'''
+            | ID
+            | SUMA factoresSuma
+            | RESTA factoresResta'''
 
+def p_factoresSuma(p):
+  ''' factoresSuma : ID
+                | cte'''
+
+def p_factoresResta(p):
+  ''' factoresResta : ID
+                | cte'''
 
 def p_cte(p):
     '''cte : cteid
@@ -180,14 +193,6 @@ def p_llamada2(p):
 def p_llamada2aux(p):
     '''llamada2aux : COMA llamada2
                   | '''
-
-#def p_argumentos(p):
-    '''argumentos : ID
-                | ID COMA argumentos
-                | ID CORCHETEIZQ CENTERO CORCHETEDER
-                | ID CORCHETEIZQ CENTERO CORCHETEDER COMA argumentos
-                | cte
-                | cte COMA argumentos'''
 
 def p_color(p):
     '''color : NEGRO
