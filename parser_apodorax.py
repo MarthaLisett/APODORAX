@@ -35,10 +35,12 @@ def p_asignacion2(p):
                | PUNTOYCOMA'''
 
 def p_asignacionaux(p):
-  '''asignacionaux : ID factor PUNTOYCOMA
-                  | ID asignacionaux2
+  '''asignacionaux : ID asignacionaux3
                   | cte
                   | llamada'''
+def p_asignacionaux3(p):
+   '''asignacionaux3 : factor PUNTOYCOMA
+                    | asignacionaux2 '''
 
 def p_asignacionaux2(p):
   ''' asignacionaux2 : CORCHETEIZQ CENTERO CORCHETEDER PUNTOYCOMA
@@ -97,15 +99,9 @@ def p_estatuto(p):
               | curva'''
 
 def p_discon(p):
-    '''discon : CONJUNCION expresion disconconjuncion
-            | DISYUNCION expresion discondisyuncion
+    '''discon : CONJUNCION expresion discon
+            | DISYUNCION expresion discon
             | '''
-
-def p_disconconjuncion(p):
-  '''disconconjuncion : discon'''
-
-def p_discondisyuncion(p):
-  '''discondisyuncion : discon'''
 
 def p_negacion(p):
     '''negacion : NO
@@ -125,7 +121,7 @@ def p_exp(p):
 def p_exp2(p):
     '''exp2 : SUMA exp
           | RESTA exp
-          |'''
+          | '''
 
 def p_termino(p):
     '''termino : factor termino2'''
@@ -135,12 +131,9 @@ def p_termino2(p):
              | DIVISION termino
              | '''
 
-
 def p_factor(p):
     '''factor : PARENIZQUIERDO expresion PARENDERECHO
-            | expresion
             | cte
-            | ID
             | SUMA factoresSuma
             | RESTA factoresResta'''
 
