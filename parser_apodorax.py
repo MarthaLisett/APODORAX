@@ -40,7 +40,7 @@ def p_asignacionaux(p):
                   | llamada'''
 
 def p_function(p):
-  '''function : FUNCION tiporegreso ID PARENIZQUIERDO funtionaux PARENDERECHO bloquefun'''
+  '''function : FUNCION tiporegreso ID PARENIZQUIERDO functionaux PARENDERECHO bloquefun'''
 
 def p_functionaux(p):
    '''functionaux : VAR tipo ID
@@ -174,10 +174,10 @@ def p_ciclo(p):
     '''ciclo : MIENTRAS PARENIZQUIERDO factor PARENDERECHO bloque'''
 
 def p_escritura(p):
-    '''entrada : DESPLEGAR PARENIZQUIERDO escritura2 PARENDERECHO PUNTOYCOMA'''
+    '''escritura : DESPLEGAR PARENIZQUIERDO escritura2 PARENDERECHO PUNTOYCOMA'''
 
 def p_escritura(p):
-    '''entrada2 : expresion
+    '''escritura2 : expresion
                  | expresion COMA escritura2'''
 
 def p_regreso(p):
