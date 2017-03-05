@@ -235,24 +235,22 @@ def p_empty(p):
   pass
 
 def p_error(p):
-    print("Error de sintaxis: '%s'"  % t.value)
+    print("Error de sintaxis: '%s'"  % p.value)
     
 parser = yacc.yacc()
 
-# lista para guardar la lineas de la entrada
-lines = []
-
-# se lee linea por linea el contenido de un archivo
-# especificado como argumento al momento de correr el programa
-for line in sys.stdin:
-  stripped = line.strip()
-  if not stripped: break
-  lines.append(stripped)
-# se crea un solo string con los strings en la lista
-input = ' '.join(lines)
-# se parsea la entrada
-#print input
-result = parser.parse(input)
-
-if result is None:
-  print result + 'Sintaxis correcta.'
+if __name__ == '__main__':
+  if (len(sys.argv) > 1):
+    # Obtiene el archivo
+    file = sys.argv[1]
+    try:
+      f = open(file,'r')
+      data = f.read()
+      f.close()
+      #Se realiza la gramatica
+      if (parser.parse(data, tracking=True) == 'Trabajando correctamente - APROPIADO'):
+        print ('Trabajando correctamente - APROPIADO');
+    except EOFError:
+        print(EOFError)
+  else:
+    print('No existe el archivo')
