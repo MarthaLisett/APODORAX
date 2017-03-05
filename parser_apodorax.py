@@ -32,20 +32,24 @@ def p_asignacion(p):
 def p_asignacion2(p):
   '''asignacion2 : ASIGNACION asignacionaux
                | CORCHETEIZQ CENTERO CORCHETEDER PUNTOYCOMA
-               | PUNTOYCOMA
-               | '''
+               | PUNTOYCOMA'''
 
 def p_asignacionaux(p):
   '''asignacionaux : expresion PUNTOYCOMA
+                  | ID CORCHETEIZQ CENTERO CORCHETEDER PUNTOYCOMA
+                  | ID PUNTOYCOMA
                   | llamada'''
 
 def p_function(p):
   '''function : FUNCION tiporegreso ID PARENIZQUIERDO functionaux PARENDERECHO bloquefun'''
 
 def p_functionaux(p):
-   '''functionaux : VAR tipo ID
-                 | VAR tipo ID COMA functionaux
+   '''functionaux : VAR tipo ID functionaux2
                  | '''
+
+def p_functionaux2(p):
+   '''functionaux2 : COMA functionaux
+               | '''
 
 def p_bloquefun(p):
   '''bloquefun : LLAVEIZQUIERDO bloquefun2 bloquefun3 bloquefunaux'''
@@ -111,14 +115,21 @@ def p_expresionaux(p) :
                    | '''
 
 def p_exp(p):
-    '''exp : termino SUMA exp
-          | termino RESTA exp
-          | termino'''
+    '''exp : termino exp2'''
+
+def p_exp2(p):
+    '''exp2 : SUMA exp
+          | RESTA exp
+          |'''
 
 def p_termino(p):
-    '''termino : factor MULTIPLICACION termino
-             | factor DIVISION termino
-             | factor'''
+    '''termino : factor termino2'''
+
+def p_termino2(p):
+  '''termino2 : MULTIPLICACION termino
+             | DIVISION termino
+             | '''
+
 
 def p_factor(p):
     '''factor : PARENIZQUIERDO expresion PARENDERECHO
@@ -164,8 +175,11 @@ def p_llamada(p):
     '''llamada : ID PARENIZQUIERDO llamada2 PARENDERECHO PUNTOYCOMA'''
 
 def p_llamada2(p):
-    '''llamada2 : expresion
-              | expresion COMA llamada2'''
+    '''llamada2 : expresion llamada2aux'''
+
+def p_llamada2aux(p):
+    '''llamada2aux : COMA llamada2
+                  | '''
 
 #def p_argumentos(p):
     '''argumentos : ID
@@ -190,8 +204,11 @@ def p_escritura(p):
     '''escritura : DESPLEGAR PARENIZQUIERDO escritura2 PARENDERECHO PUNTOYCOMA'''
 
 def p_escritura2(p):
-    '''escritura2 : expresion
-                 | expresion COMA escritura2'''
+    '''escritura2 : expresion escritura2aux'''
+
+def p_escritura2aux(p):
+    '''escritura2aux : COMA escritura2
+                    | '''
 
 def p_regreso(p):
     '''regreso : REGRESAR expresion PUNTOYCOMA
@@ -212,12 +229,18 @@ def p_ingreso(p):
     '''ingreso : ENTRADA PARENIZQUIERDO ingreso2 PARENDERECHO PUNTOYCOMA'''
 
 def p_ingreso2(p):
-    '''ingreso2 : cteid
-              | cteid COMA ingreso2'''
+    '''ingreso2 : cteid ingreso2aux'''
+
+def p_ingreso2aux(p):
+    '''ingreso2aux : COMA ingreso2
+                  | '''
 
 def p_args(p):
-    '''args : expresion
-           | expresion COMA args'''
+    '''args : expresion args2'''
+
+def p_args2(p):
+    '''args2 : COMA args
+            | '''
 
 def p_texto(p):
     '''texto : INSERTATEXTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA'''
