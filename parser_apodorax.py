@@ -44,18 +44,25 @@ def p_functionaux(p):
                  | empty'''
 
 def p_bloquefun(p):
-  '''bloquefun : LLAVEIZQUIERDO bloquefun2 bloquefun3 LLAVEDERECHO
-                | LLAVEIZQUIERDO bloquefun2 bloquefun3 regreso LLAVEDERECHO'''
+  '''bloquefun : LLAVEIZQUIERDO bloquefun2 bloquefun3 bloquefunaux'''
+
+def p_bloquefunaux(p):
+    '''bloquefunaux : LLAVEDERECHO
+                  | regreso LLAVEDERECHO'''
 
 def p_bloquefun2(p):
-  '''bloquefun2 : empty
-               | declaracion
-               | declaracion bloquefun2'''
+  '''bloquefun2 : declaracion bloquefun2aux'''
+
+def p_bloquefun2aux(p):
+    '''bloquefun2aux : bloquefun2
+                    | empty'''     
 
 def p_bloquefun3(p):
-  '''bloquefun3 : empty
-               | estatuto
-               | estatuto bloquefun3'''
+  '''bloquefun3 : estatuto bloquefun3aux'''
+
+def p_bloquefun3aux(p):
+    '''bloquefun3aux : bloquefun3
+                    | empty'''               
 
 def p_bloque(p):
    '''bloque : LLAVEIZQUIERDO bloquefun3 LLAVEDERECHO'''
@@ -79,11 +86,15 @@ def p_estatuto(p):
 
 
 def p_discon(p):
-    '''discon : CONJUNCION expresion
-            | DISYUNCION expresion
-            | CONJUNCION expresion discon
-            | DISYUNCION expresion discon
+    '''discon : CONJUNCION expresion disconconjuncion
+            | DISYUNCION expresion discondisyuncion
             | empty'''
+
+def p_disconconjuncion(p):
+  '''disconconjuncion : discon'''
+
+def p_discondisyuncion(p):
+  '''discondisyuncion : discon'''
 
 def p_negacion(p):
     '''negacion : empty 
