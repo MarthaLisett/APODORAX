@@ -75,8 +75,6 @@ tokens = (
 )
 
 # expresiones regulares que definen los tokens
-t_CFLOTANTE                    = r'[-]?[0-9]+.[0-9]+'
-t_CENTERO                      = r'[-]?[0-9]+'
 t_CCADENA                      = r'\"(\\.|[^"])*\"'
 t_CCARACTER                    = r'\'[a-z]\'|\'[A-Z]\''
 t_PUNTOYCOMA                   = r'\;'
@@ -139,6 +137,17 @@ reserved = {
    'insertaCurva'      : 'INSERTACURVA',
    'insertaLinea'      : 'INSERTALINEA',
 }
+
+def t_CFLOTANTE (t):
+    r'([\+|-]?[0-9]+[.])[0-9]+'
+    t.value = float(t.value)
+    return t
+
+def t_CENTERO(t):
+    r'[-]?[0-9]+'
+    t.value = int(t.value)
+    return t
+
 # funcion con la regla para definir la identificacion de un ID TODO:regex para id comienza con mayusculas??
 def t_ID(t):
     r'[a-zA-Z](_?[a-zA-Z0-9]+)*'
@@ -180,4 +189,3 @@ while True:
         break
     print(tok)  # se imprime el tipo de token que se encontro
 '''
-
