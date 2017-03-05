@@ -15,21 +15,25 @@ import sys
 from scanner_apodorax import tokens
 
 # Reglas Gramaticales
+
 def p_program(p):
   '''program : PROGRAMA ID DOSPUNTOS declaracion function INICIO bloque FIN'''
 
 def p_declaracion(p):
-  '''declaracion : VAR tipo asignacion declaracion
-               | empty'''
+  '''declaracion : VAR tipo asignacion declaracionaux'''
+
+def p_declaracionaux(p):
+    '''declaracionaux : declaracion
+                    | '''
 
 def p_asignacion(p):
-  '''asignacion : ID asignacion2 '''
+  '''asignacion : ID asignacion2'''
 
 def p_asignacion2(p):
   '''asignacion2 : ASIGNACION asignacionaux
                | CORCHETEIZQ CENTERO CORCHETEDER PUNTOYCOMA
                | PUNTOYCOMA
-               | empty'''
+               | '''
 
 def p_asignacionaux(p):
   '''asignacionaux : expresion PUNTOYCOMA
@@ -41,7 +45,7 @@ def p_function(p):
 def p_functionaux(p):
    '''functionaux : VAR tipo ID
                  | VAR tipo ID COMA functionaux
-                 | empty'''
+                 | '''
 
 def p_bloquefun(p):
   '''bloquefun : LLAVEIZQUIERDO bloquefun2 bloquefun3 bloquefunaux'''
@@ -55,14 +59,14 @@ def p_bloquefun2(p):
 
 def p_bloquefun2aux(p):
     '''bloquefun2aux : bloquefun2
-                    | empty'''     
+                    | '''     
 
 def p_bloquefun3(p):
   '''bloquefun3 : estatuto bloquefun3aux'''
 
 def p_bloquefun3aux(p):
     '''bloquefun3aux : bloquefun3
-                    | empty'''               
+                    | '''               
 
 def p_bloque(p):
    '''bloque : LLAVEIZQUIERDO bloquefun3 LLAVEDERECHO'''
@@ -83,12 +87,10 @@ def p_estatuto(p):
               | escritura
               | curva'''
 
-
-
 def p_discon(p):
     '''discon : CONJUNCION expresion disconconjuncion
             | DISYUNCION expresion discondisyuncion
-            | empty'''
+            | '''
 
 def p_disconconjuncion(p):
   '''disconconjuncion : discon'''
@@ -97,19 +99,19 @@ def p_discondisyuncion(p):
   '''discondisyuncion : discon'''
 
 def p_negacion(p):
-    '''negacion : empty 
-              | NO'''   
+    '''negacion : NO
+              | '''   
 
 def p_expresion(p): 
     '''expresion : negacion exp expresionaux discon
                 | color'''  
 
 def p_expresionaux(p) :
-    '''expresionaux : empty
-                   | comparacion exp'''
+    '''expresionaux : comparacion exp
+                   | '''
 
 def p_exp(p):
-    '''exp :  termino SUMA exp
+    '''exp : termino SUMA exp
           | termino RESTA exp
           | termino'''
 
@@ -139,16 +141,16 @@ def p_cteid(p):
     '''cteid : ID cteidaux'''
 
 def p_cteidaux(p):
-    '''cteidaux : empty
-               | CORCHETEIZQ exp CORCHETEDER
-               | PARENIZQUIERDO exp PARENDERECHO'''
+    '''cteidaux : CORCHETEIZQ exp CORCHETEDER
+               | PARENIZQUIERDO exp PARENDERECHO
+               | '''
 
 def p_condicion(p):
     '''condicion : SI PARENIZQUIERDO factor PARENDERECHO ENTONCES bloque condicionaux'''
 
 def p_condicionaux(p):
-   '''condicionaux : empty
-                  | SINO ENTONCES bloque'''
+   '''condicionaux : SINO ENTONCES bloque
+                  | '''
 
 def p_comparacion(p):
     '''comparacion : MENORQUE
@@ -165,7 +167,7 @@ def p_llamada2(p):
     '''llamada2 : expresion
               | expresion COMA llamada2'''
 
-def p_argumentos(p):
+#def p_argumentos(p):
     '''argumentos : ID
                 | ID COMA argumentos
                 | ID CORCHETEIZQ CENTERO CORCHETEDER
@@ -193,7 +195,7 @@ def p_escritura2(p):
 
 def p_regreso(p):
     '''regreso : REGRESAR expresion PUNTOYCOMA
-              | empty'''
+              | '''
 
 def p_tiporegreso(p):
     '''tiporegreso : tipo
@@ -240,10 +242,6 @@ def p_linea(p):
 
 def p_curva(p):
     '''curva : INSERTACURVA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA'''
-
-def p_empty(p):
-  '''empty : '''
-  pass
 
 def p_error(p):
     print("Error de sintaxis: '%s'"  % p.value)
