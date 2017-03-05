@@ -75,10 +75,10 @@ tokens = (
 )
 
 # expresiones regulares que definen los tokens
-t_CENTERO                      = r'[-]?[0-9]+'
 t_CFLOTANTE                    = r'[-]?[0-9]+.[0-9]+'
-t_CCADENA                       = r'\"(\\.|[^"])*\"'
-t_CCARACTER                    ='\'[a-z]\'|\'[A-Z]\''
+t_CENTERO                      = r'[-]?[0-9]+'
+t_CCADENA                      = r'\"(\\.|[^"])*\"'
+t_CCARACTER                    =r'\'[a-z]\'|\'[A-Z]\''
 t_PUNTOYCOMA                   = r'\;'
 t_DOSPUNTOS                    = r'\:'
 t_COMA                         = r'\,'
@@ -182,12 +182,9 @@ data = '''
 #data_err = '''? | .'''
 '''
 # string para probar el analizador lexico con tokens incorrectos
-
 # se corre el lexer con el string de prueba, descomentar para probar
 lexer.input(data)
-
 # se generan los tokens y se verifica que sean validos
-
 while True:
     tok = lexer.token()
     if not tok: 
