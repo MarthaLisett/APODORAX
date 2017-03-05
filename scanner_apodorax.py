@@ -77,8 +77,8 @@ tokens = (
 # expresiones regulares que definen los tokens
 t_CFLOTANTE                    = r'[-]?[0-9]+.[0-9]+'
 t_CENTERO                      = r'[-]?[0-9]+'
-#t_CCADENA                      = r'\"(\\.|[^"])*\"'
-#t_CCARACTER                    = r'\'[a-z]\'|\'[A-Z]\''
+t_CCADENA                      = r'\"(\\.|[^"])*\"'
+t_CCARACTER                    = r'\'[a-z]\'|\'[A-Z]\''
 t_PUNTOYCOMA                   = r'\;'
 t_DOSPUNTOS                    = r'\:'
 t_COMA                         = r'\,'
@@ -165,10 +165,10 @@ def t_COMMENT(t):
 # construccion del lexer
 lexer = lex.lex()
 
-
-#data = '''inicio'''
+data = '''  = "alicia" '''
 
 #data_err = '''? | .'''
+
 '''
 # string para probar el analizador lexico con tokens incorrectos
 # se corre el lexer con el string de prueba, descomentar para probar
@@ -180,3 +180,4 @@ while True:
         break
     print(tok)  # se imprime el tipo de token que se encontro
 '''
+
