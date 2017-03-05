@@ -71,14 +71,14 @@ tokens = (
    'PUNTOYCOMA',
    'COMA',
    'DOSPUNTOS',
-   'ASIGNACION'
+   'ASIGNACION',
 )
 
 # expresiones regulares que definen los tokens
 t_CFLOTANTE                    = r'[-]?[0-9]+.[0-9]+'
 t_CENTERO                      = r'[-]?[0-9]+'
-t_CCADENA                      = r'\"(\\.|[^"])*\"'
-t_CCARACTER                    =r'\'[a-z]\'|\'[A-Z]\''
+#t_CCADENA                      = r'\"(\\.|[^"])*\"'
+#t_CCARACTER                    = r'\'[a-z]\'|\'[A-Z]\''
 t_PUNTOYCOMA                   = r'\;'
 t_DOSPUNTOS                    = r'\:'
 t_COMA                         = r'\,'
@@ -137,11 +137,11 @@ reserved = {
    'insertaOvalo'      : 'INSERTAOVALO',
    'insertaPunto'      : 'INSERTAPUNTO',
    'insertaCurva'      : 'INSERTACURVA',
-   'insertaLinea'      : 'INSERTALINEA'
+   'insertaLinea'      : 'INSERTALINEA',
 }
 # funcion con la regla para definir la identificacion de un ID TODO:regex para id comienza con mayusculas??
 def t_ID(t):
-    r'[A-Z]([a-z0-9])*'
+    r'[a-zA-Z](_?[a-zA-Z0-9]+)*'
     t.type = reserved.get(t.value,'ID')
     return t
 # funcion para saber el numero de linea que se esta analizando
@@ -162,23 +162,12 @@ def t_COMMENT(t):
     r'\#.*'
     pass
 
-# Metodo para manejar EOF ()
-'''
-def t_eof(t):
-    # Get more input (Example)
-    more = raw_input('... ')
-    if more:
-        self.lexer.input(more)
-        return self.lexer.token()
-    return None
-'''
 # construccion del lexer
 lexer = lex.lex()
-'''
-data = '''
-# comentario
-#inicio
-#var ? mientras_tanto = 10 'a' ; fin
+
+
+#data = '''inicio'''
+
 #data_err = '''? | .'''
 '''
 # string para probar el analizador lexico con tokens incorrectos
