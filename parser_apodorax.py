@@ -12,11 +12,11 @@
 import ply.yacc as yacc
 import sys
 # obtenemos la lista de tokens generadas por el analizador lexico
-from scanner import tokens
+from scanner_apodorax import tokens
 
 # Reglas Gramaticales
-def p_empty:
-  '''empty:'''
+def p_empty(p):
+  '''empty : '''
   pass
 
 def p_program(p):
@@ -30,7 +30,7 @@ def p_asignacion(p):
   '''asignacion : id asignacion2 '''
 
 def p_asignacion2(p):
-  '''asignacion2: IGUAL asignacionaux
+  '''asignacion2 : IGUAL asignacionaux
                | CORCHETEIZQ CENTERO CORCHETEDER PUNTOYCOMA
                | PUNTOYCOMA
                | empty'''
@@ -65,9 +65,19 @@ def p_bloque(p):
    '''bloque : LLAVEIZQUIERDO bloquefun3 LLAVEDERECHO'''
 
 def p_estatuto(p):
-   '''estatuto : ingreso | texto | rectangulo | circulo | ovalo
-              | triangulo | punto | linea | llamada | asignacion
-              | condicion | ciclo | escritura'''
+   '''estatuto : ingreso
+              | texto
+              | rectangulo
+              | circulo
+              | ovalo
+              | triangulo
+              | punto
+              | linea
+              | llamada
+              | asignacion
+              | condicion
+              | ciclo
+              | escritura'''
 
 def p_asignacionarreglo(p):
     '''asignacionarreglo : ID CORCHETEIZQ exp CORCHETEDER IGUAL asignacionvalor'''
@@ -100,24 +110,28 @@ def p_exp(p):
           | termino'''
 
 def p_termino(p):
-    '''termino: factor MULTIPLICACIONDIVISION termino
+    '''termino : factor MULTIPLICACIONDIVISION termino
              | factor'''
 
 def p_factor(p):
-    '''factor: PARENIZQUIERDO expresion PARENDERECHO
+    '''factor : PARENIZQUIERDO expresion PARENDERECHO
             | expresion
             | cte
             | SUMARESTA cte'''
 
 def p_cte(p):
-    '''cte : cteid | CENTERO | CFLOTANTE | CCADENA
-           | CCARACTER | CBOOL'''
+    '''cte : cteid
+           | CENTERO
+           | CFLOTANTE
+           | CCADENA
+           | CCARACTER
+           | CBOOL'''
 
 def p_cteid(p):
     '''cteid : ID cteidaux'''
 
 def p_cteidaux(p):
-    '''cteidaux: empty
+    '''cteidaux : empty
                | CORCHETEIZQ exp CORCHETEDER
                | PARENIZQUIERDO exp PARENDERECHO'''
 
@@ -128,11 +142,10 @@ def p_condicionaux(p):
    '''condicionaux : empty
                   | SINO ENTONCES bloque'''
 
-def p_condicionaux(p):
-    '''condicionaux: ''' 
-
 def p_comparacion(p):
-    '''comparacion : COMPARACION | IGUALDAD | DIFERENTE'''
+    '''comparacion : COMPARACION
+                  | IGUALDAD
+                  | DIFERENTE'''
 
 def p_llamada(p):
     '''llamada : ID PARENIZQUIERDO llamada2 PARENDERECHO PUNTOYCOMA'''
@@ -150,7 +163,12 @@ def p_argumentos(p):
                 | cte COMA argumentos'''
 
 def p_color(p):
-    '''color : NEGRO | GRIS | AZUL | AMARILLO | VERDE | ROJO'''
+    '''color : NEGRO
+                | GRIS
+                | AZUL
+                | AMARILLO
+                | VERDE
+                | ROJO'''
 
 def p_ciclo(p):
     '''ciclo : MIENTRAS PARENIZQUIERDO factor PARENDERECHO bloque'''
@@ -167,48 +185,54 @@ def p_regreso(p):
               | empty'''
 
 def p_tiporegreso(p):
-    '''tiporegreso : tipo | VACIO'''
+    '''tiporegreso : tipo
+                   | VACIO'''
 
 def p_tipo(p):
-    '''tipo: ENTERO | FLOTANTE | CADENA | CARACTER | BOOL'''
+    '''tipo : ENTERO
+            | FLOTANTE
+            | CADENA
+            | CARACTER
+            | BOOL'''
 
 def p_ingreso(p):
     '''ingreso : ENTRADA PARENIZQUIERDO ingreso2 PARENDERECHO PUNTOYCOMA'''
 
 def p_ingreso2(p):
-    '''ingreso2: cteid
+    '''ingreso2 : cteid
               | cteid COMA ingreso2'''
 
 def p_coordenada(p):
-    '''coordenada : CENTERO | CFLOTANTE'''
+    '''coordenada : CENTERO
+                  | CFLOTANTE'''
 
 def p_args(p):
     '''args : expresion
            | expresion COMA args'''
 
 def p_texto(p):
-    '''texto: INSERTATEXTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA'''
+    '''texto : INSERTATEXTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA'''
 
 def p_rectangulo(p):
-    '''rectangulo: INSERTARECTANGULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA'''
+    '''rectangulo : INSERTARECTANGULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA'''
 
 def p_triangulo(p):
-    '''triangulo: INSERTATRIANGULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA'''
+    '''triangulo :  INSERTATRIANGULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA'''
 
 def p_circulo(p):
-    '''circulo: INSERTACIRCULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA'''
+    '''circulo : INSERTACIRCULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA'''
 
 def p_ovalo(p):
-    '''ovalo: INSERTAOVALO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA'''
+    '''ovalo : INSERTAOVALO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA'''
 
 def p_punto(p):
-    '''punto: INSERTAPUNTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA'''
+    '''punto : INSERTAPUNTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA'''
 
 def p_linea(p):
-    '''linea: INSERTALINEA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA'''
+    '''linea : INSERTALINEA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA'''
 
 def p_curva(p):
-    '''curva: INSERTACURVA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA'''
+    '''curva : INSERTACURVA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA'''
 
 def p_error(p):
     print("Error de sintaxis: '%s'"  % t.value)
@@ -230,5 +254,5 @@ input = ' '.join(lines)
 #print input
 result = parser.parse(input)
 
-#if result is None:
-  #print result#'Sintaxis correcta.'
+if result is None:
+  print result + 'Sintaxis correcta.'

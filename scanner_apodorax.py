@@ -172,11 +172,11 @@ lexer = lex.lex()
 '''
 data = '''
 # comentario
-inicio
-var ? mientras_tanto = 10 'a' ; fin
+#inicio
+#var ? mientras_tanto = 10 'a' ; fin
+#data_err = '''? | .'''
 '''
 # string para probar el analizador lexico con tokens incorrectos
-data_err = '''? | .'''
 
 # se corre el lexer con el string de prueba, descomentar para probar
 lexer.input(data)

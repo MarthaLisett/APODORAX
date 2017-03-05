@@ -1,0 +1,275 @@
+Created by PLY version 3.9 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    INSERTACURVAINSERTAOVALO
+    DESPLEGAR
+    MENORQUE
+    RESTA
+    SUMA
+    ASIGNACION
+    MAYORQUE
+    MAYORIGUAL
+    MENORIGUAL
+    TERMINO
+    DIVISION
+    O
+    EQUIVALENTE
+    Y
+    VERDADERO
+    FALSO
+    MULTIPLICACION
+
+Grammar
+
+Rule 0     S' -> empty
+Rule 1     empty -> <empty>
+Rule 2     program -> PROGRAMA ID DOSPUNTOS declaracion function INICIO bloque FIN
+Rule 3     declaracion -> VAR tipo asignacion declaracion
+Rule 4     declaracion -> empty
+Rule 5     asignacion -> id asignacion2
+Rule 6     asignacion2 -> IGUAL asignacionaux
+Rule 7     asignacion2 -> CORCHETEIZQ CENTERO CORCHETEDER PUNTOYCOMA
+Rule 8     asignacion2 -> PUNTOYCOMA
+Rule 9     asignacion2 -> empty
+Rule 10    asignacionaux -> expresion PUNTOYCOMA
+Rule 11    asignacionaux -> llamada
+Rule 12    function -> FUNCION tiporegreso ID PARENIZQUIERDO funtionaux PARENDERECHO bloquefun
+Rule 13    functionaux -> VAR tipo ID
+Rule 14    functionaux -> VAR tipo ID COMA functionaux
+Rule 15    functionaux -> empty
+Rule 16    bloquefun -> LLAVEIZQUIERDO bloquefun2 bloquefun3 LLAVEDERECHO
+Rule 17    bloquefun -> LLAVEIZQUIERDO bloquefun2 bloquefun3 regreso LLAVEDERECHO
+Rule 18    bloquefun2 -> empty
+Rule 19    bloquefun2 -> declaracion
+Rule 20    bloquefun2 -> declaracion bloquefun2
+Rule 21    bloquefun3 -> empty
+Rule 22    bloquefun3 -> estatuto
+Rule 23    bloquefun3 -> estatuto bloquefun3
+Rule 24    bloque -> LLAVEIZQUIERDO bloquefun3 LLAVEDERECHO
+Rule 25    estatuto -> ingreso
+Rule 26    estatuto -> texto
+Rule 27    estatuto -> rectangulo
+Rule 28    estatuto -> circulo
+Rule 29    estatuto -> ovalo
+Rule 30    estatuto -> triangulo
+Rule 31    estatuto -> punto
+Rule 32    estatuto -> linea
+Rule 33    estatuto -> llamada
+Rule 34    estatuto -> asignacion
+Rule 35    estatuto -> condicion
+Rule 36    estatuto -> ciclo
+Rule 37    estatuto -> escritura
+Rule 38    asignacionarreglo -> ID CORCHETEIZQ exp CORCHETEDER IGUAL asignacionvalor
+Rule 39    asignacionvalor -> cte PUNTOYCOMA
+Rule 40    asignacionvalor -> llamada
+Rule 41    discon -> CONJUNCION expresion
+Rule 42    discon -> DISJUNCION expresion
+Rule 43    discon -> CONJUNCION expresion discon
+Rule 44    discon -> DISJUNCION expresion discon
+Rule 45    discon -> empty
+Rule 46    negacion -> empty
+Rule 47    negacion -> NO
+Rule 48    expresion -> negacion exp expresionaux discon
+Rule 49    expresion -> color
+Rule 50    expresionaux -> empty
+Rule 51    expresionaux -> comparacion exp
+Rule 52    exp -> termino SUMARESTA exp
+Rule 53    exp -> termino
+Rule 54    termino -> factor MULTIPLICACIONDIVISION termino
+Rule 55    termino -> factor
+Rule 56    factor -> PARENIZQUIERDO expresion PARENDERECHO
+Rule 57    factor -> expresion
+Rule 58    factor -> cte
+Rule 59    factor -> SUMARESTA cte
+Rule 60    cte -> cteid
+Rule 61    cte -> CENTERO
+Rule 62    cte -> CFLOTANTE
+Rule 63    cte -> CCADENA
+Rule 64    cte -> CCARACTER
+Rule 65    cte -> CBOOL
+Rule 66    cteid -> ID cteidaux
+Rule 67    cteidaux -> empty
+Rule 68    cteidaux -> CORCHETEIZQ exp CORCHETEDER
+Rule 69    cteidaux -> PARENIZQUIERDO exp PARENDERECHO
+Rule 70    condicion -> SI PARENIZQUIERDO factor PARENDERECHO ENTONCES bloque condicionaux
+Rule 71    condicionaux -> empty
+Rule 72    condicionaux -> SINO ENTONCES bloque
+Rule 73    comparacion -> COMPARACION
+Rule 74    comparacion -> IGUALDAD
+Rule 75    comparacion -> DIFERENTE
+Rule 76    llamada -> ID PARENIZQUIERDO llamada2 PARENDERECHO PUNTOYCOMA
+Rule 77    llamada2 -> expresion
+Rule 78    llamada2 -> expresion COMA llamada2
+Rule 79    argumentos -> ID
+Rule 80    argumentos -> ID COMA argumentos
+Rule 81    argumentos -> ID CORCHETEIZQ CENTERO CORCHETEDER
+Rule 82    argumentos -> ID CORCHETEIZQ CENTERO CORCHETEDER COMA argumentos
+Rule 83    argumentos -> cte
+Rule 84    argumentos -> cte COMA argumentos
+Rule 85    color -> NEGRO
+Rule 86    color -> GRIS
+Rule 87    color -> AZUL
+Rule 88    color -> AMARILLO
+Rule 89    color -> VERDE
+Rule 90    color -> ROJO
+Rule 91    ciclo -> MIENTRAS PARENIZQUIERDO factor PARENDERECHO bloque
+Rule 92    entrada2 -> expresion
+Rule 93    entrada2 -> expresion COMA escritura2
+Rule 94    regreso -> REGRESAR expresion PUNTOYCOMA
+Rule 95    regreso -> empty
+Rule 96    tiporegreso -> tipo
+Rule 97    tiporegreso -> VACIO
+Rule 98    tipo -> ENTERO
+Rule 99    tipo -> FLOTANTE
+Rule 100   tipo -> CADENA
+Rule 101   tipo -> CARACTER
+Rule 102   tipo -> BOOL
+Rule 103   ingreso -> ENTRADA PARENIZQUIERDO ingreso2 PARENDERECHO PUNTOYCOMA
+Rule 104   ingreso2 -> cteid
+Rule 105   ingreso2 -> cteid COMA ingreso2
+Rule 106   coordenada -> CENTERO
+Rule 107   coordenada -> CFLOTANTE
+Rule 108   args -> expresion
+Rule 109   args -> expresion COMA args
+Rule 110   texto -> INSERTATEXTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA
+Rule 111   rectangulo -> INSERTARECTANGULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA
+Rule 112   triangulo -> INSERTATRIANGULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA
+Rule 113   circulo -> INSERTACIRCULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA
+Rule 114   ovalo -> INSERTAOVALO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA
+Rule 115   punto -> INSERTAPUNTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA
+Rule 116   linea -> INSERTALINEA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA
+Rule 117   curva -> INSERTACURVA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA
+
+Terminals, with rules where they appear
+
+AMARILLO             : 88
+ASIGNACION           : 
+AZUL                 : 87
+CADENA               : 100
+CBOOL                : 65
+CCARACTER            : 64
+CENTERO              : 7 61 81 82 106
+CFLOTANTE            : 62 107
+COMA                 : 14 78 80 82 84 93 105 109
+CORCHETEDER          : 7 38 68 81 82
+CORCHETEIZQ          : 7 38 68 81 82
+DESPLEGAR            : 
+DIFERENTE            : 75
+DIVISION             : 
+DOSPUNTOS            : 2
+ENTONCES             : 70 72
+ENTRADA              : 103
+EQUIVALENTE          : 
+FALSO                : 
+FIN                  : 2
+FUNCION              : 12
+GRIS                 : 86
+ID                   : 2 12 13 14 38 66 76 79 80 81 82
+INICIO               : 2
+INSERTACIRCULO       : 113
+INSERTACURVAINSERTAOVALO : 
+INSERTALINEA         : 116
+INSERTAPUNTO         : 115
+INSERTARECTANGULO    : 111
+INSERTATEXTO         : 110
+INSERTATRIANGULO     : 112
+LLAVEDERECHO         : 16 17 24
+LLAVEIZQUIERDO       : 16 17 24
+MAYORIGUAL           : 
+MAYORQUE             : 
+MENORIGUAL           : 
+MENORQUE             : 
+MIENTRAS             : 91
+MULTIPLICACION       : 
+NEGRO                : 85
+NO                   : 47
+O                    : 
+PARENDERECHO         : 12 56 69 70 76 91 103 110 111 112 113 114 115 116 117
+PARENIZQUIERDO       : 12 56 69 70 76 91 103 110 111 112 113 114 115 116 117
+PROGRAMA             : 2
+PUNTOYCOMA           : 7 8 10 39 76 94 103 110 111 112 113 114 115 116 117
+REGRESAR             : 94
+RESTA                : 
+ROJO                 : 90
+SI                   : 70
+SINO                 : 72
+SUMA                 : 
+TERMINO              : 
+VACIO                : 97
+VAR                  : 3 13 14
+VERDADERO            : 
+VERDE                : 89
+Y                    : 
+error                : 
+
+Nonterminals, with rules where they appear
+
+BOOL                 : 102
+CARACTER             : 101
+CCADENA              : 63
+COMPARACION          : 73
+CONJUNCION           : 41 43
+DISJUNCION           : 42 44
+ENTERO               : 98
+FLOTANTE             : 99
+IGUAL                : 6 38
+IGUALDAD             : 74
+INSERTACURVA         : 117
+INSERTAOVALO         : 114
+MULTIPLICACIONDIVISION : 54
+SUMARESTA            : 52 59
+args                 : 109 110 111 112 113 114 115 116 117
+argumentos           : 80 82 84
+asignacion           : 3 34
+asignacion2          : 5
+asignacionarreglo    : 
+asignacionaux        : 6
+asignacionvalor      : 38
+bloque               : 2 70 72 91
+bloquefun            : 12
+bloquefun2           : 16 17 20
+bloquefun3           : 16 17 23 24
+ciclo                : 36
+circulo              : 28
+color                : 49
+comparacion          : 51
+condicion            : 35
+condicionaux         : 70
+coordenada           : 
+cte                  : 39 58 59 83 84
+cteid                : 60 104 105
+cteidaux             : 66
+curva                : 
+declaracion          : 2 3 19 20
+discon               : 43 44 48
+empty                : 4 9 15 18 21 45 46 50 67 71 95 0
+entrada2             : 
+escritura            : 37
+escritura2           : 93
+estatuto             : 22 23
+exp                  : 38 48 51 52 68 69
+expresion            : 10 41 42 43 44 56 57 77 78 92 93 94 108 109
+expresionaux         : 48
+factor               : 54 55 70 91
+function             : 2
+functionaux          : 14
+funtionaux           : 12
+id                   : 5
+ingreso              : 25
+ingreso2             : 103 105
+linea                : 32
+llamada              : 11 33 40
+llamada2             : 76 78
+negacion             : 48
+ovalo                : 29
+program              : 
+punto                : 31
+rectangulo           : 27
+regreso              : 17
+termino              : 52 53 54
+texto                : 26
+tipo                 : 3 13 14 96
+tiporegreso          : 12
+triangulo            : 30
+
