@@ -20,14 +20,14 @@ def p_program(p):
   '''program : PROGRAMA ID DOSPUNTOS declaracion function INICIO bloque FIN'''
 
 def p_declaracion(p):
-  '''declaracion : VAR tipo ID asignacion declaracionaux'''
+  '''declaracion : VAR tipo asignacion declaracionaux'''
 
 def p_declaracionaux(p):
     '''declaracionaux : declaracion
                     | '''
 
 def p_asignacion(p):
-  '''asignacion : asignacion2'''
+  '''asignacion : ID asignacion2'''
 
 def p_asignacion2(p):
   '''asignacion2 : ASIGNACION asignacionaux
@@ -35,10 +35,16 @@ def p_asignacion2(p):
                | PUNTOYCOMA'''
 
 def p_asignacionaux(p):
-  '''asignacionaux : ID factor PUNTOYCOMA
-                  | ID asignacionaux2
-                  | cte
-                  | llamada'''
+  '''asignacionaux : cte asignacionaux3
+                  '''
+
+def p_llamada_asignacion(p):
+  ''' llamada_asignacion : PARENIZQUIERDO llamada2 PUNTOYCOMA'''
+
+def p_asignacionaux3(p):
+  '''asignacionaux3 : asignacionaux2
+                      | llamada_asignacion
+                      | PUNTOYCOMA'''
 
 def p_asignacionaux2(p):
   ''' asignacionaux2 : CORCHETEIZQ CENTERO CORCHETEDER PUNTOYCOMA
@@ -47,6 +53,7 @@ def p_asignacionaux2(p):
 
 def p_function(p):
   '''function : FUNCION tiporegreso ID PARENIZQUIERDO functionaux PARENDERECHO bloquefun'''
+
 
 def p_functionaux(p):
    '''functionaux : VAR tipo ID functionaux2
@@ -91,6 +98,7 @@ def p_estatuto(p):
               | linea
               | llamada
               | asignacion
+              | declaracion
               | condicion
               | ciclo
               | escritura
@@ -125,7 +133,7 @@ def p_exp(p):
 def p_exp2(p):
     '''exp2 : SUMA exp
           | RESTA exp
-          |'''
+          | '''
 
 def p_termino(p):
     '''termino : factor termino2'''
@@ -138,19 +146,10 @@ def p_termino2(p):
 
 def p_factor(p):
     '''factor : PARENIZQUIERDO expresion PARENDERECHO
-            | expresion
             | cte
-            | ID
-            | SUMA factoresSuma
-            | RESTA factoresResta'''
+            | SUMA  cte 
+            | RESTA cte '''
 
-def p_factoresSuma(p):
-  ''' factoresSuma : ID
-                | cte'''
-
-def p_factoresResta(p):
-  ''' factoresResta : ID
-                | cte'''
 
 def p_cte(p):
     '''cte : cteid
@@ -188,11 +187,12 @@ def p_llamada(p):
     '''llamada : ID PARENIZQUIERDO llamada2 PARENDERECHO PUNTOYCOMA'''
 
 def p_llamada2(p):
-    '''llamada2 : expresion llamada2aux'''
+    '''llamada2 : expresion llamada2aux
+                  | PARENDERECHO'''
 
 def p_llamada2aux(p):
     '''llamada2aux : COMA llamada2
-                  | '''
+                  '''
 
 def p_color(p):
     '''color : NEGRO
@@ -272,11 +272,12 @@ def p_curva(p):
     '''curva : INSERTACURVA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA'''
 
 def p_error(p):
-    print("Error de sintaxis: '%s'"  % p.value)
+    print("Error de sintaxis: '%s'"  % p.lineno)
     
 parser = yacc.yacc()
 
 if __name__ == '__main__':
+
   if (len(sys.argv) > 1):
     # Obtiene el archivo
     file = sys.argv[1]
