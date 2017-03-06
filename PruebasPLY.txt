@@ -1,17 +1,17 @@
 programa Martha0295:
 
 var entero hola;
-var flotante crayola = carro(4,-3.5);
-var cadena hello = "alicia";
-var caracter letra = 'b';
-var entero arrs[10] = 8; 
-var bool pregunta = falso;
-var entero I = 30;
+var flotante crayola;
+var cadena hello;
+var caracter letra ;
+var entero arrs[10]; 
+var bool pregunta;
+var entero I;
 
 funcion entero carro (var entero x, var flotante y)
 {
 	var flotante resultadofinal;
-	var flotante resultado = X * Y;
+	var flotante resultado;
 	resultadofinal = resultado + 1;
 
 	regresar resultadofinal;
