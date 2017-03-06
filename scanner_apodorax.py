@@ -97,6 +97,8 @@ t_MENORIGUAL                   = r'\>\='
 t_ASIGNACION                   = r'\='
 t_IGUAL                        = r'\=\='
 t_DIFERENTE                    = r'\!\='
+t_CONJUNCION                   = r'\&\&'
+t_DISYUNCION                   = r'\|\|'
 
 reserved = {
    'si'                : 'SI',
@@ -125,8 +127,6 @@ reserved = {
    'amarillo'          : 'AMARILLO',
    'verde'             : 'VERDE',
    'rojo'              : 'ROJO',
-   'y'                 : 'CONJUNCION',
-   'o'                 : 'DISYUNCION',
    'vacio'             : 'VACIO',
    'insertaTexto'      : 'INSERTATEXTO',
    'insertaRectangulo' : 'INSERTARECTANGULO',
