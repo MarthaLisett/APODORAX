@@ -105,11 +105,11 @@ def p_llamadaparaux(p):
 
 # Lado izquierdo de la asignacion para saber si es id normal o arreglo
 def p_asignacionizq(p):
-  '''asignacionizq : id asignacionizqaux'''
+  '''asignacionizq : ID asignacionizqaux'''
 
 # Auxiliar asignacionizq
 def p_asignacionizqaux(p):
-  '''asignacionizquaux : CORCHETEIZQ exp CORCHETEDER
+  '''asignacionizqaux : CORCHETEIZQ exp CORCHETEDER
                      | '''
 
 # Asignacion de valores
