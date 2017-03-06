@@ -33,6 +33,18 @@ inicio
 	}
 	sino entonces
 	{
+		si (((((4 + 10) * 4) > (12)) && verdadero) || falso) entonces {
+			desplegar (5);
+		}
+		mientras (10 < I)
+		{
+			si (((((4 + 10) * 4) > (12)) && verdadero) || falso) entonces {
+				desplegar (5);
+			}
+			desplegar (5);
+			I = I - 1;
+		}
+
 		desplegar (5 - (-1));
 	}
 
