@@ -8,7 +8,7 @@ var entero arrs[10];
 var bool pregunta;
 var entero I;
 
-funcion entero carro (var entero x, var flotante y)
+funcion entero carro (var entero x, var flotante z)
 {
 	var flotante resultadofinal;
 	var flotante resultado;
