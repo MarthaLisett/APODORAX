@@ -280,8 +280,7 @@ def p_curva(p):
     '''curva : INSERTACURVA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA'''
 
 def p_error(p):
-    print("Error de sintaxis: '%s'"  % p.lineno)
-    print("Error de sintaxis: '%s'"  % p.value)
+    print("Error de sintaxis: '%s' en línea: %s."  % (p.value, p.lineno))
     
 parser = yacc.yacc()
 
