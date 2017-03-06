@@ -87,7 +87,8 @@ def p_functionpam2(p):
                     | '''
 # Funcion
 def p_function(p):
-  '''function : FUNCION tiporegreso ID PARENIZQUIERDO functionpam PARENDERECHO bloquefun'''
+  '''function : FUNCION tiporegreso ID PARENIZQUIERDO functionpam PARENDERECHO bloquefun function
+            | '''
 
 # Llamada a funcion
 def p_llamada(p):
@@ -118,7 +119,7 @@ def p_asignacion(p):
 
 # Auxiliar de asignacion
 def p_asignacionaux(p):
-  '''asignacionaux : expresion
+  '''asignacionaux : exp
                   | llamada'''
 
 # Estatutos a estar dentro de los bloques

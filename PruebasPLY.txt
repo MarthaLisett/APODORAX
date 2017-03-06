@@ -35,13 +35,13 @@ inicio
 	}
 	sino entonces
 	{
-		desplegar (5-1);
+		desplegar (5 - 1);
 	}
 
 	mientras (10 < I)
 	{
 		desplegar (5);
-		I = I - 1;
+		I = I * 1;
 	}
 }
 
