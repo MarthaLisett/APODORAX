@@ -1,40 +1,33 @@
 PROGRAMA ::= 'programa' 'id' ':' DECLARACION FUNCION 'inicio' BLOQUE 'fin'
-
-DECLARACION ::= ('var' TIPO (ASIGNACION ))*
-
-ASIGNACION ::= id ';' | id '=' (EXPRESION ';' | LLAMADA) | ( ';' | id '[' 'c_entero' ']' ';')
-
-FUNCION ::= 'funcion' TIPO_REGRESO 'id' '(' (PARAMETROS | ) ')' BLOQUEFUN
-BLOQUEFUN ::= '{' DECLARACION* (ESTATUTO)* REGRESO? '}'
-BLOQUE ::= '{' BLOQUE2
-BLOQUE2 ::= ESTATUTO BLOQUE2 | '}' 
-ESTATUTO ::= INGRESO | TEXTO | RECTANGULO | CIRCULO | OVALO | TRIANGULO | PUNTO | LINEA | LLAMADA | ASIGNACION | CONDICION | CICLO | ESCRITURA
-ASIGNACION_ARREGLO ::= 'id' '[' EXP ']' '=' ASIGNACION_VALOR
-ASIGNACION_VALOR ::= CTE  ';' | LLAMADA
-EXPRESION ::= NEGACION EXP DIS_CON | NEGACION EXP COMPARACION EXP DIS_CON | COLOR
+DECLARACION ::= ('var' TIPO 'cteid' ';')*
+ASIGNACION ::= ('id' ('[' EXP ']' |))'=' (EXP | LLAMADA) ';'
+FUNCTION ::= 'funcion' TIPO_REGRESO 'id' '(' FUNCTIONPAM ')' BLOQUEFUN
+FUNCTIONPAM ::= ('var' TIPO 'id' (',' FUNCTIONPAM)* |)
+BLOQUEFUN ::= '{' DECLARACION* ESTATUTO* REGRESO '}'
+BLOQUE ::= '{' ESTATUTO* '}' 
+ESTATUTO ::= INGRESO | ESCRITURA | TEXTO | RECTANGULO | CIRCULO | OVALO | TRIANGULO | PUNTO | LINEA | CURVA | LLAMADA ';' | ASIGNACION | CONDICION | CICLO
+NEGACION ::= ('no')?
+EXPRESION ::= NEGACION EXP | NEGACION EXP COMPARACION EXP | COLOR
 EXP ::= TERMINO | TERMINO '+' EXP | TERMINO '-' EXP
 TERMINO ::= FACTOR | FACTOR '*' TERMINO | FACTOR '/' TERMINO 
-FACTOR ::= EXPRESION | '(' EXPRESION ')' | CTE | '+' CTE | '-' CTE
+FACTOR ::= '(' EXPRESION ')' | CTE
 CTE ::= CTE_ID | 'c_entero' | 'c_flotante' | 'c_cadena' | 'c_bool' | 'c_caracter'
 CTE_ID ::= 'id' | 'id' '[' EXP ']'| 'id' '(' EXP ')'
-CONDICION ::= 'si' '(' FACTOR ')' 'entonces' BLOQUE ( 'sino' 'entonces' BLOQUE | )
-COMPARACION ::= '<' | '>' | '!=' | '==' | '<=' | '>='
+CONDICION ::= 'si' '(' EXPRESION ')' 'entonces' BLOQUE ( 'sino' 'entonces' BLOQUE | )
+COMPARACION ::= '<' | '>' | '!=' | '==' | '<=' | '>=' | '&&' | '||'
 PARAMETROS ::= 'var' TIPO 'id' | 'var' TIPO 'id' ',' PARAMETROS  
-LLAMADA ::= 'id' '(' LLAMADA2 ')' ';'
+LLAMADA ::= 'id' '(' (LLAMADA2 |) ')' ';'
 LLAMADA2 ::= EXPRESION | EXPRESION ',' LLAMADA2
-ARGUMENTOS ::= ('id' | 'id' ',' ARGUMENTOS | 'id' '[' EXP ']' | 'id' '[' EXP ']' ',' ARGUMENTOS | CTE | CTE ',' ARGUMENTOS)*
 COLOR ::= 'negro' | 'gris' | 'azul' | 'amarillo' | 'verde' | 'rojo'
-CICLO ::= 'mientras' '(' FACTOR ')' BLOQUE 
-NEGACION ::= ('no'|)
-DIS_CON ::= ('y' EXPRESION | 'o' EXPRESION)*
+CICLO ::= 'mientras' '('EXPRESION ')' BLOQUE 
 ESCRITURA ::= 'desplegar' '(' ESCRITURA2 ')'  ';'
 ESCRITURA2::= EXPRESION | EXPRESION ',' ESCRITURA2 
-REGRESO ::= ('regresar' EXPRESION ';' | )
+REGRESO ::= ('regresar' EXP ';' | )
 TIPO_REGRESO ::= TIPO | 'vacio'
 TIPO ::= 'cadena' | 'entero' | 'flotante' | 'bool' | 'caracter'
 INGRESO ::= 'entrada' '(' INGRESO2 ')' ';'
 INGRESO2 ::= CTE_ID | CTE_ID ',' INGRESO2
-COORDENADA ::= 'c_entero' | 'c_flotante'
+ARGS ::= EXPRESION | EXPRESION ',' ARGS
 TEXTO ::= 'insertaTexto' '(' ARGS ')' ';'
 RECTANGULO ::= 'insertaRectangulo' '(' ARGS ')' ';'
 CIRCULO ::= 'insertaCirculo' '(' ARGS ')' ';'
@@ -43,4 +36,3 @@ TRIANGULO ::= 'insertaTriangulo' '(' ARGS ')' ';'
 PUNTO ::= 'insertaPunto' '(' ARGS ')' ';'
 LINEA ::= 'insertaLinea' '('ARGS ')' ';'
 CURVA ::= 'insertaCurva' '(' ARGS ')' ';'
-ARGS ::= EXPRESION | EXPRESION ',' ARGS
