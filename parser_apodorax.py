@@ -3,7 +3,7 @@
 #------------------------------------------------------------
 #
 #  Jose Gonzalez Ayerdi - A01036121
-#  Martha Benavides - 
+#  Martha Benavides - A01280115
 #  Proyecto Final, Diseño de Compiladores
 #  Sintaxis para el lenguaje APODORAX
 #  Gramatica regular para el analisis sintactico con PLY
@@ -19,7 +19,7 @@ from scanner_apodorax import tokens
 # Programa
 def p_program(p):
   '''program : PROGRAMA ID DOSPUNTOS declaracion function INICIO bloque FIN'''
-
+  p[0]="Interpretado Correctamente"
 # Constante ID
 def p_cteid(p):
     '''cteid : ID cteidaux'''
@@ -280,7 +280,7 @@ def p_curva(p):
     '''curva : INSERTACURVA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA'''
 
 def p_error(p):
-    print("Error de sintaxis: '%s' en línea: %s."  % (p.value, p.lineno))
+    print("Error de sintaxis: '%s' en linea: %s."  % (p.value, p.lineno))
     
 parser = yacc.yacc()
 
@@ -293,8 +293,8 @@ if __name__ == '__main__':
       data = f.read()
       f.close()
       #Se realiza la gramatica
-      if (parser.parse(data, tracking=True) == 'Trabajando correctamente - APROPIADO'):
-        print ('Trabajando correctamente - APROPIADO');
+      if (parser.parse(data, tracking=True) == 'Interpretado Correctamente'):
+        print ('Interpretado Correctamente');
     except EOFError:
         print(EOFError)
   else:

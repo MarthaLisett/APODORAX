@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------
-#  José González Ayerdi - A01036121
-#  3/02/17
-#  Tarea 3, Diseño de Compiladores
-#  Sintaxis para el lenguaje MyLittleDuck2017
-#  Archivo con expresiones regulares para el análisis lexico con PLY
+#  Jose Gonzalez Ayerdi - A01036121
+#  Martha Benavides - A01280115
+#  Proyecto Final, Diseño de Compiladores
+#  Sintaxis para el lenguaje APODORAX
+#  Gramatica regular para el analisis sintactico con PLY
 # ------------------------------------------------------------
 import ply.lex as lex
 
