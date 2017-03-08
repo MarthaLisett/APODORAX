@@ -3,7 +3,7 @@
 #------------------------------------------------------------
 #
 #  Jose Gonzalez Ayerdi - A01036121
-#  Martha Benavides - 
+#  Martha Benavides - A01280115
 #  Proyecto Final, Diseño de Compiladores
 #  Sintaxis para el lenguaje APODORAX
 #  Gramatica regular para el analisis sintactico con PLY
@@ -12,222 +12,290 @@
 import ply.yacc as yacc
 import sys
 # obtenemos la lista de tokens generadas por el analizador lexico
-from scanner import tokens
+from scanner_apodorax import tokens
 
 # Reglas Gramaticales
-def p_empty:
-  '''empty:'''
-  pass
 
+# Programa
 def p_program(p):
   '''program : PROGRAMA ID DOSPUNTOS declaracion function INICIO bloque FIN'''
-
-def p_declaracion(p):
-  '''declaracion : VAR tipo asignacion declaracion
-               | empty'''
-
-def p_asignacion(p):
-  '''asignacion : id asignacion2 '''
-
-def p_asignacion2(p):
-  '''asignacion2: IGUAL asignacionaux
-               | CORCHETEIZQ CENTERO CORCHETEDER PUNTOYCOMA
-               | PUNTOYCOMA
-               | empty'''
-
-def p_asignacionaux(p):
-  '''asignacionaux : expresion PUNTOYCOMA
-                  | llamada'''
-
-def p_function(p):
-  '''function : FUNCION tiporegreso ID PARENIZQUIERDO funtionaux PARENDERECHO bloquefun'''
-
-def p_functionaux(p):
-   '''functionaux : tipo ID
-                 | tipo ID COMA functionaux
-                 | empty'''
-
-def p_bloquefun(p):
-  '''bloquefun : LLAVEIZQUIERDO bloquefun2 bloquefun3 LLAVEDERECHO
-                | LLAVEIZQUIERDO bloquefun2 bloquefun3 regreso LLAVEDERECHO'''
-
-def p_bloquefun2(p):
-  '''bloquefun2 : empty
-               | declaracion
-               | declaracion bloquefun2'''
-
-def p_bloquefun3(p):
-  '''bloquefun3 : empty
-               | estatuto
-               | estatuto bloquefun3'''
-
-def p_bloque(p):
-   '''bloque : LLAVEIZQUIERDO bloquefun3 LLAVEDERECHO'''
-
-def p_estatuto(p):
-   '''estatuto : ingreso | texto | rectangulo | circulo | ovalo
-              | triangulo | punto | linea | llamada | asignacion
-              | condicion | ciclo | escritura'''
-
-def p_asignacionarreglo(p):
-    '''asignacionarreglo : ID CORCHETEIZQ exp CORCHETEDER IGUAL asignacionvalor'''
-
-def p_asignacionvalor(p): 
-    '''asignacionvalor : cte PUNTOYCOMA
-                      | llamada'''
-
-def p_discon(p):
-    '''discon : CONJUNCION expresion
-            | DISJUNCION expresion
-            | CONJUNCION expresion discon
-            | DISJUNCION expresion discon
-            | empty'''
-
-def p_negacion(p):
-    '''negacion : empty 
-              | NO'''   
-
-def p_expresion(p): 
-    '''expresion : negacion exp expresionaux discon
-                | color'''  
-
-def p_expresionaux(p) :
-    '''expresionaux : empty
-                   | comparacion exp'''
-
-def p_exp(p):
-    '''exp :  termino SUMARESTA exp
-          | termino'''
-
-def p_termino(p):
-    '''termino: factor MULTIPLICACIONDIVISION termino
-             | factor'''
-
-def p_factor(p):
-    '''factor: PARENIZQUIERDO expresion PARENDERECHO
-            | cte
-            | SUMARESTA cte'''
-
-def p_cte(p):
-    '''cte : cteid | CENTERO | CFLOTANTE | CCADENA
-           | CCARACTER | CBOOL'''
-
+  p[0]="Interpretado Correctamente"
+# Constante ID
 def p_cteid(p):
     '''cteid : ID cteidaux'''
 
+# Auxiliar Constante ID
 def p_cteidaux(p):
-    '''cteidaux: empty
-               | CORCHETEIZQ exp CORCHETEDER
-               | PARENIZQUIERDO exp PARENDERECHO'''
+    '''cteidaux : CORCHETEIZQ exp CORCHETEDER
+               | PARENIZQUIERDO exp PARENDERECHO
+               | '''
 
+# Valores constantes
+def p_cte(p):
+    '''cte : cteid
+           | CENTERO
+           | CFLOTANTE
+           | CCADENA
+           | CCARACTER
+           | VERDADERO
+           | FALSO'''
+
+# Tipo de dato
+def p_tipo(p):
+    '''tipo : ENTERO
+            | FLOTANTE
+            | CADENA
+            | CARACTER
+            | BOOL'''
+
+# Declaracion de variables
+def p_declaracion(p):
+  '''declaracion : VAR tipo cteid PUNTOYCOMA declaracion
+                | '''
+
+# Return de las funciones
+def p_regreso(p):
+    '''regreso : REGRESAR exp PUNTOYCOMA
+              | '''
+
+# Bloque
+def p_bloque(p):
+   '''bloque : LLAVEIZQUIERDO bloqueaux LLAVEDERECHO'''
+
+# Auxiliar bloque permite poner 0 o mas estatutos
+def p_bloqueaux(p): 
+  '''bloqueaux : estatuto bloqueaux
+              | '''
+
+# Instrucciones de las funciones
+def p_bloquefun(p):
+  '''bloquefun : LLAVEIZQUIERDO declaracion bloqueaux regreso LLAVEDERECHO'''
+
+# Tipo de regreso de las funciones
+def p_tiporegreso(p):
+    '''tiporegreso : tipo
+                   | VACIO'''
+
+# Parametros de las funciones
+def p_functionpam(p):
+   '''functionpam : VAR tipo ID functionpam2
+                 | '''
+
+# Auxiliar Parametros de las funciones
+def p_functionpam2(p):
+   '''functionpam2 : COMA functionpam
+                    | '''
+# Funcion
+def p_function(p):
+  '''function : FUNCION tiporegreso ID PARENIZQUIERDO functionpam PARENDERECHO bloquefun function
+            | '''
+
+# Llamada a funcion
+def p_llamada(p):
+    '''llamada : ID PARENIZQUIERDO llamadapar PARENDERECHO'''
+
+# Parametros de la llamada
+def p_llamadapar(p):
+    '''llamadapar : exp llamadaparaux
+                 | '''
+
+# Auxiliar de parametros de llamada
+def p_llamadaparaux(p):
+    '''llamadaparaux : COMA llamadapar
+                  | '''
+
+# Lado izquierdo de la asignacion para saber si es id normal o arreglo
+def p_asignacionizq(p):
+  '''asignacionizq : ID asignacionizqaux'''
+
+# Auxiliar asignacionizq
+def p_asignacionizqaux(p):
+  '''asignacionizqaux : CORCHETEIZQ exp CORCHETEDER
+                     | '''
+
+# Asignacion de valores
+def p_asignacion(p):
+  '''asignacion : asignacionizq ASIGNACION asignacionaux PUNTOYCOMA'''
+
+# Auxiliar de asignacion
+def p_asignacionaux(p):
+  '''asignacionaux : exp
+                  | llamada'''
+
+# Estatutos a estar dentro de los bloques
+def p_estatuto(p):
+   '''estatuto : ingreso
+              | escritura
+              | texto
+              | rectangulo
+              | circulo
+              | ovalo
+              | triangulo
+              | punto
+              | linea
+              | curva
+              | llamada PUNTOYCOMA
+              | asignacion
+              | condicion
+              | ciclo'''
+
+# Negar la expresion
+def p_negacion(p):
+    '''negacion : NO
+              | '''   
+
+# Signos de comparacion
+def p_comparacion(p):
+    '''comparacion : MENORQUE
+                  | MAYORQUE
+                  | MAYORIGUAL
+                  | MENORIGUAL
+                  | IGUAL
+                  | DIFERENTE
+                  | CONJUNCION
+                  | DISYUNCION'''
+
+# Expresion que permite la comparacion
+def p_expresion(p): 
+    '''expresion : negacion exp expresionaux
+                | color'''  
+
+# Auxiliar de expresion
+def p_expresionaux(p) :
+    '''expresionaux : comparacion exp
+                   | '''
+
+# Exp suma y resta
+def p_exp(p):
+    '''exp : termino exp2'''
+
+# Auxiliar de exp que permite tener 1 o más terminos
+def p_exp2(p):
+    '''exp2 : SUMA exp
+          | RESTA exp
+          | '''
+
+# Termino multiplicacion y division
+def p_termino(p):
+  '''termino : factor termino2'''
+
+# Auxiliar termino que permite tener 1 o mas factores
+def p_termino2(p):
+  '''termino2 : MULTIPLICACION termino
+             | DIVISION termino
+             | '''
+
+# Factor numerico o mediante IDs
+def p_factor(p):
+    '''factor : PARENIZQUIERDO expresion PARENDERECHO
+            | cte'''
+
+# Condicion que maneja si, sino, entonces
 def p_condicion(p):
     '''condicion : SI PARENIZQUIERDO expresion PARENDERECHO ENTONCES bloque condicionaux'''
 
+# Auxiliar de condicion que maneja el sino
 def p_condicionaux(p):
-   '''condicionaux : empty
-                  | SINO ENTONCES bloque'''
+   '''condicionaux : SINO ENTONCES bloque
+                  | '''
 
-def p_condicionaux(p):
-    '''condicionaux: ''' 
-
-def p_comparacion(p):
-    '''comparacion : COMPARACION | IGUALDAD | DIFERENTE'''
-
-def p_llamada(p):
-    '''llamada : ID PARENIZQUIERDO llamada2 PARENDERECHO PUNTOYCOMA'''
-
-def p_llamada2(p):
-    '''llamada2 : expresion
-              | expresion COMA llamada2'''
-
-def p_argumentos(p):
-    '''argumentos : ID
-                | ID COMA argumentos
-                | ID CORCHETEIZQ CENTERO CORCHETEDER
-                | ID CORCHETEIZQ CENTERO CORCHETEDER COMA argumentos
-                | cte
-                | cte COMA argumentos'''
-
+# Colores a usar en las figuras
 def p_color(p):
-    '''color : NEGRO | GRIS | AZUL | AMARILLO | VERDE | ROJO'''
+    '''color : NEGRO
+            | GRIS
+            | AZUL
+            | AMARILLO
+            | VERDE
+            | ROJO'''
 
+# Mientras (while)
 def p_ciclo(p):
     '''ciclo : MIENTRAS PARENIZQUIERDO expresion PARENDERECHO bloque'''
 
+# Desplegar en consola
 def p_escritura(p):
-    '''entrada : DESPLEGAR PARENIZQUIERDO escritura2 PARENDERECHO PUNTOYCOMA'''
+    '''escritura : DESPLEGAR PARENIZQUIERDO escrituraaux PARENDERECHO PUNTOYCOMA'''
+ 
+# Auxiliar para desplegar
+def p_escrituraaux(p):
+    '''escrituraaux : exp escritura2aux'''
 
-def p_escritura(p):
-    '''entrada2 : expresion
-                 | expresion COMA escritura2'''
+# Auxiliar para desplegar aceptando uno o mas exp
+def p_escritura2aux(p):
+    '''escritura2aux : COMA escrituraaux
+                    | '''
 
-def p_regreso(p):
-    '''regreso : REGRESAR expresion PUNTOYCOMA
-              | empty'''
-
-def p_tiporegreso(p):
-    '''tiporegreso : tipo | VACIO'''
-
-def p_tipo(p):
-    '''tipo: ENTERO | FLOTANTE | CADENA | CARACTER | BOOL'''
-
+# Aceptar/ingresar info del usuario
 def p_ingreso(p):
-    '''ingreso : ENTRADA PARENIZQUIERDO ingreso2 PARENDERECHO PUNTOYCOMA'''
+    '''ingreso : ENTRADA PARENIZQUIERDO ingresoaux PARENDERECHO PUNTOYCOMA'''
 
-def p_ingreso2(p):
-    '''ingreso2: cteid
-              | cteid COMA ingreso2'''
+# Auxiliar ingreso
+def p_ingresoaux(p):
+    '''ingresoaux : cteid ingreso2aux'''
 
-def p_coordenada(p):
-    '''coordenada : CENTERO | CFLOTANTE'''
+# Auxiliar ingreso para que acepte uno o varios cteid
+def p_ingreso2aux(p):
+    '''ingreso2aux : COMA ingresoaux
+                  | '''
 
+# Argumentos para las funciones de figura, pueden ser cualquier constante o color
 def p_args(p):
-    '''args : expresion
-           | expresion COMA args'''
+    '''args : expresion args2'''
 
+# Auxiliar argumentos
+def p_args2(p):
+    '''args2 : COMA args
+            | '''
+
+# Funcion para incluir texto
 def p_texto(p):
-    '''texto: INSERTATEXTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA'''
+    '''texto : INSERTATEXTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA'''
 
+# Funcion para incluir un rectangulo
 def p_rectangulo(p):
-    '''rectangulo: INSERTARECTANGULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA'''
+    '''rectangulo : INSERTARECTANGULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA'''
 
+# Funcion para incluir un triangulo
 def p_triangulo(p):
-    '''triangulo: INSERTATRIANGULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA'''
+    '''triangulo :  INSERTATRIANGULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA'''
 
+# Funcion para incluir un circulo
 def p_circulo(p):
-    '''circulo: INSERTACIRCULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA'''
+    '''circulo : INSERTACIRCULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA'''
 
+# Funcion para incluir un ovalo
 def p_ovalo(p):
-    '''ovalo: INSERTAOVALO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA'''
+    '''ovalo : INSERTAOVALO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA'''
 
+# Funcion para incluir un punto
 def p_punto(p):
-    '''punto: INSERTAPUNTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA'''
+    '''punto : INSERTAPUNTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA'''
 
+# Funcion para incluir una linea
 def p_linea(p):
-    '''linea: INSERTALINEA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA'''
+    '''linea : INSERTALINEA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA'''
 
+# Funcion para incluir una curva
 def p_curva(p):
-    '''curva: INSERTACURVA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA'''
+    '''curva : INSERTACURVA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA'''
 
 def p_error(p):
-    print("Error de sintaxis: '%s'"  % t.value)
+    print("Error de sintaxis: '%s' en linea: %s."  % (p.value, p.lineno))
     
 parser = yacc.yacc()
 
-# lista para guardar la lineas de la entrada
-lines = []
-
-# se lee linea por linea el contenido de un archivo
-# especificado como argumento al momento de correr el programa
-for line in sys.stdin:
-  stripped = line.strip()
-  if not stripped: break
-  lines.append(stripped)
-# se crea un solo string con los strings en la lista
-input = ' '.join(lines)
-# se parsea la entrada
-#print input
-result = parser.parse(input)
-
-#if result is None:
-  #print result#'Sintaxis correcta.'
+if __name__ == '__main__':
+  if (len(sys.argv) > 1):
+    # Obtiene el archivo
+    file = sys.argv[1]
+    try:
+      f = open(file,'r')
+      data = f.read()
+      f.close()
+      #Se realiza la gramatica
+      if (parser.parse(data, tracking=True) == 'Interpretado Correctamente'):
+        print ('Interpretado Correctamente');
+    except EOFError:
+        print(EOFError)
+  else:
+    print('No existe el archivo')

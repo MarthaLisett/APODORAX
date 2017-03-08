@@ -1,0 +1,3678 @@
+Created by PLY version 3.9 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> program
+Rule 1     program -> PROGRAMA ID DOSPUNTOS declaracion function INICIO bloque FIN
+Rule 2     cteid -> ID cteidaux
+Rule 3     cteidaux -> CORCHETEIZQ exp CORCHETEDER
+Rule 4     cteidaux -> PARENIZQUIERDO exp PARENDERECHO
+Rule 5     cteidaux -> <empty>
+Rule 6     cte -> cteid
+Rule 7     cte -> CENTERO
+Rule 8     cte -> CFLOTANTE
+Rule 9     cte -> CCADENA
+Rule 10    cte -> CCARACTER
+Rule 11    cte -> VERDADERO
+Rule 12    cte -> FALSO
+Rule 13    tipo -> ENTERO
+Rule 14    tipo -> FLOTANTE
+Rule 15    tipo -> CADENA
+Rule 16    tipo -> CARACTER
+Rule 17    tipo -> BOOL
+Rule 18    declaracion -> VAR tipo cteid PUNTOYCOMA declaracion
+Rule 19    declaracion -> <empty>
+Rule 20    regreso -> REGRESAR exp PUNTOYCOMA
+Rule 21    regreso -> <empty>
+Rule 22    bloque -> LLAVEIZQUIERDO bloqueaux LLAVEDERECHO
+Rule 23    bloqueaux -> estatuto bloqueaux
+Rule 24    bloqueaux -> <empty>
+Rule 25    bloquefun -> LLAVEIZQUIERDO declaracion bloqueaux regreso LLAVEDERECHO
+Rule 26    tiporegreso -> tipo
+Rule 27    tiporegreso -> VACIO
+Rule 28    functionpam -> VAR tipo ID functionpam2
+Rule 29    functionpam -> <empty>
+Rule 30    functionpam2 -> COMA functionpam
+Rule 31    functionpam2 -> <empty>
+Rule 32    function -> FUNCION tiporegreso ID PARENIZQUIERDO functionpam PARENDERECHO bloquefun function
+Rule 33    function -> <empty>
+Rule 34    llamada -> ID PARENIZQUIERDO llamadapar PARENDERECHO
+Rule 35    llamadapar -> exp llamadaparaux
+Rule 36    llamadapar -> <empty>
+Rule 37    llamadaparaux -> COMA llamadapar
+Rule 38    llamadaparaux -> <empty>
+Rule 39    asignacionizq -> ID asignacionizqaux
+Rule 40    asignacionizqaux -> CORCHETEIZQ exp CORCHETEDER
+Rule 41    asignacionizqaux -> <empty>
+Rule 42    asignacion -> asignacionizq ASIGNACION asignacionaux PUNTOYCOMA
+Rule 43    asignacionaux -> exp
+Rule 44    asignacionaux -> llamada
+Rule 45    estatuto -> ingreso
+Rule 46    estatuto -> escritura
+Rule 47    estatuto -> texto
+Rule 48    estatuto -> rectangulo
+Rule 49    estatuto -> circulo
+Rule 50    estatuto -> ovalo
+Rule 51    estatuto -> triangulo
+Rule 52    estatuto -> punto
+Rule 53    estatuto -> linea
+Rule 54    estatuto -> curva
+Rule 55    estatuto -> llamada PUNTOYCOMA
+Rule 56    estatuto -> asignacion
+Rule 57    estatuto -> condicion
+Rule 58    estatuto -> ciclo
+Rule 59    negacion -> NO
+Rule 60    negacion -> <empty>
+Rule 61    comparacion -> MENORQUE
+Rule 62    comparacion -> MAYORQUE
+Rule 63    comparacion -> MAYORIGUAL
+Rule 64    comparacion -> MENORIGUAL
+Rule 65    comparacion -> IGUAL
+Rule 66    comparacion -> DIFERENTE
+Rule 67    comparacion -> CONJUNCION
+Rule 68    comparacion -> DISYUNCION
+Rule 69    expresion -> negacion exp expresionaux
+Rule 70    expresion -> color
+Rule 71    expresionaux -> comparacion exp
+Rule 72    expresionaux -> <empty>
+Rule 73    exp -> termino exp2
+Rule 74    exp2 -> SUMA exp
+Rule 75    exp2 -> RESTA exp
+Rule 76    exp2 -> <empty>
+Rule 77    termino -> factor termino2
+Rule 78    termino2 -> MULTIPLICACION termino
+Rule 79    termino2 -> DIVISION termino
+Rule 80    termino2 -> <empty>
+Rule 81    factor -> PARENIZQUIERDO expresion PARENDERECHO
+Rule 82    factor -> cte
+Rule 83    condicion -> SI PARENIZQUIERDO expresion PARENDERECHO ENTONCES bloque condicionaux
+Rule 84    condicionaux -> SINO ENTONCES bloque
+Rule 85    condicionaux -> <empty>
+Rule 86    color -> NEGRO
+Rule 87    color -> GRIS
+Rule 88    color -> AZUL
+Rule 89    color -> AMARILLO
+Rule 90    color -> VERDE
+Rule 91    color -> ROJO
+Rule 92    ciclo -> MIENTRAS PARENIZQUIERDO expresion PARENDERECHO bloque
+Rule 93    escritura -> DESPLEGAR PARENIZQUIERDO escrituraaux PARENDERECHO PUNTOYCOMA
+Rule 94    escrituraaux -> exp escritura2aux
+Rule 95    escritura2aux -> COMA escrituraaux
+Rule 96    escritura2aux -> <empty>
+Rule 97    ingreso -> ENTRADA PARENIZQUIERDO ingresoaux PARENDERECHO PUNTOYCOMA
+Rule 98    ingresoaux -> cteid ingreso2aux
+Rule 99    ingreso2aux -> COMA ingresoaux
+Rule 100   ingreso2aux -> <empty>
+Rule 101   args -> expresion args2
+Rule 102   args2 -> COMA args
+Rule 103   args2 -> <empty>
+Rule 104   texto -> INSERTATEXTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA
+Rule 105   rectangulo -> INSERTARECTANGULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA
+Rule 106   triangulo -> INSERTATRIANGULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA
+Rule 107   circulo -> INSERTACIRCULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA
+Rule 108   ovalo -> INSERTAOVALO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA
+Rule 109   punto -> INSERTAPUNTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA
+Rule 110   linea -> INSERTALINEA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA
+Rule 111   curva -> INSERTACURVA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA
+
+Terminals, with rules where they appear
+
+AMARILLO             : 89
+ASIGNACION           : 42
+AZUL                 : 88
+BOOL                 : 17
+CADENA               : 15
+CARACTER             : 16
+CCADENA              : 9
+CCARACTER            : 10
+CENTERO              : 7
+CFLOTANTE            : 8
+COMA                 : 30 37 95 99 102
+CONJUNCION           : 67
+CORCHETEDER          : 3 40
+CORCHETEIZQ          : 3 40
+DESPLEGAR            : 93
+DIFERENTE            : 66
+DISYUNCION           : 68
+DIVISION             : 79
+DOSPUNTOS            : 1
+ENTERO               : 13
+ENTONCES             : 83 84
+ENTRADA              : 97
+FALSO                : 12
+FIN                  : 1
+FLOTANTE             : 14
+FUNCION              : 32
+GRIS                 : 87
+ID                   : 1 2 28 32 34 39
+IGUAL                : 65
+INICIO               : 1
+INSERTACIRCULO       : 107
+INSERTACURVA         : 111
+INSERTALINEA         : 110
+INSERTAOVALO         : 108
+INSERTAPUNTO         : 109
+INSERTARECTANGULO    : 105
+INSERTATEXTO         : 104
+INSERTATRIANGULO     : 106
+LLAVEDERECHO         : 22 25
+LLAVEIZQUIERDO       : 22 25
+MAYORIGUAL           : 63
+MAYORQUE             : 62
+MENORIGUAL           : 64
+MENORQUE             : 61
+MIENTRAS             : 92
+MULTIPLICACION       : 78
+NEGRO                : 86
+NO                   : 59
+PARENDERECHO         : 4 32 34 81 83 92 93 97 104 105 106 107 108 109 110 111
+PARENIZQUIERDO       : 4 32 34 81 83 92 93 97 104 105 106 107 108 109 110 111
+PROGRAMA             : 1
+PUNTOYCOMA           : 18 20 42 55 93 97 104 105 106 107 108 109 110 111
+REGRESAR             : 20
+RESTA                : 75
+ROJO                 : 91
+SI                   : 83
+SINO                 : 84
+SUMA                 : 74
+VACIO                : 27
+VAR                  : 18 28
+VERDADERO            : 11
+VERDE                : 90
+error                : 
+
+Nonterminals, with rules where they appear
+
+args                 : 102 104 105 106 107 108 109 110 111
+args2                : 101
+asignacion           : 56
+asignacionaux        : 42
+asignacionizq        : 42
+asignacionizqaux     : 39
+bloque               : 1 83 84 92
+bloqueaux            : 22 23 25
+bloquefun            : 32
+ciclo                : 58
+circulo              : 49
+color                : 70
+comparacion          : 71
+condicion            : 57
+condicionaux         : 83
+cte                  : 82
+cteid                : 6 18 98
+cteidaux             : 2
+curva                : 54
+declaracion          : 1 18 25
+escritura            : 46
+escritura2aux        : 94
+escrituraaux         : 93 95
+estatuto             : 23
+exp                  : 3 4 20 35 40 43 69 71 74 75 94
+exp2                 : 73
+expresion            : 81 83 92 101
+expresionaux         : 69
+factor               : 77
+function             : 1 32
+functionpam          : 30 32
+functionpam2         : 28
+ingreso              : 45
+ingreso2aux          : 98
+ingresoaux           : 97 99
+linea                : 53
+llamada              : 44 55
+llamadapar           : 34 37
+llamadaparaux        : 35
+negacion             : 69
+ovalo                : 50
+program              : 0
+punto                : 52
+rectangulo           : 48
+regreso              : 25
+termino              : 73 78 79
+termino2             : 77
+texto                : 47
+tipo                 : 18 26 28
+tiporegreso          : 32
+triangulo            : 51
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . program
+    (1) program -> . PROGRAMA ID DOSPUNTOS declaracion function INICIO bloque FIN
+
+    PROGRAMA        shift and go to state 2
+
+    program                        shift and go to state 1
+
+state 1
+
+    (0) S' -> program .
+
+
+
+state 2
+
+    (1) program -> PROGRAMA . ID DOSPUNTOS declaracion function INICIO bloque FIN
+
+    ID              shift and go to state 3
+
+
+state 3
+
+    (1) program -> PROGRAMA ID . DOSPUNTOS declaracion function INICIO bloque FIN
+
+    DOSPUNTOS       shift and go to state 4
+
+
+state 4
+
+    (1) program -> PROGRAMA ID DOSPUNTOS . declaracion function INICIO bloque FIN
+    (18) declaracion -> . VAR tipo cteid PUNTOYCOMA declaracion
+    (19) declaracion -> .
+
+    VAR             shift and go to state 5
+    FUNCION         reduce using rule 19 (declaracion -> .)
+    INICIO          reduce using rule 19 (declaracion -> .)
+
+    declaracion                    shift and go to state 6
+
+state 5
+
+    (18) declaracion -> VAR . tipo cteid PUNTOYCOMA declaracion
+    (13) tipo -> . ENTERO
+    (14) tipo -> . FLOTANTE
+    (15) tipo -> . CADENA
+    (16) tipo -> . CARACTER
+    (17) tipo -> . BOOL
+
+    ENTERO          shift and go to state 12
+    FLOTANTE        shift and go to state 11
+    CADENA          shift and go to state 9
+    CARACTER        shift and go to state 8
+    BOOL            shift and go to state 10
+
+    tipo                           shift and go to state 7
+
+state 6
+
+    (1) program -> PROGRAMA ID DOSPUNTOS declaracion . function INICIO bloque FIN
+    (32) function -> . FUNCION tiporegreso ID PARENIZQUIERDO functionpam PARENDERECHO bloquefun function
+    (33) function -> .
+
+    FUNCION         shift and go to state 14
+    INICIO          reduce using rule 33 (function -> .)
+
+    function                       shift and go to state 13
+
+state 7
+
+    (18) declaracion -> VAR tipo . cteid PUNTOYCOMA declaracion
+    (2) cteid -> . ID cteidaux
+
+    ID              shift and go to state 16
+
+    cteid                          shift and go to state 15
+
+state 8
+
+    (16) tipo -> CARACTER .
+
+    ID              reduce using rule 16 (tipo -> CARACTER .)
+
+
+state 9
+
+    (15) tipo -> CADENA .
+
+    ID              reduce using rule 15 (tipo -> CADENA .)
+
+
+state 10
+
+    (17) tipo -> BOOL .
+
+    ID              reduce using rule 17 (tipo -> BOOL .)
+
+
+state 11
+
+    (14) tipo -> FLOTANTE .
+
+    ID              reduce using rule 14 (tipo -> FLOTANTE .)
+
+
+state 12
+
+    (13) tipo -> ENTERO .
+
+    ID              reduce using rule 13 (tipo -> ENTERO .)
+
+
+state 13
+
+    (1) program -> PROGRAMA ID DOSPUNTOS declaracion function . INICIO bloque FIN
+
+    INICIO          shift and go to state 17
+
+
+state 14
+
+    (32) function -> FUNCION . tiporegreso ID PARENIZQUIERDO functionpam PARENDERECHO bloquefun function
+    (26) tiporegreso -> . tipo
+    (27) tiporegreso -> . VACIO
+    (13) tipo -> . ENTERO
+    (14) tipo -> . FLOTANTE
+    (15) tipo -> . CADENA
+    (16) tipo -> . CARACTER
+    (17) tipo -> . BOOL
+
+    VACIO           shift and go to state 20
+    ENTERO          shift and go to state 12
+    FLOTANTE        shift and go to state 11
+    CADENA          shift and go to state 9
+    CARACTER        shift and go to state 8
+    BOOL            shift and go to state 10
+
+    tipo                           shift and go to state 19
+    tiporegreso                    shift and go to state 18
+
+state 15
+
+    (18) declaracion -> VAR tipo cteid . PUNTOYCOMA declaracion
+
+    PUNTOYCOMA      shift and go to state 21
+
+
+state 16
+
+    (2) cteid -> ID . cteidaux
+    (3) cteidaux -> . CORCHETEIZQ exp CORCHETEDER
+    (4) cteidaux -> . PARENIZQUIERDO exp PARENDERECHO
+    (5) cteidaux -> .
+
+    CORCHETEIZQ     shift and go to state 22
+    PARENIZQUIERDO  shift and go to state 23
+    PUNTOYCOMA      reduce using rule 5 (cteidaux -> .)
+    MULTIPLICACION  reduce using rule 5 (cteidaux -> .)
+    DIVISION        reduce using rule 5 (cteidaux -> .)
+    SUMA            reduce using rule 5 (cteidaux -> .)
+    RESTA           reduce using rule 5 (cteidaux -> .)
+    CORCHETEDER     reduce using rule 5 (cteidaux -> .)
+    PARENDERECHO    reduce using rule 5 (cteidaux -> .)
+    MENORQUE        reduce using rule 5 (cteidaux -> .)
+    MAYORQUE        reduce using rule 5 (cteidaux -> .)
+    MAYORIGUAL      reduce using rule 5 (cteidaux -> .)
+    MENORIGUAL      reduce using rule 5 (cteidaux -> .)
+    IGUAL           reduce using rule 5 (cteidaux -> .)
+    DIFERENTE       reduce using rule 5 (cteidaux -> .)
+    CONJUNCION      reduce using rule 5 (cteidaux -> .)
+    DISYUNCION      reduce using rule 5 (cteidaux -> .)
+    COMA            reduce using rule 5 (cteidaux -> .)
+
+    cteidaux                       shift and go to state 24
+
+state 17
+
+    (1) program -> PROGRAMA ID DOSPUNTOS declaracion function INICIO . bloque FIN
+    (22) bloque -> . LLAVEIZQUIERDO bloqueaux LLAVEDERECHO
+
+    LLAVEIZQUIERDO  shift and go to state 25
+
+    bloque                         shift and go to state 26
+
+state 18
+
+    (32) function -> FUNCION tiporegreso . ID PARENIZQUIERDO functionpam PARENDERECHO bloquefun function
+
+    ID              shift and go to state 27
+
+
+state 19
+
+    (26) tiporegreso -> tipo .
+
+    ID              reduce using rule 26 (tiporegreso -> tipo .)
+
+
+state 20
+
+    (27) tiporegreso -> VACIO .
+
+    ID              reduce using rule 27 (tiporegreso -> VACIO .)
+
+
+state 21
+
+    (18) declaracion -> VAR tipo cteid PUNTOYCOMA . declaracion
+    (18) declaracion -> . VAR tipo cteid PUNTOYCOMA declaracion
+    (19) declaracion -> .
+
+    VAR             shift and go to state 5
+    FUNCION         reduce using rule 19 (declaracion -> .)
+    INICIO          reduce using rule 19 (declaracion -> .)
+    ENTRADA         reduce using rule 19 (declaracion -> .)
+    DESPLEGAR       reduce using rule 19 (declaracion -> .)
+    INSERTATEXTO    reduce using rule 19 (declaracion -> .)
+    INSERTARECTANGULO reduce using rule 19 (declaracion -> .)
+    INSERTACIRCULO  reduce using rule 19 (declaracion -> .)
+    INSERTAOVALO    reduce using rule 19 (declaracion -> .)
+    INSERTATRIANGULO reduce using rule 19 (declaracion -> .)
+    INSERTAPUNTO    reduce using rule 19 (declaracion -> .)
+    INSERTALINEA    reduce using rule 19 (declaracion -> .)
+    INSERTACURVA    reduce using rule 19 (declaracion -> .)
+    ID              reduce using rule 19 (declaracion -> .)
+    SI              reduce using rule 19 (declaracion -> .)
+    MIENTRAS        reduce using rule 19 (declaracion -> .)
+    REGRESAR        reduce using rule 19 (declaracion -> .)
+    LLAVEDERECHO    reduce using rule 19 (declaracion -> .)
+
+    declaracion                    shift and go to state 28
+
+state 22
+
+    (3) cteidaux -> CORCHETEIZQ . exp CORCHETEDER
+    (73) exp -> . termino exp2
+    (77) termino -> . factor termino2
+    (81) factor -> . PARENIZQUIERDO expresion PARENDERECHO
+    (82) factor -> . cte
+    (6) cte -> . cteid
+    (7) cte -> . CENTERO
+    (8) cte -> . CFLOTANTE
+    (9) cte -> . CCADENA
+    (10) cte -> . CCARACTER
+    (11) cte -> . VERDADERO
+    (12) cte -> . FALSO
+    (2) cteid -> . ID cteidaux
+
+    PARENIZQUIERDO  shift and go to state 30
+    CENTERO         shift and go to state 31
+    CFLOTANTE       shift and go to state 40
+    CCADENA         shift and go to state 32
+    CCARACTER       shift and go to state 29
+    VERDADERO       shift and go to state 38
+    FALSO           shift and go to state 33
+    ID              shift and go to state 16
+
+    cte                            shift and go to state 34
+    termino                        shift and go to state 35
+    exp                            shift and go to state 36
+    factor                         shift and go to state 37
+    cteid                          shift and go to state 39
+
+state 23
+
+    (4) cteidaux -> PARENIZQUIERDO . exp PARENDERECHO
+    (73) exp -> . termino exp2
+    (77) termino -> . factor termino2
+    (81) factor -> . PARENIZQUIERDO expresion PARENDERECHO
+    (82) factor -> . cte
+    (6) cte -> . cteid
+    (7) cte -> . CENTERO
+    (8) cte -> . CFLOTANTE
+    (9) cte -> . CCADENA
+    (10) cte -> . CCARACTER
+    (11) cte -> . VERDADERO
+    (12) cte -> . FALSO
+    (2) cteid -> . ID cteidaux
+
+    PARENIZQUIERDO  shift and go to state 30
+    CENTERO         shift and go to state 31
+    CFLOTANTE       shift and go to state 40
+    CCADENA         shift and go to state 32
+    CCARACTER       shift and go to state 29
+    VERDADERO       shift and go to state 38
+    FALSO           shift and go to state 33
+    ID              shift and go to state 16
+
+    cte                            shift and go to state 34
+    termino                        shift and go to state 35
+    exp                            shift and go to state 41
+    factor                         shift and go to state 37
+    cteid                          shift and go to state 39
+
+state 24
+
+    (2) cteid -> ID cteidaux .
+
+    MULTIPLICACION  reduce using rule 2 (cteid -> ID cteidaux .)
+    DIVISION        reduce using rule 2 (cteid -> ID cteidaux .)
+    SUMA            reduce using rule 2 (cteid -> ID cteidaux .)
+    RESTA           reduce using rule 2 (cteid -> ID cteidaux .)
+    CORCHETEDER     reduce using rule 2 (cteid -> ID cteidaux .)
+    PARENDERECHO    reduce using rule 2 (cteid -> ID cteidaux .)
+    MENORQUE        reduce using rule 2 (cteid -> ID cteidaux .)
+    MAYORQUE        reduce using rule 2 (cteid -> ID cteidaux .)
+    MAYORIGUAL      reduce using rule 2 (cteid -> ID cteidaux .)
+    MENORIGUAL      reduce using rule 2 (cteid -> ID cteidaux .)
+    IGUAL           reduce using rule 2 (cteid -> ID cteidaux .)
+    DIFERENTE       reduce using rule 2 (cteid -> ID cteidaux .)
+    CONJUNCION      reduce using rule 2 (cteid -> ID cteidaux .)
+    DISYUNCION      reduce using rule 2 (cteid -> ID cteidaux .)
+    COMA            reduce using rule 2 (cteid -> ID cteidaux .)
+    PUNTOYCOMA      reduce using rule 2 (cteid -> ID cteidaux .)
+
+
+state 25
+
+    (22) bloque -> LLAVEIZQUIERDO . bloqueaux LLAVEDERECHO
+    (23) bloqueaux -> . estatuto bloqueaux
+    (24) bloqueaux -> .
+    (45) estatuto -> . ingreso
+    (46) estatuto -> . escritura
+    (47) estatuto -> . texto
+    (48) estatuto -> . rectangulo
+    (49) estatuto -> . circulo
+    (50) estatuto -> . ovalo
+    (51) estatuto -> . triangulo
+    (52) estatuto -> . punto
+    (53) estatuto -> . linea
+    (54) estatuto -> . curva
+    (55) estatuto -> . llamada PUNTOYCOMA
+    (56) estatuto -> . asignacion
+    (57) estatuto -> . condicion
+    (58) estatuto -> . ciclo
+    (97) ingreso -> . ENTRADA PARENIZQUIERDO ingresoaux PARENDERECHO PUNTOYCOMA
+    (93) escritura -> . DESPLEGAR PARENIZQUIERDO escrituraaux PARENDERECHO PUNTOYCOMA
+    (104) texto -> . INSERTATEXTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA
+    (105) rectangulo -> . INSERTARECTANGULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA
+    (107) circulo -> . INSERTACIRCULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA
+    (108) ovalo -> . INSERTAOVALO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA
+    (106) triangulo -> . INSERTATRIANGULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA
+    (109) punto -> . INSERTAPUNTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA
+    (110) linea -> . INSERTALINEA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA
+    (111) curva -> . INSERTACURVA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA
+    (34) llamada -> . ID PARENIZQUIERDO llamadapar PARENDERECHO
+    (42) asignacion -> . asignacionizq ASIGNACION asignacionaux PUNTOYCOMA
+    (83) condicion -> . SI PARENIZQUIERDO expresion PARENDERECHO ENTONCES bloque condicionaux
+    (92) ciclo -> . MIENTRAS PARENIZQUIERDO expresion PARENDERECHO bloque
+    (39) asignacionizq -> . ID asignacionizqaux
+
+    LLAVEDERECHO    reduce using rule 24 (bloqueaux -> .)
+    ENTRADA         shift and go to state 58
+    DESPLEGAR       shift and go to state 46
+    INSERTATEXTO    shift and go to state 51
+    INSERTARECTANGULO shift and go to state 52
+    INSERTACIRCULO  shift and go to state 54
+    INSERTAOVALO    shift and go to state 69
+    INSERTATRIANGULO shift and go to state 60
+    INSERTAPUNTO    shift and go to state 42
+    INSERTALINEA    shift and go to state 63
+    INSERTACURVA    shift and go to state 47
+    ID              shift and go to state 55
+    SI              shift and go to state 67
+    MIENTRAS        shift and go to state 62
+
+    asignacionizq                  shift and go to state 43
+    texto                          shift and go to state 44
+    bloqueaux                      shift and go to state 45
+    ingreso                        shift and go to state 48
+    triangulo                      shift and go to state 49
+    ciclo                          shift and go to state 50
+    estatuto                       shift and go to state 53
+    llamada                        shift and go to state 56
+    condicion                      shift and go to state 57
+    rectangulo                     shift and go to state 59
+    ovalo                          shift and go to state 68
+    punto                          shift and go to state 61
+    circulo                        shift and go to state 64
+    asignacion                     shift and go to state 65
+    curva                          shift and go to state 66
+    linea                          shift and go to state 70
+    escritura                      shift and go to state 71
+
+state 26
+
+    (1) program -> PROGRAMA ID DOSPUNTOS declaracion function INICIO bloque . FIN
+
+    FIN             shift and go to state 72
+
+
+state 27
+
+    (32) function -> FUNCION tiporegreso ID . PARENIZQUIERDO functionpam PARENDERECHO bloquefun function
+
+    PARENIZQUIERDO  shift and go to state 73
+
+
+state 28
+
+    (18) declaracion -> VAR tipo cteid PUNTOYCOMA declaracion .
+
+    ENTRADA         reduce using rule 18 (declaracion -> VAR tipo cteid PUNTOYCOMA declaracion .)
+    DESPLEGAR       reduce using rule 18 (declaracion -> VAR tipo cteid PUNTOYCOMA declaracion .)
+    INSERTATEXTO    reduce using rule 18 (declaracion -> VAR tipo cteid PUNTOYCOMA declaracion .)
+    INSERTARECTANGULO reduce using rule 18 (declaracion -> VAR tipo cteid PUNTOYCOMA declaracion .)
+    INSERTACIRCULO  reduce using rule 18 (declaracion -> VAR tipo cteid PUNTOYCOMA declaracion .)
+    INSERTAOVALO    reduce using rule 18 (declaracion -> VAR tipo cteid PUNTOYCOMA declaracion .)
+    INSERTATRIANGULO reduce using rule 18 (declaracion -> VAR tipo cteid PUNTOYCOMA declaracion .)
+    INSERTAPUNTO    reduce using rule 18 (declaracion -> VAR tipo cteid PUNTOYCOMA declaracion .)
+    INSERTALINEA    reduce using rule 18 (declaracion -> VAR tipo cteid PUNTOYCOMA declaracion .)
+    INSERTACURVA    reduce using rule 18 (declaracion -> VAR tipo cteid PUNTOYCOMA declaracion .)
+    ID              reduce using rule 18 (declaracion -> VAR tipo cteid PUNTOYCOMA declaracion .)
+    SI              reduce using rule 18 (declaracion -> VAR tipo cteid PUNTOYCOMA declaracion .)
+    MIENTRAS        reduce using rule 18 (declaracion -> VAR tipo cteid PUNTOYCOMA declaracion .)
+    REGRESAR        reduce using rule 18 (declaracion -> VAR tipo cteid PUNTOYCOMA declaracion .)
+    LLAVEDERECHO    reduce using rule 18 (declaracion -> VAR tipo cteid PUNTOYCOMA declaracion .)
+    FUNCION         reduce using rule 18 (declaracion -> VAR tipo cteid PUNTOYCOMA declaracion .)
+    INICIO          reduce using rule 18 (declaracion -> VAR tipo cteid PUNTOYCOMA declaracion .)
+
+
+state 29
+
+    (10) cte -> CCARACTER .
+
+    MULTIPLICACION  reduce using rule 10 (cte -> CCARACTER .)
+    DIVISION        reduce using rule 10 (cte -> CCARACTER .)
+    SUMA            reduce using rule 10 (cte -> CCARACTER .)
+    RESTA           reduce using rule 10 (cte -> CCARACTER .)
+    PARENDERECHO    reduce using rule 10 (cte -> CCARACTER .)
+    COMA            reduce using rule 10 (cte -> CCARACTER .)
+    PUNTOYCOMA      reduce using rule 10 (cte -> CCARACTER .)
+    CORCHETEDER     reduce using rule 10 (cte -> CCARACTER .)
+    MENORQUE        reduce using rule 10 (cte -> CCARACTER .)
+    MAYORQUE        reduce using rule 10 (cte -> CCARACTER .)
+    MAYORIGUAL      reduce using rule 10 (cte -> CCARACTER .)
+    MENORIGUAL      reduce using rule 10 (cte -> CCARACTER .)
+    IGUAL           reduce using rule 10 (cte -> CCARACTER .)
+    DIFERENTE       reduce using rule 10 (cte -> CCARACTER .)
+    CONJUNCION      reduce using rule 10 (cte -> CCARACTER .)
+    DISYUNCION      reduce using rule 10 (cte -> CCARACTER .)
+
+
+state 30
+
+    (81) factor -> PARENIZQUIERDO . expresion PARENDERECHO
+    (69) expresion -> . negacion exp expresionaux
+    (70) expresion -> . color
+    (59) negacion -> . NO
+    (60) negacion -> .
+    (86) color -> . NEGRO
+    (87) color -> . GRIS
+    (88) color -> . AZUL
+    (89) color -> . AMARILLO
+    (90) color -> . VERDE
+    (91) color -> . ROJO
+
+    NO              shift and go to state 77
+    PARENIZQUIERDO  reduce using rule 60 (negacion -> .)
+    CENTERO         reduce using rule 60 (negacion -> .)
+    CFLOTANTE       reduce using rule 60 (negacion -> .)
+    CCADENA         reduce using rule 60 (negacion -> .)
+    CCARACTER       reduce using rule 60 (negacion -> .)
+    VERDADERO       reduce using rule 60 (negacion -> .)
+    FALSO           reduce using rule 60 (negacion -> .)
+    ID              reduce using rule 60 (negacion -> .)
+    NEGRO           shift and go to state 79
+    GRIS            shift and go to state 75
+    AZUL            shift and go to state 82
+    AMARILLO        shift and go to state 80
+    VERDE           shift and go to state 83
+    ROJO            shift and go to state 81
+
+    expresion                      shift and go to state 74
+    color                          shift and go to state 78
+    negacion                       shift and go to state 76
+
+state 31
+
+    (7) cte -> CENTERO .
+
+    MULTIPLICACION  reduce using rule 7 (cte -> CENTERO .)
+    DIVISION        reduce using rule 7 (cte -> CENTERO .)
+    SUMA            reduce using rule 7 (cte -> CENTERO .)
+    RESTA           reduce using rule 7 (cte -> CENTERO .)
+    PARENDERECHO    reduce using rule 7 (cte -> CENTERO .)
+    COMA            reduce using rule 7 (cte -> CENTERO .)
+    PUNTOYCOMA      reduce using rule 7 (cte -> CENTERO .)
+    CORCHETEDER     reduce using rule 7 (cte -> CENTERO .)
+    MENORQUE        reduce using rule 7 (cte -> CENTERO .)
+    MAYORQUE        reduce using rule 7 (cte -> CENTERO .)
+    MAYORIGUAL      reduce using rule 7 (cte -> CENTERO .)
+    MENORIGUAL      reduce using rule 7 (cte -> CENTERO .)
+    IGUAL           reduce using rule 7 (cte -> CENTERO .)
+    DIFERENTE       reduce using rule 7 (cte -> CENTERO .)
+    CONJUNCION      reduce using rule 7 (cte -> CENTERO .)
+    DISYUNCION      reduce using rule 7 (cte -> CENTERO .)
+
+
+state 32
+
+    (9) cte -> CCADENA .
+
+    MULTIPLICACION  reduce using rule 9 (cte -> CCADENA .)
+    DIVISION        reduce using rule 9 (cte -> CCADENA .)
+    SUMA            reduce using rule 9 (cte -> CCADENA .)
+    RESTA           reduce using rule 9 (cte -> CCADENA .)
+    PARENDERECHO    reduce using rule 9 (cte -> CCADENA .)
+    COMA            reduce using rule 9 (cte -> CCADENA .)
+    PUNTOYCOMA      reduce using rule 9 (cte -> CCADENA .)
+    CORCHETEDER     reduce using rule 9 (cte -> CCADENA .)
+    MENORQUE        reduce using rule 9 (cte -> CCADENA .)
+    MAYORQUE        reduce using rule 9 (cte -> CCADENA .)
+    MAYORIGUAL      reduce using rule 9 (cte -> CCADENA .)
+    MENORIGUAL      reduce using rule 9 (cte -> CCADENA .)
+    IGUAL           reduce using rule 9 (cte -> CCADENA .)
+    DIFERENTE       reduce using rule 9 (cte -> CCADENA .)
+    CONJUNCION      reduce using rule 9 (cte -> CCADENA .)
+    DISYUNCION      reduce using rule 9 (cte -> CCADENA .)
+
+
+state 33
+
+    (12) cte -> FALSO .
+
+    MULTIPLICACION  reduce using rule 12 (cte -> FALSO .)
+    DIVISION        reduce using rule 12 (cte -> FALSO .)
+    SUMA            reduce using rule 12 (cte -> FALSO .)
+    RESTA           reduce using rule 12 (cte -> FALSO .)
+    PARENDERECHO    reduce using rule 12 (cte -> FALSO .)
+    COMA            reduce using rule 12 (cte -> FALSO .)
+    PUNTOYCOMA      reduce using rule 12 (cte -> FALSO .)
+    CORCHETEDER     reduce using rule 12 (cte -> FALSO .)
+    MENORQUE        reduce using rule 12 (cte -> FALSO .)
+    MAYORQUE        reduce using rule 12 (cte -> FALSO .)
+    MAYORIGUAL      reduce using rule 12 (cte -> FALSO .)
+    MENORIGUAL      reduce using rule 12 (cte -> FALSO .)
+    IGUAL           reduce using rule 12 (cte -> FALSO .)
+    DIFERENTE       reduce using rule 12 (cte -> FALSO .)
+    CONJUNCION      reduce using rule 12 (cte -> FALSO .)
+    DISYUNCION      reduce using rule 12 (cte -> FALSO .)
+
+
+state 34
+
+    (82) factor -> cte .
+
+    MULTIPLICACION  reduce using rule 82 (factor -> cte .)
+    DIVISION        reduce using rule 82 (factor -> cte .)
+    SUMA            reduce using rule 82 (factor -> cte .)
+    RESTA           reduce using rule 82 (factor -> cte .)
+    CORCHETEDER     reduce using rule 82 (factor -> cte .)
+    COMA            reduce using rule 82 (factor -> cte .)
+    PARENDERECHO    reduce using rule 82 (factor -> cte .)
+    MENORQUE        reduce using rule 82 (factor -> cte .)
+    MAYORQUE        reduce using rule 82 (factor -> cte .)
+    MAYORIGUAL      reduce using rule 82 (factor -> cte .)
+    MENORIGUAL      reduce using rule 82 (factor -> cte .)
+    IGUAL           reduce using rule 82 (factor -> cte .)
+    DIFERENTE       reduce using rule 82 (factor -> cte .)
+    CONJUNCION      reduce using rule 82 (factor -> cte .)
+    DISYUNCION      reduce using rule 82 (factor -> cte .)
+    PUNTOYCOMA      reduce using rule 82 (factor -> cte .)
+
+
+state 35
+
+    (73) exp -> termino . exp2
+    (74) exp2 -> . SUMA exp
+    (75) exp2 -> . RESTA exp
+    (76) exp2 -> .
+
+    SUMA            shift and go to state 85
+    RESTA           shift and go to state 86
+    CORCHETEDER     reduce using rule 76 (exp2 -> .)
+    PARENDERECHO    reduce using rule 76 (exp2 -> .)
+    MENORQUE        reduce using rule 76 (exp2 -> .)
+    MAYORQUE        reduce using rule 76 (exp2 -> .)
+    MAYORIGUAL      reduce using rule 76 (exp2 -> .)
+    MENORIGUAL      reduce using rule 76 (exp2 -> .)
+    IGUAL           reduce using rule 76 (exp2 -> .)
+    DIFERENTE       reduce using rule 76 (exp2 -> .)
+    CONJUNCION      reduce using rule 76 (exp2 -> .)
+    DISYUNCION      reduce using rule 76 (exp2 -> .)
+    COMA            reduce using rule 76 (exp2 -> .)
+    PUNTOYCOMA      reduce using rule 76 (exp2 -> .)
+
+    exp2                           shift and go to state 84
+
+state 36
+
+    (3) cteidaux -> CORCHETEIZQ exp . CORCHETEDER
+
+    CORCHETEDER     shift and go to state 87
+
+
+state 37
+
+    (77) termino -> factor . termino2
+    (78) termino2 -> . MULTIPLICACION termino
+    (79) termino2 -> . DIVISION termino
+    (80) termino2 -> .
+
+    MULTIPLICACION  shift and go to state 90
+    DIVISION        shift and go to state 88
+    SUMA            reduce using rule 80 (termino2 -> .)
+    RESTA           reduce using rule 80 (termino2 -> .)
+    CORCHETEDER     reduce using rule 80 (termino2 -> .)
+    PARENDERECHO    reduce using rule 80 (termino2 -> .)
+    MENORQUE        reduce using rule 80 (termino2 -> .)
+    MAYORQUE        reduce using rule 80 (termino2 -> .)
+    MAYORIGUAL      reduce using rule 80 (termino2 -> .)
+    MENORIGUAL      reduce using rule 80 (termino2 -> .)
+    IGUAL           reduce using rule 80 (termino2 -> .)
+    DIFERENTE       reduce using rule 80 (termino2 -> .)
+    CONJUNCION      reduce using rule 80 (termino2 -> .)
+    DISYUNCION      reduce using rule 80 (termino2 -> .)
+    COMA            reduce using rule 80 (termino2 -> .)
+    PUNTOYCOMA      reduce using rule 80 (termino2 -> .)
+
+    termino2                       shift and go to state 89
+
+state 38
+
+    (11) cte -> VERDADERO .
+
+    MULTIPLICACION  reduce using rule 11 (cte -> VERDADERO .)
+    DIVISION        reduce using rule 11 (cte -> VERDADERO .)
+    SUMA            reduce using rule 11 (cte -> VERDADERO .)
+    RESTA           reduce using rule 11 (cte -> VERDADERO .)
+    PARENDERECHO    reduce using rule 11 (cte -> VERDADERO .)
+    COMA            reduce using rule 11 (cte -> VERDADERO .)
+    PUNTOYCOMA      reduce using rule 11 (cte -> VERDADERO .)
+    CORCHETEDER     reduce using rule 11 (cte -> VERDADERO .)
+    MENORQUE        reduce using rule 11 (cte -> VERDADERO .)
+    MAYORQUE        reduce using rule 11 (cte -> VERDADERO .)
+    MAYORIGUAL      reduce using rule 11 (cte -> VERDADERO .)
+    MENORIGUAL      reduce using rule 11 (cte -> VERDADERO .)
+    IGUAL           reduce using rule 11 (cte -> VERDADERO .)
+    DIFERENTE       reduce using rule 11 (cte -> VERDADERO .)
+    CONJUNCION      reduce using rule 11 (cte -> VERDADERO .)
+    DISYUNCION      reduce using rule 11 (cte -> VERDADERO .)
+
+
+state 39
+
+    (6) cte -> cteid .
+
+    MULTIPLICACION  reduce using rule 6 (cte -> cteid .)
+    DIVISION        reduce using rule 6 (cte -> cteid .)
+    SUMA            reduce using rule 6 (cte -> cteid .)
+    RESTA           reduce using rule 6 (cte -> cteid .)
+    PARENDERECHO    reduce using rule 6 (cte -> cteid .)
+    COMA            reduce using rule 6 (cte -> cteid .)
+    PUNTOYCOMA      reduce using rule 6 (cte -> cteid .)
+    CORCHETEDER     reduce using rule 6 (cte -> cteid .)
+    MENORQUE        reduce using rule 6 (cte -> cteid .)
+    MAYORQUE        reduce using rule 6 (cte -> cteid .)
+    MAYORIGUAL      reduce using rule 6 (cte -> cteid .)
+    MENORIGUAL      reduce using rule 6 (cte -> cteid .)
+    IGUAL           reduce using rule 6 (cte -> cteid .)
+    DIFERENTE       reduce using rule 6 (cte -> cteid .)
+    CONJUNCION      reduce using rule 6 (cte -> cteid .)
+    DISYUNCION      reduce using rule 6 (cte -> cteid .)
+
+
+state 40
+
+    (8) cte -> CFLOTANTE .
+
+    MULTIPLICACION  reduce using rule 8 (cte -> CFLOTANTE .)
+    DIVISION        reduce using rule 8 (cte -> CFLOTANTE .)
+    SUMA            reduce using rule 8 (cte -> CFLOTANTE .)
+    RESTA           reduce using rule 8 (cte -> CFLOTANTE .)
+    PARENDERECHO    reduce using rule 8 (cte -> CFLOTANTE .)
+    COMA            reduce using rule 8 (cte -> CFLOTANTE .)
+    PUNTOYCOMA      reduce using rule 8 (cte -> CFLOTANTE .)
+    CORCHETEDER     reduce using rule 8 (cte -> CFLOTANTE .)
+    MENORQUE        reduce using rule 8 (cte -> CFLOTANTE .)
+    MAYORQUE        reduce using rule 8 (cte -> CFLOTANTE .)
+    MAYORIGUAL      reduce using rule 8 (cte -> CFLOTANTE .)
+    MENORIGUAL      reduce using rule 8 (cte -> CFLOTANTE .)
+    IGUAL           reduce using rule 8 (cte -> CFLOTANTE .)
+    DIFERENTE       reduce using rule 8 (cte -> CFLOTANTE .)
+    CONJUNCION      reduce using rule 8 (cte -> CFLOTANTE .)
+    DISYUNCION      reduce using rule 8 (cte -> CFLOTANTE .)
+
+
+state 41
+
+    (4) cteidaux -> PARENIZQUIERDO exp . PARENDERECHO
+
+    PARENDERECHO    shift and go to state 91
+
+
+state 42
+
+    (109) punto -> INSERTAPUNTO . PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA
+
+    PARENIZQUIERDO  shift and go to state 92
+
+
+state 43
+
+    (42) asignacion -> asignacionizq . ASIGNACION asignacionaux PUNTOYCOMA
+
+    ASIGNACION      shift and go to state 93
+
+
+state 44
+
+    (47) estatuto -> texto .
+
+    ENTRADA         reduce using rule 47 (estatuto -> texto .)
+    DESPLEGAR       reduce using rule 47 (estatuto -> texto .)
+    INSERTATEXTO    reduce using rule 47 (estatuto -> texto .)
+    INSERTARECTANGULO reduce using rule 47 (estatuto -> texto .)
+    INSERTACIRCULO  reduce using rule 47 (estatuto -> texto .)
+    INSERTAOVALO    reduce using rule 47 (estatuto -> texto .)
+    INSERTATRIANGULO reduce using rule 47 (estatuto -> texto .)
+    INSERTAPUNTO    reduce using rule 47 (estatuto -> texto .)
+    INSERTALINEA    reduce using rule 47 (estatuto -> texto .)
+    INSERTACURVA    reduce using rule 47 (estatuto -> texto .)
+    ID              reduce using rule 47 (estatuto -> texto .)
+    SI              reduce using rule 47 (estatuto -> texto .)
+    MIENTRAS        reduce using rule 47 (estatuto -> texto .)
+    LLAVEDERECHO    reduce using rule 47 (estatuto -> texto .)
+    REGRESAR        reduce using rule 47 (estatuto -> texto .)
+
+
+state 45
+
+    (22) bloque -> LLAVEIZQUIERDO bloqueaux . LLAVEDERECHO
+
+    LLAVEDERECHO    shift and go to state 94
+
+
+state 46
+
+    (93) escritura -> DESPLEGAR . PARENIZQUIERDO escrituraaux PARENDERECHO PUNTOYCOMA
+
+    PARENIZQUIERDO  shift and go to state 95
+
+
+state 47
+
+    (111) curva -> INSERTACURVA . PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA
+
+    PARENIZQUIERDO  shift and go to state 96
+
+
+state 48
+
+    (45) estatuto -> ingreso .
+
+    ENTRADA         reduce using rule 45 (estatuto -> ingreso .)
+    DESPLEGAR       reduce using rule 45 (estatuto -> ingreso .)
+    INSERTATEXTO    reduce using rule 45 (estatuto -> ingreso .)
+    INSERTARECTANGULO reduce using rule 45 (estatuto -> ingreso .)
+    INSERTACIRCULO  reduce using rule 45 (estatuto -> ingreso .)
+    INSERTAOVALO    reduce using rule 45 (estatuto -> ingreso .)
+    INSERTATRIANGULO reduce using rule 45 (estatuto -> ingreso .)
+    INSERTAPUNTO    reduce using rule 45 (estatuto -> ingreso .)
+    INSERTALINEA    reduce using rule 45 (estatuto -> ingreso .)
+    INSERTACURVA    reduce using rule 45 (estatuto -> ingreso .)
+    ID              reduce using rule 45 (estatuto -> ingreso .)
+    SI              reduce using rule 45 (estatuto -> ingreso .)
+    MIENTRAS        reduce using rule 45 (estatuto -> ingreso .)
+    LLAVEDERECHO    reduce using rule 45 (estatuto -> ingreso .)
+    REGRESAR        reduce using rule 45 (estatuto -> ingreso .)
+
+
+state 49
+
+    (51) estatuto -> triangulo .
+
+    ENTRADA         reduce using rule 51 (estatuto -> triangulo .)
+    DESPLEGAR       reduce using rule 51 (estatuto -> triangulo .)
+    INSERTATEXTO    reduce using rule 51 (estatuto -> triangulo .)
+    INSERTARECTANGULO reduce using rule 51 (estatuto -> triangulo .)
+    INSERTACIRCULO  reduce using rule 51 (estatuto -> triangulo .)
+    INSERTAOVALO    reduce using rule 51 (estatuto -> triangulo .)
+    INSERTATRIANGULO reduce using rule 51 (estatuto -> triangulo .)
+    INSERTAPUNTO    reduce using rule 51 (estatuto -> triangulo .)
+    INSERTALINEA    reduce using rule 51 (estatuto -> triangulo .)
+    INSERTACURVA    reduce using rule 51 (estatuto -> triangulo .)
+    ID              reduce using rule 51 (estatuto -> triangulo .)
+    SI              reduce using rule 51 (estatuto -> triangulo .)
+    MIENTRAS        reduce using rule 51 (estatuto -> triangulo .)
+    LLAVEDERECHO    reduce using rule 51 (estatuto -> triangulo .)
+    REGRESAR        reduce using rule 51 (estatuto -> triangulo .)
+
+
+state 50
+
+    (58) estatuto -> ciclo .
+
+    ENTRADA         reduce using rule 58 (estatuto -> ciclo .)
+    DESPLEGAR       reduce using rule 58 (estatuto -> ciclo .)
+    INSERTATEXTO    reduce using rule 58 (estatuto -> ciclo .)
+    INSERTARECTANGULO reduce using rule 58 (estatuto -> ciclo .)
+    INSERTACIRCULO  reduce using rule 58 (estatuto -> ciclo .)
+    INSERTAOVALO    reduce using rule 58 (estatuto -> ciclo .)
+    INSERTATRIANGULO reduce using rule 58 (estatuto -> ciclo .)
+    INSERTAPUNTO    reduce using rule 58 (estatuto -> ciclo .)
+    INSERTALINEA    reduce using rule 58 (estatuto -> ciclo .)
+    INSERTACURVA    reduce using rule 58 (estatuto -> ciclo .)
+    ID              reduce using rule 58 (estatuto -> ciclo .)
+    SI              reduce using rule 58 (estatuto -> ciclo .)
+    MIENTRAS        reduce using rule 58 (estatuto -> ciclo .)
+    LLAVEDERECHO    reduce using rule 58 (estatuto -> ciclo .)
+    REGRESAR        reduce using rule 58 (estatuto -> ciclo .)
+
+
+state 51
+
+    (104) texto -> INSERTATEXTO . PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA
+
+    PARENIZQUIERDO  shift and go to state 97
+
+
+state 52
+
+    (105) rectangulo -> INSERTARECTANGULO . PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA
+
+    PARENIZQUIERDO  shift and go to state 98
+
+
+state 53
+
+    (23) bloqueaux -> estatuto . bloqueaux
+    (23) bloqueaux -> . estatuto bloqueaux
+    (24) bloqueaux -> .
+    (45) estatuto -> . ingreso
+    (46) estatuto -> . escritura
+    (47) estatuto -> . texto
+    (48) estatuto -> . rectangulo
+    (49) estatuto -> . circulo
+    (50) estatuto -> . ovalo
+    (51) estatuto -> . triangulo
+    (52) estatuto -> . punto
+    (53) estatuto -> . linea
+    (54) estatuto -> . curva
+    (55) estatuto -> . llamada PUNTOYCOMA
+    (56) estatuto -> . asignacion
+    (57) estatuto -> . condicion
+    (58) estatuto -> . ciclo
+    (97) ingreso -> . ENTRADA PARENIZQUIERDO ingresoaux PARENDERECHO PUNTOYCOMA
+    (93) escritura -> . DESPLEGAR PARENIZQUIERDO escrituraaux PARENDERECHO PUNTOYCOMA
+    (104) texto -> . INSERTATEXTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA
+    (105) rectangulo -> . INSERTARECTANGULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA
+    (107) circulo -> . INSERTACIRCULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA
+    (108) ovalo -> . INSERTAOVALO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA
+    (106) triangulo -> . INSERTATRIANGULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA
+    (109) punto -> . INSERTAPUNTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA
+    (110) linea -> . INSERTALINEA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA
+    (111) curva -> . INSERTACURVA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA
+    (34) llamada -> . ID PARENIZQUIERDO llamadapar PARENDERECHO
+    (42) asignacion -> . asignacionizq ASIGNACION asignacionaux PUNTOYCOMA
+    (83) condicion -> . SI PARENIZQUIERDO expresion PARENDERECHO ENTONCES bloque condicionaux
+    (92) ciclo -> . MIENTRAS PARENIZQUIERDO expresion PARENDERECHO bloque
+    (39) asignacionizq -> . ID asignacionizqaux
+
+    LLAVEDERECHO    reduce using rule 24 (bloqueaux -> .)
+    REGRESAR        reduce using rule 24 (bloqueaux -> .)
+    ENTRADA         shift and go to state 58
+    DESPLEGAR       shift and go to state 46
+    INSERTATEXTO    shift and go to state 51
+    INSERTARECTANGULO shift and go to state 52
+    INSERTACIRCULO  shift and go to state 54
+    INSERTAOVALO    shift and go to state 69
+    INSERTATRIANGULO shift and go to state 60
+    INSERTAPUNTO    shift and go to state 42
+    INSERTALINEA    shift and go to state 63
+    INSERTACURVA    shift and go to state 47
+    ID              shift and go to state 55
+    SI              shift and go to state 67
+    MIENTRAS        shift and go to state 62
+
+    asignacionizq                  shift and go to state 43
+    texto                          shift and go to state 44
+    bloqueaux                      shift and go to state 99
+    ingreso                        shift and go to state 48
+    triangulo                      shift and go to state 49
+    ciclo                          shift and go to state 50
+    estatuto                       shift and go to state 53
+    llamada                        shift and go to state 56
+    condicion                      shift and go to state 57
+    rectangulo                     shift and go to state 59
+    ovalo                          shift and go to state 68
+    punto                          shift and go to state 61
+    circulo                        shift and go to state 64
+    asignacion                     shift and go to state 65
+    curva                          shift and go to state 66
+    linea                          shift and go to state 70
+    escritura                      shift and go to state 71
+
+state 54
+
+    (107) circulo -> INSERTACIRCULO . PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA
+
+    PARENIZQUIERDO  shift and go to state 100
+
+
+state 55
+
+    (34) llamada -> ID . PARENIZQUIERDO llamadapar PARENDERECHO
+    (39) asignacionizq -> ID . asignacionizqaux
+    (40) asignacionizqaux -> . CORCHETEIZQ exp CORCHETEDER
+    (41) asignacionizqaux -> .
+
+    PARENIZQUIERDO  shift and go to state 102
+    CORCHETEIZQ     shift and go to state 101
+    ASIGNACION      reduce using rule 41 (asignacionizqaux -> .)
+
+    asignacionizqaux               shift and go to state 103
+
+state 56
+
+    (55) estatuto -> llamada . PUNTOYCOMA
+
+    PUNTOYCOMA      shift and go to state 104
+
+
+state 57
+
+    (57) estatuto -> condicion .
+
+    ENTRADA         reduce using rule 57 (estatuto -> condicion .)
+    DESPLEGAR       reduce using rule 57 (estatuto -> condicion .)
+    INSERTATEXTO    reduce using rule 57 (estatuto -> condicion .)
+    INSERTARECTANGULO reduce using rule 57 (estatuto -> condicion .)
+    INSERTACIRCULO  reduce using rule 57 (estatuto -> condicion .)
+    INSERTAOVALO    reduce using rule 57 (estatuto -> condicion .)
+    INSERTATRIANGULO reduce using rule 57 (estatuto -> condicion .)
+    INSERTAPUNTO    reduce using rule 57 (estatuto -> condicion .)
+    INSERTALINEA    reduce using rule 57 (estatuto -> condicion .)
+    INSERTACURVA    reduce using rule 57 (estatuto -> condicion .)
+    ID              reduce using rule 57 (estatuto -> condicion .)
+    SI              reduce using rule 57 (estatuto -> condicion .)
+    MIENTRAS        reduce using rule 57 (estatuto -> condicion .)
+    LLAVEDERECHO    reduce using rule 57 (estatuto -> condicion .)
+    REGRESAR        reduce using rule 57 (estatuto -> condicion .)
+
+
+state 58
+
+    (97) ingreso -> ENTRADA . PARENIZQUIERDO ingresoaux PARENDERECHO PUNTOYCOMA
+
+    PARENIZQUIERDO  shift and go to state 105
+
+
+state 59
+
+    (48) estatuto -> rectangulo .
+
+    ENTRADA         reduce using rule 48 (estatuto -> rectangulo .)
+    DESPLEGAR       reduce using rule 48 (estatuto -> rectangulo .)
+    INSERTATEXTO    reduce using rule 48 (estatuto -> rectangulo .)
+    INSERTARECTANGULO reduce using rule 48 (estatuto -> rectangulo .)
+    INSERTACIRCULO  reduce using rule 48 (estatuto -> rectangulo .)
+    INSERTAOVALO    reduce using rule 48 (estatuto -> rectangulo .)
+    INSERTATRIANGULO reduce using rule 48 (estatuto -> rectangulo .)
+    INSERTAPUNTO    reduce using rule 48 (estatuto -> rectangulo .)
+    INSERTALINEA    reduce using rule 48 (estatuto -> rectangulo .)
+    INSERTACURVA    reduce using rule 48 (estatuto -> rectangulo .)
+    ID              reduce using rule 48 (estatuto -> rectangulo .)
+    SI              reduce using rule 48 (estatuto -> rectangulo .)
+    MIENTRAS        reduce using rule 48 (estatuto -> rectangulo .)
+    LLAVEDERECHO    reduce using rule 48 (estatuto -> rectangulo .)
+    REGRESAR        reduce using rule 48 (estatuto -> rectangulo .)
+
+
+state 60
+
+    (106) triangulo -> INSERTATRIANGULO . PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA
+
+    PARENIZQUIERDO  shift and go to state 106
+
+
+state 61
+
+    (52) estatuto -> punto .
+
+    ENTRADA         reduce using rule 52 (estatuto -> punto .)
+    DESPLEGAR       reduce using rule 52 (estatuto -> punto .)
+    INSERTATEXTO    reduce using rule 52 (estatuto -> punto .)
+    INSERTARECTANGULO reduce using rule 52 (estatuto -> punto .)
+    INSERTACIRCULO  reduce using rule 52 (estatuto -> punto .)
+    INSERTAOVALO    reduce using rule 52 (estatuto -> punto .)
+    INSERTATRIANGULO reduce using rule 52 (estatuto -> punto .)
+    INSERTAPUNTO    reduce using rule 52 (estatuto -> punto .)
+    INSERTALINEA    reduce using rule 52 (estatuto -> punto .)
+    INSERTACURVA    reduce using rule 52 (estatuto -> punto .)
+    ID              reduce using rule 52 (estatuto -> punto .)
+    SI              reduce using rule 52 (estatuto -> punto .)
+    MIENTRAS        reduce using rule 52 (estatuto -> punto .)
+    LLAVEDERECHO    reduce using rule 52 (estatuto -> punto .)
+    REGRESAR        reduce using rule 52 (estatuto -> punto .)
+
+
+state 62
+
+    (92) ciclo -> MIENTRAS . PARENIZQUIERDO expresion PARENDERECHO bloque
+
+    PARENIZQUIERDO  shift and go to state 107
+
+
+state 63
+
+    (110) linea -> INSERTALINEA . PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA
+
+    PARENIZQUIERDO  shift and go to state 108
+
+
+state 64
+
+    (49) estatuto -> circulo .
+
+    ENTRADA         reduce using rule 49 (estatuto -> circulo .)
+    DESPLEGAR       reduce using rule 49 (estatuto -> circulo .)
+    INSERTATEXTO    reduce using rule 49 (estatuto -> circulo .)
+    INSERTARECTANGULO reduce using rule 49 (estatuto -> circulo .)
+    INSERTACIRCULO  reduce using rule 49 (estatuto -> circulo .)
+    INSERTAOVALO    reduce using rule 49 (estatuto -> circulo .)
+    INSERTATRIANGULO reduce using rule 49 (estatuto -> circulo .)
+    INSERTAPUNTO    reduce using rule 49 (estatuto -> circulo .)
+    INSERTALINEA    reduce using rule 49 (estatuto -> circulo .)
+    INSERTACURVA    reduce using rule 49 (estatuto -> circulo .)
+    ID              reduce using rule 49 (estatuto -> circulo .)
+    SI              reduce using rule 49 (estatuto -> circulo .)
+    MIENTRAS        reduce using rule 49 (estatuto -> circulo .)
+    LLAVEDERECHO    reduce using rule 49 (estatuto -> circulo .)
+    REGRESAR        reduce using rule 49 (estatuto -> circulo .)
+
+
+state 65
+
+    (56) estatuto -> asignacion .
+
+    ENTRADA         reduce using rule 56 (estatuto -> asignacion .)
+    DESPLEGAR       reduce using rule 56 (estatuto -> asignacion .)
+    INSERTATEXTO    reduce using rule 56 (estatuto -> asignacion .)
+    INSERTARECTANGULO reduce using rule 56 (estatuto -> asignacion .)
+    INSERTACIRCULO  reduce using rule 56 (estatuto -> asignacion .)
+    INSERTAOVALO    reduce using rule 56 (estatuto -> asignacion .)
+    INSERTATRIANGULO reduce using rule 56 (estatuto -> asignacion .)
+    INSERTAPUNTO    reduce using rule 56 (estatuto -> asignacion .)
+    INSERTALINEA    reduce using rule 56 (estatuto -> asignacion .)
+    INSERTACURVA    reduce using rule 56 (estatuto -> asignacion .)
+    ID              reduce using rule 56 (estatuto -> asignacion .)
+    SI              reduce using rule 56 (estatuto -> asignacion .)
+    MIENTRAS        reduce using rule 56 (estatuto -> asignacion .)
+    LLAVEDERECHO    reduce using rule 56 (estatuto -> asignacion .)
+    REGRESAR        reduce using rule 56 (estatuto -> asignacion .)
+
+
+state 66
+
+    (54) estatuto -> curva .
+
+    ENTRADA         reduce using rule 54 (estatuto -> curva .)
+    DESPLEGAR       reduce using rule 54 (estatuto -> curva .)
+    INSERTATEXTO    reduce using rule 54 (estatuto -> curva .)
+    INSERTARECTANGULO reduce using rule 54 (estatuto -> curva .)
+    INSERTACIRCULO  reduce using rule 54 (estatuto -> curva .)
+    INSERTAOVALO    reduce using rule 54 (estatuto -> curva .)
+    INSERTATRIANGULO reduce using rule 54 (estatuto -> curva .)
+    INSERTAPUNTO    reduce using rule 54 (estatuto -> curva .)
+    INSERTALINEA    reduce using rule 54 (estatuto -> curva .)
+    INSERTACURVA    reduce using rule 54 (estatuto -> curva .)
+    ID              reduce using rule 54 (estatuto -> curva .)
+    SI              reduce using rule 54 (estatuto -> curva .)
+    MIENTRAS        reduce using rule 54 (estatuto -> curva .)
+    LLAVEDERECHO    reduce using rule 54 (estatuto -> curva .)
+    REGRESAR        reduce using rule 54 (estatuto -> curva .)
+
+
+state 67
+
+    (83) condicion -> SI . PARENIZQUIERDO expresion PARENDERECHO ENTONCES bloque condicionaux
+
+    PARENIZQUIERDO  shift and go to state 109
+
+
+state 68
+
+    (50) estatuto -> ovalo .
+
+    ENTRADA         reduce using rule 50 (estatuto -> ovalo .)
+    DESPLEGAR       reduce using rule 50 (estatuto -> ovalo .)
+    INSERTATEXTO    reduce using rule 50 (estatuto -> ovalo .)
+    INSERTARECTANGULO reduce using rule 50 (estatuto -> ovalo .)
+    INSERTACIRCULO  reduce using rule 50 (estatuto -> ovalo .)
+    INSERTAOVALO    reduce using rule 50 (estatuto -> ovalo .)
+    INSERTATRIANGULO reduce using rule 50 (estatuto -> ovalo .)
+    INSERTAPUNTO    reduce using rule 50 (estatuto -> ovalo .)
+    INSERTALINEA    reduce using rule 50 (estatuto -> ovalo .)
+    INSERTACURVA    reduce using rule 50 (estatuto -> ovalo .)
+    ID              reduce using rule 50 (estatuto -> ovalo .)
+    SI              reduce using rule 50 (estatuto -> ovalo .)
+    MIENTRAS        reduce using rule 50 (estatuto -> ovalo .)
+    LLAVEDERECHO    reduce using rule 50 (estatuto -> ovalo .)
+    REGRESAR        reduce using rule 50 (estatuto -> ovalo .)
+
+
+state 69
+
+    (108) ovalo -> INSERTAOVALO . PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA
+
+    PARENIZQUIERDO  shift and go to state 110
+
+
+state 70
+
+    (53) estatuto -> linea .
+
+    ENTRADA         reduce using rule 53 (estatuto -> linea .)
+    DESPLEGAR       reduce using rule 53 (estatuto -> linea .)
+    INSERTATEXTO    reduce using rule 53 (estatuto -> linea .)
+    INSERTARECTANGULO reduce using rule 53 (estatuto -> linea .)
+    INSERTACIRCULO  reduce using rule 53 (estatuto -> linea .)
+    INSERTAOVALO    reduce using rule 53 (estatuto -> linea .)
+    INSERTATRIANGULO reduce using rule 53 (estatuto -> linea .)
+    INSERTAPUNTO    reduce using rule 53 (estatuto -> linea .)
+    INSERTALINEA    reduce using rule 53 (estatuto -> linea .)
+    INSERTACURVA    reduce using rule 53 (estatuto -> linea .)
+    ID              reduce using rule 53 (estatuto -> linea .)
+    SI              reduce using rule 53 (estatuto -> linea .)
+    MIENTRAS        reduce using rule 53 (estatuto -> linea .)
+    LLAVEDERECHO    reduce using rule 53 (estatuto -> linea .)
+    REGRESAR        reduce using rule 53 (estatuto -> linea .)
+
+
+state 71
+
+    (46) estatuto -> escritura .
+
+    ENTRADA         reduce using rule 46 (estatuto -> escritura .)
+    DESPLEGAR       reduce using rule 46 (estatuto -> escritura .)
+    INSERTATEXTO    reduce using rule 46 (estatuto -> escritura .)
+    INSERTARECTANGULO reduce using rule 46 (estatuto -> escritura .)
+    INSERTACIRCULO  reduce using rule 46 (estatuto -> escritura .)
+    INSERTAOVALO    reduce using rule 46 (estatuto -> escritura .)
+    INSERTATRIANGULO reduce using rule 46 (estatuto -> escritura .)
+    INSERTAPUNTO    reduce using rule 46 (estatuto -> escritura .)
+    INSERTALINEA    reduce using rule 46 (estatuto -> escritura .)
+    INSERTACURVA    reduce using rule 46 (estatuto -> escritura .)
+    ID              reduce using rule 46 (estatuto -> escritura .)
+    SI              reduce using rule 46 (estatuto -> escritura .)
+    MIENTRAS        reduce using rule 46 (estatuto -> escritura .)
+    LLAVEDERECHO    reduce using rule 46 (estatuto -> escritura .)
+    REGRESAR        reduce using rule 46 (estatuto -> escritura .)
+
+
+state 72
+
+    (1) program -> PROGRAMA ID DOSPUNTOS declaracion function INICIO bloque FIN .
+
+    $end            reduce using rule 1 (program -> PROGRAMA ID DOSPUNTOS declaracion function INICIO bloque FIN .)
+
+
+state 73
+
+    (32) function -> FUNCION tiporegreso ID PARENIZQUIERDO . functionpam PARENDERECHO bloquefun function
+    (28) functionpam -> . VAR tipo ID functionpam2
+    (29) functionpam -> .
+
+    VAR             shift and go to state 112
+    PARENDERECHO    reduce using rule 29 (functionpam -> .)
+
+    functionpam                    shift and go to state 111
+
+state 74
+
+    (81) factor -> PARENIZQUIERDO expresion . PARENDERECHO
+
+    PARENDERECHO    shift and go to state 113
+
+
+state 75
+
+    (87) color -> GRIS .
+
+    PARENDERECHO    reduce using rule 87 (color -> GRIS .)
+    COMA            reduce using rule 87 (color -> GRIS .)
+
+
+state 76
+
+    (69) expresion -> negacion . exp expresionaux
+    (73) exp -> . termino exp2
+    (77) termino -> . factor termino2
+    (81) factor -> . PARENIZQUIERDO expresion PARENDERECHO
+    (82) factor -> . cte
+    (6) cte -> . cteid
+    (7) cte -> . CENTERO
+    (8) cte -> . CFLOTANTE
+    (9) cte -> . CCADENA
+    (10) cte -> . CCARACTER
+    (11) cte -> . VERDADERO
+    (12) cte -> . FALSO
+    (2) cteid -> . ID cteidaux
+
+    PARENIZQUIERDO  shift and go to state 30
+    CENTERO         shift and go to state 31
+    CFLOTANTE       shift and go to state 40
+    CCADENA         shift and go to state 32
+    CCARACTER       shift and go to state 29
+    VERDADERO       shift and go to state 38
+    FALSO           shift and go to state 33
+    ID              shift and go to state 16
+
+    cte                            shift and go to state 34
+    termino                        shift and go to state 35
+    exp                            shift and go to state 114
+    factor                         shift and go to state 37
+    cteid                          shift and go to state 39
+
+state 77
+
+    (59) negacion -> NO .
+
+    PARENIZQUIERDO  reduce using rule 59 (negacion -> NO .)
+    CENTERO         reduce using rule 59 (negacion -> NO .)
+    CFLOTANTE       reduce using rule 59 (negacion -> NO .)
+    CCADENA         reduce using rule 59 (negacion -> NO .)
+    CCARACTER       reduce using rule 59 (negacion -> NO .)
+    VERDADERO       reduce using rule 59 (negacion -> NO .)
+    FALSO           reduce using rule 59 (negacion -> NO .)
+    ID              reduce using rule 59 (negacion -> NO .)
+
+
+state 78
+
+    (70) expresion -> color .
+
+    COMA            reduce using rule 70 (expresion -> color .)
+    PARENDERECHO    reduce using rule 70 (expresion -> color .)
+
+
+state 79
+
+    (86) color -> NEGRO .
+
+    PARENDERECHO    reduce using rule 86 (color -> NEGRO .)
+    COMA            reduce using rule 86 (color -> NEGRO .)
+
+
+state 80
+
+    (89) color -> AMARILLO .
+
+    PARENDERECHO    reduce using rule 89 (color -> AMARILLO .)
+    COMA            reduce using rule 89 (color -> AMARILLO .)
+
+
+state 81
+
+    (91) color -> ROJO .
+
+    PARENDERECHO    reduce using rule 91 (color -> ROJO .)
+    COMA            reduce using rule 91 (color -> ROJO .)
+
+
+state 82
+
+    (88) color -> AZUL .
+
+    PARENDERECHO    reduce using rule 88 (color -> AZUL .)
+    COMA            reduce using rule 88 (color -> AZUL .)
+
+
+state 83
+
+    (90) color -> VERDE .
+
+    PARENDERECHO    reduce using rule 90 (color -> VERDE .)
+    COMA            reduce using rule 90 (color -> VERDE .)
+
+
+state 84
+
+    (73) exp -> termino exp2 .
+
+    PARENDERECHO    reduce using rule 73 (exp -> termino exp2 .)
+    COMA            reduce using rule 73 (exp -> termino exp2 .)
+    CORCHETEDER     reduce using rule 73 (exp -> termino exp2 .)
+    PUNTOYCOMA      reduce using rule 73 (exp -> termino exp2 .)
+    MENORQUE        reduce using rule 73 (exp -> termino exp2 .)
+    MAYORQUE        reduce using rule 73 (exp -> termino exp2 .)
+    MAYORIGUAL      reduce using rule 73 (exp -> termino exp2 .)
+    MENORIGUAL      reduce using rule 73 (exp -> termino exp2 .)
+    IGUAL           reduce using rule 73 (exp -> termino exp2 .)
+    DIFERENTE       reduce using rule 73 (exp -> termino exp2 .)
+    CONJUNCION      reduce using rule 73 (exp -> termino exp2 .)
+    DISYUNCION      reduce using rule 73 (exp -> termino exp2 .)
+
+
+state 85
+
+    (74) exp2 -> SUMA . exp
+    (73) exp -> . termino exp2
+    (77) termino -> . factor termino2
+    (81) factor -> . PARENIZQUIERDO expresion PARENDERECHO
+    (82) factor -> . cte
+    (6) cte -> . cteid
+    (7) cte -> . CENTERO
+    (8) cte -> . CFLOTANTE
+    (9) cte -> . CCADENA
+    (10) cte -> . CCARACTER
+    (11) cte -> . VERDADERO
+    (12) cte -> . FALSO
+    (2) cteid -> . ID cteidaux
+
+    PARENIZQUIERDO  shift and go to state 30
+    CENTERO         shift and go to state 31
+    CFLOTANTE       shift and go to state 40
+    CCADENA         shift and go to state 32
+    CCARACTER       shift and go to state 29
+    VERDADERO       shift and go to state 38
+    FALSO           shift and go to state 33
+    ID              shift and go to state 16
+
+    cte                            shift and go to state 34
+    termino                        shift and go to state 35
+    exp                            shift and go to state 115
+    factor                         shift and go to state 37
+    cteid                          shift and go to state 39
+
+state 86
+
+    (75) exp2 -> RESTA . exp
+    (73) exp -> . termino exp2
+    (77) termino -> . factor termino2
+    (81) factor -> . PARENIZQUIERDO expresion PARENDERECHO
+    (82) factor -> . cte
+    (6) cte -> . cteid
+    (7) cte -> . CENTERO
+    (8) cte -> . CFLOTANTE
+    (9) cte -> . CCADENA
+    (10) cte -> . CCARACTER
+    (11) cte -> . VERDADERO
+    (12) cte -> . FALSO
+    (2) cteid -> . ID cteidaux
+
+    PARENIZQUIERDO  shift and go to state 30
+    CENTERO         shift and go to state 31
+    CFLOTANTE       shift and go to state 40
+    CCADENA         shift and go to state 32
+    CCARACTER       shift and go to state 29
+    VERDADERO       shift and go to state 38
+    FALSO           shift and go to state 33
+    ID              shift and go to state 16
+
+    cte                            shift and go to state 34
+    termino                        shift and go to state 35
+    exp                            shift and go to state 116
+    factor                         shift and go to state 37
+    cteid                          shift and go to state 39
+
+state 87
+
+    (3) cteidaux -> CORCHETEIZQ exp CORCHETEDER .
+
+    MULTIPLICACION  reduce using rule 3 (cteidaux -> CORCHETEIZQ exp CORCHETEDER .)
+    DIVISION        reduce using rule 3 (cteidaux -> CORCHETEIZQ exp CORCHETEDER .)
+    SUMA            reduce using rule 3 (cteidaux -> CORCHETEIZQ exp CORCHETEDER .)
+    RESTA           reduce using rule 3 (cteidaux -> CORCHETEIZQ exp CORCHETEDER .)
+    PUNTOYCOMA      reduce using rule 3 (cteidaux -> CORCHETEIZQ exp CORCHETEDER .)
+    CORCHETEDER     reduce using rule 3 (cteidaux -> CORCHETEIZQ exp CORCHETEDER .)
+    PARENDERECHO    reduce using rule 3 (cteidaux -> CORCHETEIZQ exp CORCHETEDER .)
+    MENORQUE        reduce using rule 3 (cteidaux -> CORCHETEIZQ exp CORCHETEDER .)
+    MAYORQUE        reduce using rule 3 (cteidaux -> CORCHETEIZQ exp CORCHETEDER .)
+    MAYORIGUAL      reduce using rule 3 (cteidaux -> CORCHETEIZQ exp CORCHETEDER .)
+    MENORIGUAL      reduce using rule 3 (cteidaux -> CORCHETEIZQ exp CORCHETEDER .)
+    IGUAL           reduce using rule 3 (cteidaux -> CORCHETEIZQ exp CORCHETEDER .)
+    DIFERENTE       reduce using rule 3 (cteidaux -> CORCHETEIZQ exp CORCHETEDER .)
+    CONJUNCION      reduce using rule 3 (cteidaux -> CORCHETEIZQ exp CORCHETEDER .)
+    DISYUNCION      reduce using rule 3 (cteidaux -> CORCHETEIZQ exp CORCHETEDER .)
+    COMA            reduce using rule 3 (cteidaux -> CORCHETEIZQ exp CORCHETEDER .)
+
+
+state 88
+
+    (79) termino2 -> DIVISION . termino
+    (77) termino -> . factor termino2
+    (81) factor -> . PARENIZQUIERDO expresion PARENDERECHO
+    (82) factor -> . cte
+    (6) cte -> . cteid
+    (7) cte -> . CENTERO
+    (8) cte -> . CFLOTANTE
+    (9) cte -> . CCADENA
+    (10) cte -> . CCARACTER
+    (11) cte -> . VERDADERO
+    (12) cte -> . FALSO
+    (2) cteid -> . ID cteidaux
+
+    PARENIZQUIERDO  shift and go to state 30
+    CENTERO         shift and go to state 31
+    CFLOTANTE       shift and go to state 40
+    CCADENA         shift and go to state 32
+    CCARACTER       shift and go to state 29
+    VERDADERO       shift and go to state 38
+    FALSO           shift and go to state 33
+    ID              shift and go to state 16
+
+    cte                            shift and go to state 34
+    termino                        shift and go to state 117
+    factor                         shift and go to state 37
+    cteid                          shift and go to state 39
+
+state 89
+
+    (77) termino -> factor termino2 .
+
+    SUMA            reduce using rule 77 (termino -> factor termino2 .)
+    RESTA           reduce using rule 77 (termino -> factor termino2 .)
+    COMA            reduce using rule 77 (termino -> factor termino2 .)
+    PARENDERECHO    reduce using rule 77 (termino -> factor termino2 .)
+    CORCHETEDER     reduce using rule 77 (termino -> factor termino2 .)
+    PUNTOYCOMA      reduce using rule 77 (termino -> factor termino2 .)
+    MENORQUE        reduce using rule 77 (termino -> factor termino2 .)
+    MAYORQUE        reduce using rule 77 (termino -> factor termino2 .)
+    MAYORIGUAL      reduce using rule 77 (termino -> factor termino2 .)
+    MENORIGUAL      reduce using rule 77 (termino -> factor termino2 .)
+    IGUAL           reduce using rule 77 (termino -> factor termino2 .)
+    DIFERENTE       reduce using rule 77 (termino -> factor termino2 .)
+    CONJUNCION      reduce using rule 77 (termino -> factor termino2 .)
+    DISYUNCION      reduce using rule 77 (termino -> factor termino2 .)
+
+
+state 90
+
+    (78) termino2 -> MULTIPLICACION . termino
+    (77) termino -> . factor termino2
+    (81) factor -> . PARENIZQUIERDO expresion PARENDERECHO
+    (82) factor -> . cte
+    (6) cte -> . cteid
+    (7) cte -> . CENTERO
+    (8) cte -> . CFLOTANTE
+    (9) cte -> . CCADENA
+    (10) cte -> . CCARACTER
+    (11) cte -> . VERDADERO
+    (12) cte -> . FALSO
+    (2) cteid -> . ID cteidaux
+
+    PARENIZQUIERDO  shift and go to state 30
+    CENTERO         shift and go to state 31
+    CFLOTANTE       shift and go to state 40
+    CCADENA         shift and go to state 32
+    CCARACTER       shift and go to state 29
+    VERDADERO       shift and go to state 38
+    FALSO           shift and go to state 33
+    ID              shift and go to state 16
+
+    cte                            shift and go to state 34
+    termino                        shift and go to state 118
+    factor                         shift and go to state 37
+    cteid                          shift and go to state 39
+
+state 91
+
+    (4) cteidaux -> PARENIZQUIERDO exp PARENDERECHO .
+
+    MULTIPLICACION  reduce using rule 4 (cteidaux -> PARENIZQUIERDO exp PARENDERECHO .)
+    DIVISION        reduce using rule 4 (cteidaux -> PARENIZQUIERDO exp PARENDERECHO .)
+    SUMA            reduce using rule 4 (cteidaux -> PARENIZQUIERDO exp PARENDERECHO .)
+    RESTA           reduce using rule 4 (cteidaux -> PARENIZQUIERDO exp PARENDERECHO .)
+    PUNTOYCOMA      reduce using rule 4 (cteidaux -> PARENIZQUIERDO exp PARENDERECHO .)
+    CORCHETEDER     reduce using rule 4 (cteidaux -> PARENIZQUIERDO exp PARENDERECHO .)
+    PARENDERECHO    reduce using rule 4 (cteidaux -> PARENIZQUIERDO exp PARENDERECHO .)
+    MENORQUE        reduce using rule 4 (cteidaux -> PARENIZQUIERDO exp PARENDERECHO .)
+    MAYORQUE        reduce using rule 4 (cteidaux -> PARENIZQUIERDO exp PARENDERECHO .)
+    MAYORIGUAL      reduce using rule 4 (cteidaux -> PARENIZQUIERDO exp PARENDERECHO .)
+    MENORIGUAL      reduce using rule 4 (cteidaux -> PARENIZQUIERDO exp PARENDERECHO .)
+    IGUAL           reduce using rule 4 (cteidaux -> PARENIZQUIERDO exp PARENDERECHO .)
+    DIFERENTE       reduce using rule 4 (cteidaux -> PARENIZQUIERDO exp PARENDERECHO .)
+    CONJUNCION      reduce using rule 4 (cteidaux -> PARENIZQUIERDO exp PARENDERECHO .)
+    DISYUNCION      reduce using rule 4 (cteidaux -> PARENIZQUIERDO exp PARENDERECHO .)
+    COMA            reduce using rule 4 (cteidaux -> PARENIZQUIERDO exp PARENDERECHO .)
+
+
+state 92
+
+    (109) punto -> INSERTAPUNTO PARENIZQUIERDO . args PARENDERECHO PUNTOYCOMA
+    (101) args -> . expresion args2
+    (69) expresion -> . negacion exp expresionaux
+    (70) expresion -> . color
+    (59) negacion -> . NO
+    (60) negacion -> .
+    (86) color -> . NEGRO
+    (87) color -> . GRIS
+    (88) color -> . AZUL
+    (89) color -> . AMARILLO
+    (90) color -> . VERDE
+    (91) color -> . ROJO
+
+    NO              shift and go to state 77
+    PARENIZQUIERDO  reduce using rule 60 (negacion -> .)
+    CENTERO         reduce using rule 60 (negacion -> .)
+    CFLOTANTE       reduce using rule 60 (negacion -> .)
+    CCADENA         reduce using rule 60 (negacion -> .)
+    CCARACTER       reduce using rule 60 (negacion -> .)
+    VERDADERO       reduce using rule 60 (negacion -> .)
+    FALSO           reduce using rule 60 (negacion -> .)
+    ID              reduce using rule 60 (negacion -> .)
+    NEGRO           shift and go to state 79
+    GRIS            shift and go to state 75
+    AZUL            shift and go to state 82
+    AMARILLO        shift and go to state 80
+    VERDE           shift and go to state 83
+    ROJO            shift and go to state 81
+
+    expresion                      shift and go to state 119
+    negacion                       shift and go to state 76
+    color                          shift and go to state 78
+    args                           shift and go to state 120
+
+state 93
+
+    (42) asignacion -> asignacionizq ASIGNACION . asignacionaux PUNTOYCOMA
+    (43) asignacionaux -> . exp
+    (44) asignacionaux -> . llamada
+    (73) exp -> . termino exp2
+    (34) llamada -> . ID PARENIZQUIERDO llamadapar PARENDERECHO
+    (77) termino -> . factor termino2
+    (81) factor -> . PARENIZQUIERDO expresion PARENDERECHO
+    (82) factor -> . cte
+    (6) cte -> . cteid
+    (7) cte -> . CENTERO
+    (8) cte -> . CFLOTANTE
+    (9) cte -> . CCADENA
+    (10) cte -> . CCARACTER
+    (11) cte -> . VERDADERO
+    (12) cte -> . FALSO
+    (2) cteid -> . ID cteidaux
+
+    ID              shift and go to state 122
+    PARENIZQUIERDO  shift and go to state 30
+    CENTERO         shift and go to state 31
+    CFLOTANTE       shift and go to state 40
+    CCADENA         shift and go to state 32
+    CCARACTER       shift and go to state 29
+    VERDADERO       shift and go to state 38
+    FALSO           shift and go to state 33
+
+    cte                            shift and go to state 34
+    llamada                        shift and go to state 121
+    termino                        shift and go to state 35
+    exp                            shift and go to state 123
+    factor                         shift and go to state 37
+    asignacionaux                  shift and go to state 124
+    cteid                          shift and go to state 39
+
+state 94
+
+    (22) bloque -> LLAVEIZQUIERDO bloqueaux LLAVEDERECHO .
+
+    SINO            reduce using rule 22 (bloque -> LLAVEIZQUIERDO bloqueaux LLAVEDERECHO .)
+    ENTRADA         reduce using rule 22 (bloque -> LLAVEIZQUIERDO bloqueaux LLAVEDERECHO .)
+    DESPLEGAR       reduce using rule 22 (bloque -> LLAVEIZQUIERDO bloqueaux LLAVEDERECHO .)
+    INSERTATEXTO    reduce using rule 22 (bloque -> LLAVEIZQUIERDO bloqueaux LLAVEDERECHO .)
+    INSERTARECTANGULO reduce using rule 22 (bloque -> LLAVEIZQUIERDO bloqueaux LLAVEDERECHO .)
+    INSERTACIRCULO  reduce using rule 22 (bloque -> LLAVEIZQUIERDO bloqueaux LLAVEDERECHO .)
+    INSERTAOVALO    reduce using rule 22 (bloque -> LLAVEIZQUIERDO bloqueaux LLAVEDERECHO .)
+    INSERTATRIANGULO reduce using rule 22 (bloque -> LLAVEIZQUIERDO bloqueaux LLAVEDERECHO .)
+    INSERTAPUNTO    reduce using rule 22 (bloque -> LLAVEIZQUIERDO bloqueaux LLAVEDERECHO .)
+    INSERTALINEA    reduce using rule 22 (bloque -> LLAVEIZQUIERDO bloqueaux LLAVEDERECHO .)
+    INSERTACURVA    reduce using rule 22 (bloque -> LLAVEIZQUIERDO bloqueaux LLAVEDERECHO .)
+    ID              reduce using rule 22 (bloque -> LLAVEIZQUIERDO bloqueaux LLAVEDERECHO .)
+    SI              reduce using rule 22 (bloque -> LLAVEIZQUIERDO bloqueaux LLAVEDERECHO .)
+    MIENTRAS        reduce using rule 22 (bloque -> LLAVEIZQUIERDO bloqueaux LLAVEDERECHO .)
+    LLAVEDERECHO    reduce using rule 22 (bloque -> LLAVEIZQUIERDO bloqueaux LLAVEDERECHO .)
+    REGRESAR        reduce using rule 22 (bloque -> LLAVEIZQUIERDO bloqueaux LLAVEDERECHO .)
+    FIN             reduce using rule 22 (bloque -> LLAVEIZQUIERDO bloqueaux LLAVEDERECHO .)
+
+
+state 95
+
+    (93) escritura -> DESPLEGAR PARENIZQUIERDO . escrituraaux PARENDERECHO PUNTOYCOMA
+    (94) escrituraaux -> . exp escritura2aux
+    (73) exp -> . termino exp2
+    (77) termino -> . factor termino2
+    (81) factor -> . PARENIZQUIERDO expresion PARENDERECHO
+    (82) factor -> . cte
+    (6) cte -> . cteid
+    (7) cte -> . CENTERO
+    (8) cte -> . CFLOTANTE
+    (9) cte -> . CCADENA
+    (10) cte -> . CCARACTER
+    (11) cte -> . VERDADERO
+    (12) cte -> . FALSO
+    (2) cteid -> . ID cteidaux
+
+    PARENIZQUIERDO  shift and go to state 30
+    CENTERO         shift and go to state 31
+    CFLOTANTE       shift and go to state 40
+    CCADENA         shift and go to state 32
+    CCARACTER       shift and go to state 29
+    VERDADERO       shift and go to state 38
+    FALSO           shift and go to state 33
+    ID              shift and go to state 16
+
+    escrituraaux                   shift and go to state 125
+    cte                            shift and go to state 34
+    termino                        shift and go to state 35
+    exp                            shift and go to state 126
+    factor                         shift and go to state 37
+    cteid                          shift and go to state 39
+
+state 96
+
+    (111) curva -> INSERTACURVA PARENIZQUIERDO . args PARENDERECHO PUNTOYCOMA
+    (101) args -> . expresion args2
+    (69) expresion -> . negacion exp expresionaux
+    (70) expresion -> . color
+    (59) negacion -> . NO
+    (60) negacion -> .
+    (86) color -> . NEGRO
+    (87) color -> . GRIS
+    (88) color -> . AZUL
+    (89) color -> . AMARILLO
+    (90) color -> . VERDE
+    (91) color -> . ROJO
+
+    NO              shift and go to state 77
+    PARENIZQUIERDO  reduce using rule 60 (negacion -> .)
+    CENTERO         reduce using rule 60 (negacion -> .)
+    CFLOTANTE       reduce using rule 60 (negacion -> .)
+    CCADENA         reduce using rule 60 (negacion -> .)
+    CCARACTER       reduce using rule 60 (negacion -> .)
+    VERDADERO       reduce using rule 60 (negacion -> .)
+    FALSO           reduce using rule 60 (negacion -> .)
+    ID              reduce using rule 60 (negacion -> .)
+    NEGRO           shift and go to state 79
+    GRIS            shift and go to state 75
+    AZUL            shift and go to state 82
+    AMARILLO        shift and go to state 80
+    VERDE           shift and go to state 83
+    ROJO            shift and go to state 81
+
+    expresion                      shift and go to state 119
+    negacion                       shift and go to state 76
+    color                          shift and go to state 78
+    args                           shift and go to state 127
+
+state 97
+
+    (104) texto -> INSERTATEXTO PARENIZQUIERDO . args PARENDERECHO PUNTOYCOMA
+    (101) args -> . expresion args2
+    (69) expresion -> . negacion exp expresionaux
+    (70) expresion -> . color
+    (59) negacion -> . NO
+    (60) negacion -> .
+    (86) color -> . NEGRO
+    (87) color -> . GRIS
+    (88) color -> . AZUL
+    (89) color -> . AMARILLO
+    (90) color -> . VERDE
+    (91) color -> . ROJO
+
+    NO              shift and go to state 77
+    PARENIZQUIERDO  reduce using rule 60 (negacion -> .)
+    CENTERO         reduce using rule 60 (negacion -> .)
+    CFLOTANTE       reduce using rule 60 (negacion -> .)
+    CCADENA         reduce using rule 60 (negacion -> .)
+    CCARACTER       reduce using rule 60 (negacion -> .)
+    VERDADERO       reduce using rule 60 (negacion -> .)
+    FALSO           reduce using rule 60 (negacion -> .)
+    ID              reduce using rule 60 (negacion -> .)
+    NEGRO           shift and go to state 79
+    GRIS            shift and go to state 75
+    AZUL            shift and go to state 82
+    AMARILLO        shift and go to state 80
+    VERDE           shift and go to state 83
+    ROJO            shift and go to state 81
+
+    expresion                      shift and go to state 119
+    negacion                       shift and go to state 76
+    color                          shift and go to state 78
+    args                           shift and go to state 128
+
+state 98
+
+    (105) rectangulo -> INSERTARECTANGULO PARENIZQUIERDO . args PARENDERECHO PUNTOYCOMA
+    (101) args -> . expresion args2
+    (69) expresion -> . negacion exp expresionaux
+    (70) expresion -> . color
+    (59) negacion -> . NO
+    (60) negacion -> .
+    (86) color -> . NEGRO
+    (87) color -> . GRIS
+    (88) color -> . AZUL
+    (89) color -> . AMARILLO
+    (90) color -> . VERDE
+    (91) color -> . ROJO
+
+    NO              shift and go to state 77
+    PARENIZQUIERDO  reduce using rule 60 (negacion -> .)
+    CENTERO         reduce using rule 60 (negacion -> .)
+    CFLOTANTE       reduce using rule 60 (negacion -> .)
+    CCADENA         reduce using rule 60 (negacion -> .)
+    CCARACTER       reduce using rule 60 (negacion -> .)
+    VERDADERO       reduce using rule 60 (negacion -> .)
+    FALSO           reduce using rule 60 (negacion -> .)
+    ID              reduce using rule 60 (negacion -> .)
+    NEGRO           shift and go to state 79
+    GRIS            shift and go to state 75
+    AZUL            shift and go to state 82
+    AMARILLO        shift and go to state 80
+    VERDE           shift and go to state 83
+    ROJO            shift and go to state 81
+
+    expresion                      shift and go to state 119
+    negacion                       shift and go to state 76
+    color                          shift and go to state 78
+    args                           shift and go to state 129
+
+state 99
+
+    (23) bloqueaux -> estatuto bloqueaux .
+
+    LLAVEDERECHO    reduce using rule 23 (bloqueaux -> estatuto bloqueaux .)
+    REGRESAR        reduce using rule 23 (bloqueaux -> estatuto bloqueaux .)
+
+
+state 100
+
+    (107) circulo -> INSERTACIRCULO PARENIZQUIERDO . args PARENDERECHO PUNTOYCOMA
+    (101) args -> . expresion args2
+    (69) expresion -> . negacion exp expresionaux
+    (70) expresion -> . color
+    (59) negacion -> . NO
+    (60) negacion -> .
+    (86) color -> . NEGRO
+    (87) color -> . GRIS
+    (88) color -> . AZUL
+    (89) color -> . AMARILLO
+    (90) color -> . VERDE
+    (91) color -> . ROJO
+
+    NO              shift and go to state 77
+    PARENIZQUIERDO  reduce using rule 60 (negacion -> .)
+    CENTERO         reduce using rule 60 (negacion -> .)
+    CFLOTANTE       reduce using rule 60 (negacion -> .)
+    CCADENA         reduce using rule 60 (negacion -> .)
+    CCARACTER       reduce using rule 60 (negacion -> .)
+    VERDADERO       reduce using rule 60 (negacion -> .)
+    FALSO           reduce using rule 60 (negacion -> .)
+    ID              reduce using rule 60 (negacion -> .)
+    NEGRO           shift and go to state 79
+    GRIS            shift and go to state 75
+    AZUL            shift and go to state 82
+    AMARILLO        shift and go to state 80
+    VERDE           shift and go to state 83
+    ROJO            shift and go to state 81
+
+    expresion                      shift and go to state 119
+    negacion                       shift and go to state 76
+    color                          shift and go to state 78
+    args                           shift and go to state 130
+
+state 101
+
+    (40) asignacionizqaux -> CORCHETEIZQ . exp CORCHETEDER
+    (73) exp -> . termino exp2
+    (77) termino -> . factor termino2
+    (81) factor -> . PARENIZQUIERDO expresion PARENDERECHO
+    (82) factor -> . cte
+    (6) cte -> . cteid
+    (7) cte -> . CENTERO
+    (8) cte -> . CFLOTANTE
+    (9) cte -> . CCADENA
+    (10) cte -> . CCARACTER
+    (11) cte -> . VERDADERO
+    (12) cte -> . FALSO
+    (2) cteid -> . ID cteidaux
+
+    PARENIZQUIERDO  shift and go to state 30
+    CENTERO         shift and go to state 31
+    CFLOTANTE       shift and go to state 40
+    CCADENA         shift and go to state 32
+    CCARACTER       shift and go to state 29
+    VERDADERO       shift and go to state 38
+    FALSO           shift and go to state 33
+    ID              shift and go to state 16
+
+    cte                            shift and go to state 34
+    termino                        shift and go to state 35
+    exp                            shift and go to state 131
+    factor                         shift and go to state 37
+    cteid                          shift and go to state 39
+
+state 102
+
+    (34) llamada -> ID PARENIZQUIERDO . llamadapar PARENDERECHO
+    (35) llamadapar -> . exp llamadaparaux
+    (36) llamadapar -> .
+    (73) exp -> . termino exp2
+    (77) termino -> . factor termino2
+    (81) factor -> . PARENIZQUIERDO expresion PARENDERECHO
+    (82) factor -> . cte
+    (6) cte -> . cteid
+    (7) cte -> . CENTERO
+    (8) cte -> . CFLOTANTE
+    (9) cte -> . CCADENA
+    (10) cte -> . CCARACTER
+    (11) cte -> . VERDADERO
+    (12) cte -> . FALSO
+    (2) cteid -> . ID cteidaux
+
+    PARENDERECHO    reduce using rule 36 (llamadapar -> .)
+    PARENIZQUIERDO  shift and go to state 30
+    CENTERO         shift and go to state 31
+    CFLOTANTE       shift and go to state 40
+    CCADENA         shift and go to state 32
+    CCARACTER       shift and go to state 29
+    VERDADERO       shift and go to state 38
+    FALSO           shift and go to state 33
+    ID              shift and go to state 16
+
+    cte                            shift and go to state 34
+    termino                        shift and go to state 35
+    exp                            shift and go to state 133
+    factor                         shift and go to state 37
+    cteid                          shift and go to state 39
+    llamadapar                     shift and go to state 132
+
+state 103
+
+    (39) asignacionizq -> ID asignacionizqaux .
+
+    ASIGNACION      reduce using rule 39 (asignacionizq -> ID asignacionizqaux .)
+
+
+state 104
+
+    (55) estatuto -> llamada PUNTOYCOMA .
+
+    ENTRADA         reduce using rule 55 (estatuto -> llamada PUNTOYCOMA .)
+    DESPLEGAR       reduce using rule 55 (estatuto -> llamada PUNTOYCOMA .)
+    INSERTATEXTO    reduce using rule 55 (estatuto -> llamada PUNTOYCOMA .)
+    INSERTARECTANGULO reduce using rule 55 (estatuto -> llamada PUNTOYCOMA .)
+    INSERTACIRCULO  reduce using rule 55 (estatuto -> llamada PUNTOYCOMA .)
+    INSERTAOVALO    reduce using rule 55 (estatuto -> llamada PUNTOYCOMA .)
+    INSERTATRIANGULO reduce using rule 55 (estatuto -> llamada PUNTOYCOMA .)
+    INSERTAPUNTO    reduce using rule 55 (estatuto -> llamada PUNTOYCOMA .)
+    INSERTALINEA    reduce using rule 55 (estatuto -> llamada PUNTOYCOMA .)
+    INSERTACURVA    reduce using rule 55 (estatuto -> llamada PUNTOYCOMA .)
+    ID              reduce using rule 55 (estatuto -> llamada PUNTOYCOMA .)
+    SI              reduce using rule 55 (estatuto -> llamada PUNTOYCOMA .)
+    MIENTRAS        reduce using rule 55 (estatuto -> llamada PUNTOYCOMA .)
+    LLAVEDERECHO    reduce using rule 55 (estatuto -> llamada PUNTOYCOMA .)
+    REGRESAR        reduce using rule 55 (estatuto -> llamada PUNTOYCOMA .)
+
+
+state 105
+
+    (97) ingreso -> ENTRADA PARENIZQUIERDO . ingresoaux PARENDERECHO PUNTOYCOMA
+    (98) ingresoaux -> . cteid ingreso2aux
+    (2) cteid -> . ID cteidaux
+
+    ID              shift and go to state 16
+
+    ingresoaux                     shift and go to state 134
+    cteid                          shift and go to state 135
+
+state 106
+
+    (106) triangulo -> INSERTATRIANGULO PARENIZQUIERDO . args PARENDERECHO PUNTOYCOMA
+    (101) args -> . expresion args2
+    (69) expresion -> . negacion exp expresionaux
+    (70) expresion -> . color
+    (59) negacion -> . NO
+    (60) negacion -> .
+    (86) color -> . NEGRO
+    (87) color -> . GRIS
+    (88) color -> . AZUL
+    (89) color -> . AMARILLO
+    (90) color -> . VERDE
+    (91) color -> . ROJO
+
+    NO              shift and go to state 77
+    PARENIZQUIERDO  reduce using rule 60 (negacion -> .)
+    CENTERO         reduce using rule 60 (negacion -> .)
+    CFLOTANTE       reduce using rule 60 (negacion -> .)
+    CCADENA         reduce using rule 60 (negacion -> .)
+    CCARACTER       reduce using rule 60 (negacion -> .)
+    VERDADERO       reduce using rule 60 (negacion -> .)
+    FALSO           reduce using rule 60 (negacion -> .)
+    ID              reduce using rule 60 (negacion -> .)
+    NEGRO           shift and go to state 79
+    GRIS            shift and go to state 75
+    AZUL            shift and go to state 82
+    AMARILLO        shift and go to state 80
+    VERDE           shift and go to state 83
+    ROJO            shift and go to state 81
+
+    expresion                      shift and go to state 119
+    negacion                       shift and go to state 76
+    color                          shift and go to state 78
+    args                           shift and go to state 136
+
+state 107
+
+    (92) ciclo -> MIENTRAS PARENIZQUIERDO . expresion PARENDERECHO bloque
+    (69) expresion -> . negacion exp expresionaux
+    (70) expresion -> . color
+    (59) negacion -> . NO
+    (60) negacion -> .
+    (86) color -> . NEGRO
+    (87) color -> . GRIS
+    (88) color -> . AZUL
+    (89) color -> . AMARILLO
+    (90) color -> . VERDE
+    (91) color -> . ROJO
+
+    NO              shift and go to state 77
+    PARENIZQUIERDO  reduce using rule 60 (negacion -> .)
+    CENTERO         reduce using rule 60 (negacion -> .)
+    CFLOTANTE       reduce using rule 60 (negacion -> .)
+    CCADENA         reduce using rule 60 (negacion -> .)
+    CCARACTER       reduce using rule 60 (negacion -> .)
+    VERDADERO       reduce using rule 60 (negacion -> .)
+    FALSO           reduce using rule 60 (negacion -> .)
+    ID              reduce using rule 60 (negacion -> .)
+    NEGRO           shift and go to state 79
+    GRIS            shift and go to state 75
+    AZUL            shift and go to state 82
+    AMARILLO        shift and go to state 80
+    VERDE           shift and go to state 83
+    ROJO            shift and go to state 81
+
+    expresion                      shift and go to state 137
+    negacion                       shift and go to state 76
+    color                          shift and go to state 78
+
+state 108
+
+    (110) linea -> INSERTALINEA PARENIZQUIERDO . args PARENDERECHO PUNTOYCOMA
+    (101) args -> . expresion args2
+    (69) expresion -> . negacion exp expresionaux
+    (70) expresion -> . color
+    (59) negacion -> . NO
+    (60) negacion -> .
+    (86) color -> . NEGRO
+    (87) color -> . GRIS
+    (88) color -> . AZUL
+    (89) color -> . AMARILLO
+    (90) color -> . VERDE
+    (91) color -> . ROJO
+
+    NO              shift and go to state 77
+    PARENIZQUIERDO  reduce using rule 60 (negacion -> .)
+    CENTERO         reduce using rule 60 (negacion -> .)
+    CFLOTANTE       reduce using rule 60 (negacion -> .)
+    CCADENA         reduce using rule 60 (negacion -> .)
+    CCARACTER       reduce using rule 60 (negacion -> .)
+    VERDADERO       reduce using rule 60 (negacion -> .)
+    FALSO           reduce using rule 60 (negacion -> .)
+    ID              reduce using rule 60 (negacion -> .)
+    NEGRO           shift and go to state 79
+    GRIS            shift and go to state 75
+    AZUL            shift and go to state 82
+    AMARILLO        shift and go to state 80
+    VERDE           shift and go to state 83
+    ROJO            shift and go to state 81
+
+    expresion                      shift and go to state 119
+    negacion                       shift and go to state 76
+    color                          shift and go to state 78
+    args                           shift and go to state 138
+
+state 109
+
+    (83) condicion -> SI PARENIZQUIERDO . expresion PARENDERECHO ENTONCES bloque condicionaux
+    (69) expresion -> . negacion exp expresionaux
+    (70) expresion -> . color
+    (59) negacion -> . NO
+    (60) negacion -> .
+    (86) color -> . NEGRO
+    (87) color -> . GRIS
+    (88) color -> . AZUL
+    (89) color -> . AMARILLO
+    (90) color -> . VERDE
+    (91) color -> . ROJO
+
+    NO              shift and go to state 77
+    PARENIZQUIERDO  reduce using rule 60 (negacion -> .)
+    CENTERO         reduce using rule 60 (negacion -> .)
+    CFLOTANTE       reduce using rule 60 (negacion -> .)
+    CCADENA         reduce using rule 60 (negacion -> .)
+    CCARACTER       reduce using rule 60 (negacion -> .)
+    VERDADERO       reduce using rule 60 (negacion -> .)
+    FALSO           reduce using rule 60 (negacion -> .)
+    ID              reduce using rule 60 (negacion -> .)
+    NEGRO           shift and go to state 79
+    GRIS            shift and go to state 75
+    AZUL            shift and go to state 82
+    AMARILLO        shift and go to state 80
+    VERDE           shift and go to state 83
+    ROJO            shift and go to state 81
+
+    expresion                      shift and go to state 139
+    negacion                       shift and go to state 76
+    color                          shift and go to state 78
+
+state 110
+
+    (108) ovalo -> INSERTAOVALO PARENIZQUIERDO . args PARENDERECHO PUNTOYCOMA
+    (101) args -> . expresion args2
+    (69) expresion -> . negacion exp expresionaux
+    (70) expresion -> . color
+    (59) negacion -> . NO
+    (60) negacion -> .
+    (86) color -> . NEGRO
+    (87) color -> . GRIS
+    (88) color -> . AZUL
+    (89) color -> . AMARILLO
+    (90) color -> . VERDE
+    (91) color -> . ROJO
+
+    NO              shift and go to state 77
+    PARENIZQUIERDO  reduce using rule 60 (negacion -> .)
+    CENTERO         reduce using rule 60 (negacion -> .)
+    CFLOTANTE       reduce using rule 60 (negacion -> .)
+    CCADENA         reduce using rule 60 (negacion -> .)
+    CCARACTER       reduce using rule 60 (negacion -> .)
+    VERDADERO       reduce using rule 60 (negacion -> .)
+    FALSO           reduce using rule 60 (negacion -> .)
+    ID              reduce using rule 60 (negacion -> .)
+    NEGRO           shift and go to state 79
+    GRIS            shift and go to state 75
+    AZUL            shift and go to state 82
+    AMARILLO        shift and go to state 80
+    VERDE           shift and go to state 83
+    ROJO            shift and go to state 81
+
+    expresion                      shift and go to state 119
+    negacion                       shift and go to state 76
+    color                          shift and go to state 78
+    args                           shift and go to state 140
+
+state 111
+
+    (32) function -> FUNCION tiporegreso ID PARENIZQUIERDO functionpam . PARENDERECHO bloquefun function
+
+    PARENDERECHO    shift and go to state 141
+
+
+state 112
+
+    (28) functionpam -> VAR . tipo ID functionpam2
+    (13) tipo -> . ENTERO
+    (14) tipo -> . FLOTANTE
+    (15) tipo -> . CADENA
+    (16) tipo -> . CARACTER
+    (17) tipo -> . BOOL
+
+    ENTERO          shift and go to state 12
+    FLOTANTE        shift and go to state 11
+    CADENA          shift and go to state 9
+    CARACTER        shift and go to state 8
+    BOOL            shift and go to state 10
+
+    tipo                           shift and go to state 142
+
+state 113
+
+    (81) factor -> PARENIZQUIERDO expresion PARENDERECHO .
+
+    MULTIPLICACION  reduce using rule 81 (factor -> PARENIZQUIERDO expresion PARENDERECHO .)
+    DIVISION        reduce using rule 81 (factor -> PARENIZQUIERDO expresion PARENDERECHO .)
+    SUMA            reduce using rule 81 (factor -> PARENIZQUIERDO expresion PARENDERECHO .)
+    RESTA           reduce using rule 81 (factor -> PARENIZQUIERDO expresion PARENDERECHO .)
+    CORCHETEDER     reduce using rule 81 (factor -> PARENIZQUIERDO expresion PARENDERECHO .)
+    COMA            reduce using rule 81 (factor -> PARENIZQUIERDO expresion PARENDERECHO .)
+    PARENDERECHO    reduce using rule 81 (factor -> PARENIZQUIERDO expresion PARENDERECHO .)
+    MENORQUE        reduce using rule 81 (factor -> PARENIZQUIERDO expresion PARENDERECHO .)
+    MAYORQUE        reduce using rule 81 (factor -> PARENIZQUIERDO expresion PARENDERECHO .)
+    MAYORIGUAL      reduce using rule 81 (factor -> PARENIZQUIERDO expresion PARENDERECHO .)
+    MENORIGUAL      reduce using rule 81 (factor -> PARENIZQUIERDO expresion PARENDERECHO .)
+    IGUAL           reduce using rule 81 (factor -> PARENIZQUIERDO expresion PARENDERECHO .)
+    DIFERENTE       reduce using rule 81 (factor -> PARENIZQUIERDO expresion PARENDERECHO .)
+    CONJUNCION      reduce using rule 81 (factor -> PARENIZQUIERDO expresion PARENDERECHO .)
+    DISYUNCION      reduce using rule 81 (factor -> PARENIZQUIERDO expresion PARENDERECHO .)
+    PUNTOYCOMA      reduce using rule 81 (factor -> PARENIZQUIERDO expresion PARENDERECHO .)
+
+
+state 114
+
+    (69) expresion -> negacion exp . expresionaux
+    (71) expresionaux -> . comparacion exp
+    (72) expresionaux -> .
+    (61) comparacion -> . MENORQUE
+    (62) comparacion -> . MAYORQUE
+    (63) comparacion -> . MAYORIGUAL
+    (64) comparacion -> . MENORIGUAL
+    (65) comparacion -> . IGUAL
+    (66) comparacion -> . DIFERENTE
+    (67) comparacion -> . CONJUNCION
+    (68) comparacion -> . DISYUNCION
+
+    PARENDERECHO    reduce using rule 72 (expresionaux -> .)
+    COMA            reduce using rule 72 (expresionaux -> .)
+    MENORQUE        shift and go to state 148
+    MAYORQUE        shift and go to state 149
+    MAYORIGUAL      shift and go to state 150
+    MENORIGUAL      shift and go to state 145
+    IGUAL           shift and go to state 146
+    DIFERENTE       shift and go to state 147
+    CONJUNCION      shift and go to state 152
+    DISYUNCION      shift and go to state 143
+
+    comparacion                    shift and go to state 151
+    expresionaux                   shift and go to state 144
+
+state 115
+
+    (74) exp2 -> SUMA exp .
+
+    CORCHETEDER     reduce using rule 74 (exp2 -> SUMA exp .)
+    PARENDERECHO    reduce using rule 74 (exp2 -> SUMA exp .)
+    MENORQUE        reduce using rule 74 (exp2 -> SUMA exp .)
+    MAYORQUE        reduce using rule 74 (exp2 -> SUMA exp .)
+    MAYORIGUAL      reduce using rule 74 (exp2 -> SUMA exp .)
+    MENORIGUAL      reduce using rule 74 (exp2 -> SUMA exp .)
+    IGUAL           reduce using rule 74 (exp2 -> SUMA exp .)
+    DIFERENTE       reduce using rule 74 (exp2 -> SUMA exp .)
+    CONJUNCION      reduce using rule 74 (exp2 -> SUMA exp .)
+    DISYUNCION      reduce using rule 74 (exp2 -> SUMA exp .)
+    COMA            reduce using rule 74 (exp2 -> SUMA exp .)
+    PUNTOYCOMA      reduce using rule 74 (exp2 -> SUMA exp .)
+
+
+state 116
+
+    (75) exp2 -> RESTA exp .
+
+    CORCHETEDER     reduce using rule 75 (exp2 -> RESTA exp .)
+    PARENDERECHO    reduce using rule 75 (exp2 -> RESTA exp .)
+    MENORQUE        reduce using rule 75 (exp2 -> RESTA exp .)
+    MAYORQUE        reduce using rule 75 (exp2 -> RESTA exp .)
+    MAYORIGUAL      reduce using rule 75 (exp2 -> RESTA exp .)
+    MENORIGUAL      reduce using rule 75 (exp2 -> RESTA exp .)
+    IGUAL           reduce using rule 75 (exp2 -> RESTA exp .)
+    DIFERENTE       reduce using rule 75 (exp2 -> RESTA exp .)
+    CONJUNCION      reduce using rule 75 (exp2 -> RESTA exp .)
+    DISYUNCION      reduce using rule 75 (exp2 -> RESTA exp .)
+    COMA            reduce using rule 75 (exp2 -> RESTA exp .)
+    PUNTOYCOMA      reduce using rule 75 (exp2 -> RESTA exp .)
+
+
+state 117
+
+    (79) termino2 -> DIVISION termino .
+
+    SUMA            reduce using rule 79 (termino2 -> DIVISION termino .)
+    RESTA           reduce using rule 79 (termino2 -> DIVISION termino .)
+    CORCHETEDER     reduce using rule 79 (termino2 -> DIVISION termino .)
+    PARENDERECHO    reduce using rule 79 (termino2 -> DIVISION termino .)
+    MENORQUE        reduce using rule 79 (termino2 -> DIVISION termino .)
+    MAYORQUE        reduce using rule 79 (termino2 -> DIVISION termino .)
+    MAYORIGUAL      reduce using rule 79 (termino2 -> DIVISION termino .)
+    MENORIGUAL      reduce using rule 79 (termino2 -> DIVISION termino .)
+    IGUAL           reduce using rule 79 (termino2 -> DIVISION termino .)
+    DIFERENTE       reduce using rule 79 (termino2 -> DIVISION termino .)
+    CONJUNCION      reduce using rule 79 (termino2 -> DIVISION termino .)
+    DISYUNCION      reduce using rule 79 (termino2 -> DIVISION termino .)
+    COMA            reduce using rule 79 (termino2 -> DIVISION termino .)
+    PUNTOYCOMA      reduce using rule 79 (termino2 -> DIVISION termino .)
+
+
+state 118
+
+    (78) termino2 -> MULTIPLICACION termino .
+
+    SUMA            reduce using rule 78 (termino2 -> MULTIPLICACION termino .)
+    RESTA           reduce using rule 78 (termino2 -> MULTIPLICACION termino .)
+    CORCHETEDER     reduce using rule 78 (termino2 -> MULTIPLICACION termino .)
+    PARENDERECHO    reduce using rule 78 (termino2 -> MULTIPLICACION termino .)
+    MENORQUE        reduce using rule 78 (termino2 -> MULTIPLICACION termino .)
+    MAYORQUE        reduce using rule 78 (termino2 -> MULTIPLICACION termino .)
+    MAYORIGUAL      reduce using rule 78 (termino2 -> MULTIPLICACION termino .)
+    MENORIGUAL      reduce using rule 78 (termino2 -> MULTIPLICACION termino .)
+    IGUAL           reduce using rule 78 (termino2 -> MULTIPLICACION termino .)
+    DIFERENTE       reduce using rule 78 (termino2 -> MULTIPLICACION termino .)
+    CONJUNCION      reduce using rule 78 (termino2 -> MULTIPLICACION termino .)
+    DISYUNCION      reduce using rule 78 (termino2 -> MULTIPLICACION termino .)
+    COMA            reduce using rule 78 (termino2 -> MULTIPLICACION termino .)
+    PUNTOYCOMA      reduce using rule 78 (termino2 -> MULTIPLICACION termino .)
+
+
+state 119
+
+    (101) args -> expresion . args2
+    (102) args2 -> . COMA args
+    (103) args2 -> .
+
+    COMA            shift and go to state 153
+    PARENDERECHO    reduce using rule 103 (args2 -> .)
+
+    args2                          shift and go to state 154
+
+state 120
+
+    (109) punto -> INSERTAPUNTO PARENIZQUIERDO args . PARENDERECHO PUNTOYCOMA
+
+    PARENDERECHO    shift and go to state 155
+
+
+state 121
+
+    (44) asignacionaux -> llamada .
+
+    PUNTOYCOMA      reduce using rule 44 (asignacionaux -> llamada .)
+
+
+state 122
+
+    (34) llamada -> ID . PARENIZQUIERDO llamadapar PARENDERECHO
+    (2) cteid -> ID . cteidaux
+    (3) cteidaux -> . CORCHETEIZQ exp CORCHETEDER
+    (4) cteidaux -> . PARENIZQUIERDO exp PARENDERECHO
+    (5) cteidaux -> .
+
+    PARENIZQUIERDO  shift and go to state 156
+    CORCHETEIZQ     shift and go to state 22
+    MULTIPLICACION  reduce using rule 5 (cteidaux -> .)
+    DIVISION        reduce using rule 5 (cteidaux -> .)
+    SUMA            reduce using rule 5 (cteidaux -> .)
+    RESTA           reduce using rule 5 (cteidaux -> .)
+    PUNTOYCOMA      reduce using rule 5 (cteidaux -> .)
+
+    cteidaux                       shift and go to state 24
+
+state 123
+
+    (43) asignacionaux -> exp .
+
+    PUNTOYCOMA      reduce using rule 43 (asignacionaux -> exp .)
+
+
+state 124
+
+    (42) asignacion -> asignacionizq ASIGNACION asignacionaux . PUNTOYCOMA
+
+    PUNTOYCOMA      shift and go to state 157
+
+
+state 125
+
+    (93) escritura -> DESPLEGAR PARENIZQUIERDO escrituraaux . PARENDERECHO PUNTOYCOMA
+
+    PARENDERECHO    shift and go to state 158
+
+
+state 126
+
+    (94) escrituraaux -> exp . escritura2aux
+    (95) escritura2aux -> . COMA escrituraaux
+    (96) escritura2aux -> .
+
+    COMA            shift and go to state 159
+    PARENDERECHO    reduce using rule 96 (escritura2aux -> .)
+
+    escritura2aux                  shift and go to state 160
+
+state 127
+
+    (111) curva -> INSERTACURVA PARENIZQUIERDO args . PARENDERECHO PUNTOYCOMA
+
+    PARENDERECHO    shift and go to state 161
+
+
+state 128
+
+    (104) texto -> INSERTATEXTO PARENIZQUIERDO args . PARENDERECHO PUNTOYCOMA
+
+    PARENDERECHO    shift and go to state 162
+
+
+state 129
+
+    (105) rectangulo -> INSERTARECTANGULO PARENIZQUIERDO args . PARENDERECHO PUNTOYCOMA
+
+    PARENDERECHO    shift and go to state 163
+
+
+state 130
+
+    (107) circulo -> INSERTACIRCULO PARENIZQUIERDO args . PARENDERECHO PUNTOYCOMA
+
+    PARENDERECHO    shift and go to state 164
+
+
+state 131
+
+    (40) asignacionizqaux -> CORCHETEIZQ exp . CORCHETEDER
+
+    CORCHETEDER     shift and go to state 165
+
+
+state 132
+
+    (34) llamada -> ID PARENIZQUIERDO llamadapar . PARENDERECHO
+
+    PARENDERECHO    shift and go to state 166
+
+
+state 133
+
+    (35) llamadapar -> exp . llamadaparaux
+    (37) llamadaparaux -> . COMA llamadapar
+    (38) llamadaparaux -> .
+
+    COMA            shift and go to state 167
+    PARENDERECHO    reduce using rule 38 (llamadaparaux -> .)
+
+    llamadaparaux                  shift and go to state 168
+
+state 134
+
+    (97) ingreso -> ENTRADA PARENIZQUIERDO ingresoaux . PARENDERECHO PUNTOYCOMA
+
+    PARENDERECHO    shift and go to state 169
+
+
+state 135
+
+    (98) ingresoaux -> cteid . ingreso2aux
+    (99) ingreso2aux -> . COMA ingresoaux
+    (100) ingreso2aux -> .
+
+    COMA            shift and go to state 170
+    PARENDERECHO    reduce using rule 100 (ingreso2aux -> .)
+
+    ingreso2aux                    shift and go to state 171
+
+state 136
+
+    (106) triangulo -> INSERTATRIANGULO PARENIZQUIERDO args . PARENDERECHO PUNTOYCOMA
+
+    PARENDERECHO    shift and go to state 172
+
+
+state 137
+
+    (92) ciclo -> MIENTRAS PARENIZQUIERDO expresion . PARENDERECHO bloque
+
+    PARENDERECHO    shift and go to state 173
+
+
+state 138
+
+    (110) linea -> INSERTALINEA PARENIZQUIERDO args . PARENDERECHO PUNTOYCOMA
+
+    PARENDERECHO    shift and go to state 174
+
+
+state 139
+
+    (83) condicion -> SI PARENIZQUIERDO expresion . PARENDERECHO ENTONCES bloque condicionaux
+
+    PARENDERECHO    shift and go to state 175
+
+
+state 140
+
+    (108) ovalo -> INSERTAOVALO PARENIZQUIERDO args . PARENDERECHO PUNTOYCOMA
+
+    PARENDERECHO    shift and go to state 176
+
+
+state 141
+
+    (32) function -> FUNCION tiporegreso ID PARENIZQUIERDO functionpam PARENDERECHO . bloquefun function
+    (25) bloquefun -> . LLAVEIZQUIERDO declaracion bloqueaux regreso LLAVEDERECHO
+
+    LLAVEIZQUIERDO  shift and go to state 178
+
+    bloquefun                      shift and go to state 177
+
+state 142
+
+    (28) functionpam -> VAR tipo . ID functionpam2
+
+    ID              shift and go to state 179
+
+
+state 143
+
+    (68) comparacion -> DISYUNCION .
+
+    PARENIZQUIERDO  reduce using rule 68 (comparacion -> DISYUNCION .)
+    CENTERO         reduce using rule 68 (comparacion -> DISYUNCION .)
+    CFLOTANTE       reduce using rule 68 (comparacion -> DISYUNCION .)
+    CCADENA         reduce using rule 68 (comparacion -> DISYUNCION .)
+    CCARACTER       reduce using rule 68 (comparacion -> DISYUNCION .)
+    VERDADERO       reduce using rule 68 (comparacion -> DISYUNCION .)
+    FALSO           reduce using rule 68 (comparacion -> DISYUNCION .)
+    ID              reduce using rule 68 (comparacion -> DISYUNCION .)
+
+
+state 144
+
+    (69) expresion -> negacion exp expresionaux .
+
+    COMA            reduce using rule 69 (expresion -> negacion exp expresionaux .)
+    PARENDERECHO    reduce using rule 69 (expresion -> negacion exp expresionaux .)
+
+
+state 145
+
+    (64) comparacion -> MENORIGUAL .
+
+    PARENIZQUIERDO  reduce using rule 64 (comparacion -> MENORIGUAL .)
+    CENTERO         reduce using rule 64 (comparacion -> MENORIGUAL .)
+    CFLOTANTE       reduce using rule 64 (comparacion -> MENORIGUAL .)
+    CCADENA         reduce using rule 64 (comparacion -> MENORIGUAL .)
+    CCARACTER       reduce using rule 64 (comparacion -> MENORIGUAL .)
+    VERDADERO       reduce using rule 64 (comparacion -> MENORIGUAL .)
+    FALSO           reduce using rule 64 (comparacion -> MENORIGUAL .)
+    ID              reduce using rule 64 (comparacion -> MENORIGUAL .)
+
+
+state 146
+
+    (65) comparacion -> IGUAL .
+
+    PARENIZQUIERDO  reduce using rule 65 (comparacion -> IGUAL .)
+    CENTERO         reduce using rule 65 (comparacion -> IGUAL .)
+    CFLOTANTE       reduce using rule 65 (comparacion -> IGUAL .)
+    CCADENA         reduce using rule 65 (comparacion -> IGUAL .)
+    CCARACTER       reduce using rule 65 (comparacion -> IGUAL .)
+    VERDADERO       reduce using rule 65 (comparacion -> IGUAL .)
+    FALSO           reduce using rule 65 (comparacion -> IGUAL .)
+    ID              reduce using rule 65 (comparacion -> IGUAL .)
+
+
+state 147
+
+    (66) comparacion -> DIFERENTE .
+
+    PARENIZQUIERDO  reduce using rule 66 (comparacion -> DIFERENTE .)
+    CENTERO         reduce using rule 66 (comparacion -> DIFERENTE .)
+    CFLOTANTE       reduce using rule 66 (comparacion -> DIFERENTE .)
+    CCADENA         reduce using rule 66 (comparacion -> DIFERENTE .)
+    CCARACTER       reduce using rule 66 (comparacion -> DIFERENTE .)
+    VERDADERO       reduce using rule 66 (comparacion -> DIFERENTE .)
+    FALSO           reduce using rule 66 (comparacion -> DIFERENTE .)
+    ID              reduce using rule 66 (comparacion -> DIFERENTE .)
+
+
+state 148
+
+    (61) comparacion -> MENORQUE .
+
+    PARENIZQUIERDO  reduce using rule 61 (comparacion -> MENORQUE .)
+    CENTERO         reduce using rule 61 (comparacion -> MENORQUE .)
+    CFLOTANTE       reduce using rule 61 (comparacion -> MENORQUE .)
+    CCADENA         reduce using rule 61 (comparacion -> MENORQUE .)
+    CCARACTER       reduce using rule 61 (comparacion -> MENORQUE .)
+    VERDADERO       reduce using rule 61 (comparacion -> MENORQUE .)
+    FALSO           reduce using rule 61 (comparacion -> MENORQUE .)
+    ID              reduce using rule 61 (comparacion -> MENORQUE .)
+
+
+state 149
+
+    (62) comparacion -> MAYORQUE .
+
+    PARENIZQUIERDO  reduce using rule 62 (comparacion -> MAYORQUE .)
+    CENTERO         reduce using rule 62 (comparacion -> MAYORQUE .)
+    CFLOTANTE       reduce using rule 62 (comparacion -> MAYORQUE .)
+    CCADENA         reduce using rule 62 (comparacion -> MAYORQUE .)
+    CCARACTER       reduce using rule 62 (comparacion -> MAYORQUE .)
+    VERDADERO       reduce using rule 62 (comparacion -> MAYORQUE .)
+    FALSO           reduce using rule 62 (comparacion -> MAYORQUE .)
+    ID              reduce using rule 62 (comparacion -> MAYORQUE .)
+
+
+state 150
+
+    (63) comparacion -> MAYORIGUAL .
+
+    PARENIZQUIERDO  reduce using rule 63 (comparacion -> MAYORIGUAL .)
+    CENTERO         reduce using rule 63 (comparacion -> MAYORIGUAL .)
+    CFLOTANTE       reduce using rule 63 (comparacion -> MAYORIGUAL .)
+    CCADENA         reduce using rule 63 (comparacion -> MAYORIGUAL .)
+    CCARACTER       reduce using rule 63 (comparacion -> MAYORIGUAL .)
+    VERDADERO       reduce using rule 63 (comparacion -> MAYORIGUAL .)
+    FALSO           reduce using rule 63 (comparacion -> MAYORIGUAL .)
+    ID              reduce using rule 63 (comparacion -> MAYORIGUAL .)
+
+
+state 151
+
+    (71) expresionaux -> comparacion . exp
+    (73) exp -> . termino exp2
+    (77) termino -> . factor termino2
+    (81) factor -> . PARENIZQUIERDO expresion PARENDERECHO
+    (82) factor -> . cte
+    (6) cte -> . cteid
+    (7) cte -> . CENTERO
+    (8) cte -> . CFLOTANTE
+    (9) cte -> . CCADENA
+    (10) cte -> . CCARACTER
+    (11) cte -> . VERDADERO
+    (12) cte -> . FALSO
+    (2) cteid -> . ID cteidaux
+
+    PARENIZQUIERDO  shift and go to state 30
+    CENTERO         shift and go to state 31
+    CFLOTANTE       shift and go to state 40
+    CCADENA         shift and go to state 32
+    CCARACTER       shift and go to state 29
+    VERDADERO       shift and go to state 38
+    FALSO           shift and go to state 33
+    ID              shift and go to state 16
+
+    cte                            shift and go to state 34
+    termino                        shift and go to state 35
+    exp                            shift and go to state 180
+    factor                         shift and go to state 37
+    cteid                          shift and go to state 39
+
+state 152
+
+    (67) comparacion -> CONJUNCION .
+
+    PARENIZQUIERDO  reduce using rule 67 (comparacion -> CONJUNCION .)
+    CENTERO         reduce using rule 67 (comparacion -> CONJUNCION .)
+    CFLOTANTE       reduce using rule 67 (comparacion -> CONJUNCION .)
+    CCADENA         reduce using rule 67 (comparacion -> CONJUNCION .)
+    CCARACTER       reduce using rule 67 (comparacion -> CONJUNCION .)
+    VERDADERO       reduce using rule 67 (comparacion -> CONJUNCION .)
+    FALSO           reduce using rule 67 (comparacion -> CONJUNCION .)
+    ID              reduce using rule 67 (comparacion -> CONJUNCION .)
+
+
+state 153
+
+    (102) args2 -> COMA . args
+    (101) args -> . expresion args2
+    (69) expresion -> . negacion exp expresionaux
+    (70) expresion -> . color
+    (59) negacion -> . NO
+    (60) negacion -> .
+    (86) color -> . NEGRO
+    (87) color -> . GRIS
+    (88) color -> . AZUL
+    (89) color -> . AMARILLO
+    (90) color -> . VERDE
+    (91) color -> . ROJO
+
+    NO              shift and go to state 77
+    PARENIZQUIERDO  reduce using rule 60 (negacion -> .)
+    CENTERO         reduce using rule 60 (negacion -> .)
+    CFLOTANTE       reduce using rule 60 (negacion -> .)
+    CCADENA         reduce using rule 60 (negacion -> .)
+    CCARACTER       reduce using rule 60 (negacion -> .)
+    VERDADERO       reduce using rule 60 (negacion -> .)
+    FALSO           reduce using rule 60 (negacion -> .)
+    ID              reduce using rule 60 (negacion -> .)
+    NEGRO           shift and go to state 79
+    GRIS            shift and go to state 75
+    AZUL            shift and go to state 82
+    AMARILLO        shift and go to state 80
+    VERDE           shift and go to state 83
+    ROJO            shift and go to state 81
+
+    expresion                      shift and go to state 119
+    negacion                       shift and go to state 76
+    color                          shift and go to state 78
+    args                           shift and go to state 181
+
+state 154
+
+    (101) args -> expresion args2 .
+
+    PARENDERECHO    reduce using rule 101 (args -> expresion args2 .)
+
+
+state 155
+
+    (109) punto -> INSERTAPUNTO PARENIZQUIERDO args PARENDERECHO . PUNTOYCOMA
+
+    PUNTOYCOMA      shift and go to state 182
+
+
+state 156
+
+    (34) llamada -> ID PARENIZQUIERDO . llamadapar PARENDERECHO
+    (4) cteidaux -> PARENIZQUIERDO . exp PARENDERECHO
+    (35) llamadapar -> . exp llamadaparaux
+    (36) llamadapar -> .
+    (73) exp -> . termino exp2
+    (77) termino -> . factor termino2
+    (81) factor -> . PARENIZQUIERDO expresion PARENDERECHO
+    (82) factor -> . cte
+    (6) cte -> . cteid
+    (7) cte -> . CENTERO
+    (8) cte -> . CFLOTANTE
+    (9) cte -> . CCADENA
+    (10) cte -> . CCARACTER
+    (11) cte -> . VERDADERO
+    (12) cte -> . FALSO
+    (2) cteid -> . ID cteidaux
+
+    PARENDERECHO    reduce using rule 36 (llamadapar -> .)
+    PARENIZQUIERDO  shift and go to state 30
+    CENTERO         shift and go to state 31
+    CFLOTANTE       shift and go to state 40
+    CCADENA         shift and go to state 32
+    CCARACTER       shift and go to state 29
+    VERDADERO       shift and go to state 38
+    FALSO           shift and go to state 33
+    ID              shift and go to state 16
+
+    cte                            shift and go to state 34
+    termino                        shift and go to state 35
+    exp                            shift and go to state 183
+    factor                         shift and go to state 37
+    cteid                          shift and go to state 39
+    llamadapar                     shift and go to state 132
+
+state 157
+
+    (42) asignacion -> asignacionizq ASIGNACION asignacionaux PUNTOYCOMA .
+
+    ENTRADA         reduce using rule 42 (asignacion -> asignacionizq ASIGNACION asignacionaux PUNTOYCOMA .)
+    DESPLEGAR       reduce using rule 42 (asignacion -> asignacionizq ASIGNACION asignacionaux PUNTOYCOMA .)
+    INSERTATEXTO    reduce using rule 42 (asignacion -> asignacionizq ASIGNACION asignacionaux PUNTOYCOMA .)
+    INSERTARECTANGULO reduce using rule 42 (asignacion -> asignacionizq ASIGNACION asignacionaux PUNTOYCOMA .)
+    INSERTACIRCULO  reduce using rule 42 (asignacion -> asignacionizq ASIGNACION asignacionaux PUNTOYCOMA .)
+    INSERTAOVALO    reduce using rule 42 (asignacion -> asignacionizq ASIGNACION asignacionaux PUNTOYCOMA .)
+    INSERTATRIANGULO reduce using rule 42 (asignacion -> asignacionizq ASIGNACION asignacionaux PUNTOYCOMA .)
+    INSERTAPUNTO    reduce using rule 42 (asignacion -> asignacionizq ASIGNACION asignacionaux PUNTOYCOMA .)
+    INSERTALINEA    reduce using rule 42 (asignacion -> asignacionizq ASIGNACION asignacionaux PUNTOYCOMA .)
+    INSERTACURVA    reduce using rule 42 (asignacion -> asignacionizq ASIGNACION asignacionaux PUNTOYCOMA .)
+    ID              reduce using rule 42 (asignacion -> asignacionizq ASIGNACION asignacionaux PUNTOYCOMA .)
+    SI              reduce using rule 42 (asignacion -> asignacionizq ASIGNACION asignacionaux PUNTOYCOMA .)
+    MIENTRAS        reduce using rule 42 (asignacion -> asignacionizq ASIGNACION asignacionaux PUNTOYCOMA .)
+    REGRESAR        reduce using rule 42 (asignacion -> asignacionizq ASIGNACION asignacionaux PUNTOYCOMA .)
+    LLAVEDERECHO    reduce using rule 42 (asignacion -> asignacionizq ASIGNACION asignacionaux PUNTOYCOMA .)
+
+
+state 158
+
+    (93) escritura -> DESPLEGAR PARENIZQUIERDO escrituraaux PARENDERECHO . PUNTOYCOMA
+
+    PUNTOYCOMA      shift and go to state 184
+
+
+state 159
+
+    (95) escritura2aux -> COMA . escrituraaux
+    (94) escrituraaux -> . exp escritura2aux
+    (73) exp -> . termino exp2
+    (77) termino -> . factor termino2
+    (81) factor -> . PARENIZQUIERDO expresion PARENDERECHO
+    (82) factor -> . cte
+    (6) cte -> . cteid
+    (7) cte -> . CENTERO
+    (8) cte -> . CFLOTANTE
+    (9) cte -> . CCADENA
+    (10) cte -> . CCARACTER
+    (11) cte -> . VERDADERO
+    (12) cte -> . FALSO
+    (2) cteid -> . ID cteidaux
+
+    PARENIZQUIERDO  shift and go to state 30
+    CENTERO         shift and go to state 31
+    CFLOTANTE       shift and go to state 40
+    CCADENA         shift and go to state 32
+    CCARACTER       shift and go to state 29
+    VERDADERO       shift and go to state 38
+    FALSO           shift and go to state 33
+    ID              shift and go to state 16
+
+    escrituraaux                   shift and go to state 185
+    cte                            shift and go to state 34
+    termino                        shift and go to state 35
+    exp                            shift and go to state 126
+    factor                         shift and go to state 37
+    cteid                          shift and go to state 39
+
+state 160
+
+    (94) escrituraaux -> exp escritura2aux .
+
+    PARENDERECHO    reduce using rule 94 (escrituraaux -> exp escritura2aux .)
+
+
+state 161
+
+    (111) curva -> INSERTACURVA PARENIZQUIERDO args PARENDERECHO . PUNTOYCOMA
+
+    PUNTOYCOMA      shift and go to state 186
+
+
+state 162
+
+    (104) texto -> INSERTATEXTO PARENIZQUIERDO args PARENDERECHO . PUNTOYCOMA
+
+    PUNTOYCOMA      shift and go to state 187
+
+
+state 163
+
+    (105) rectangulo -> INSERTARECTANGULO PARENIZQUIERDO args PARENDERECHO . PUNTOYCOMA
+
+    PUNTOYCOMA      shift and go to state 188
+
+
+state 164
+
+    (107) circulo -> INSERTACIRCULO PARENIZQUIERDO args PARENDERECHO . PUNTOYCOMA
+
+    PUNTOYCOMA      shift and go to state 189
+
+
+state 165
+
+    (40) asignacionizqaux -> CORCHETEIZQ exp CORCHETEDER .
+
+    ASIGNACION      reduce using rule 40 (asignacionizqaux -> CORCHETEIZQ exp CORCHETEDER .)
+
+
+state 166
+
+    (34) llamada -> ID PARENIZQUIERDO llamadapar PARENDERECHO .
+
+    PUNTOYCOMA      reduce using rule 34 (llamada -> ID PARENIZQUIERDO llamadapar PARENDERECHO .)
+
+
+state 167
+
+    (37) llamadaparaux -> COMA . llamadapar
+    (35) llamadapar -> . exp llamadaparaux
+    (36) llamadapar -> .
+    (73) exp -> . termino exp2
+    (77) termino -> . factor termino2
+    (81) factor -> . PARENIZQUIERDO expresion PARENDERECHO
+    (82) factor -> . cte
+    (6) cte -> . cteid
+    (7) cte -> . CENTERO
+    (8) cte -> . CFLOTANTE
+    (9) cte -> . CCADENA
+    (10) cte -> . CCARACTER
+    (11) cte -> . VERDADERO
+    (12) cte -> . FALSO
+    (2) cteid -> . ID cteidaux
+
+    PARENDERECHO    reduce using rule 36 (llamadapar -> .)
+    PARENIZQUIERDO  shift and go to state 30
+    CENTERO         shift and go to state 31
+    CFLOTANTE       shift and go to state 40
+    CCADENA         shift and go to state 32
+    CCARACTER       shift and go to state 29
+    VERDADERO       shift and go to state 38
+    FALSO           shift and go to state 33
+    ID              shift and go to state 16
+
+    cte                            shift and go to state 34
+    termino                        shift and go to state 35
+    exp                            shift and go to state 133
+    factor                         shift and go to state 37
+    cteid                          shift and go to state 39
+    llamadapar                     shift and go to state 190
+
+state 168
+
+    (35) llamadapar -> exp llamadaparaux .
+
+    PARENDERECHO    reduce using rule 35 (llamadapar -> exp llamadaparaux .)
+
+
+state 169
+
+    (97) ingreso -> ENTRADA PARENIZQUIERDO ingresoaux PARENDERECHO . PUNTOYCOMA
+
+    PUNTOYCOMA      shift and go to state 191
+
+
+state 170
+
+    (99) ingreso2aux -> COMA . ingresoaux
+    (98) ingresoaux -> . cteid ingreso2aux
+    (2) cteid -> . ID cteidaux
+
+    ID              shift and go to state 16
+
+    ingresoaux                     shift and go to state 192
+    cteid                          shift and go to state 135
+
+state 171
+
+    (98) ingresoaux -> cteid ingreso2aux .
+
+    PARENDERECHO    reduce using rule 98 (ingresoaux -> cteid ingreso2aux .)
+
+
+state 172
+
+    (106) triangulo -> INSERTATRIANGULO PARENIZQUIERDO args PARENDERECHO . PUNTOYCOMA
+
+    PUNTOYCOMA      shift and go to state 193
+
+
+state 173
+
+    (92) ciclo -> MIENTRAS PARENIZQUIERDO expresion PARENDERECHO . bloque
+    (22) bloque -> . LLAVEIZQUIERDO bloqueaux LLAVEDERECHO
+
+    LLAVEIZQUIERDO  shift and go to state 25
+
+    bloque                         shift and go to state 194
+
+state 174
+
+    (110) linea -> INSERTALINEA PARENIZQUIERDO args PARENDERECHO . PUNTOYCOMA
+
+    PUNTOYCOMA      shift and go to state 195
+
+
+state 175
+
+    (83) condicion -> SI PARENIZQUIERDO expresion PARENDERECHO . ENTONCES bloque condicionaux
+
+    ENTONCES        shift and go to state 196
+
+
+state 176
+
+    (108) ovalo -> INSERTAOVALO PARENIZQUIERDO args PARENDERECHO . PUNTOYCOMA
+
+    PUNTOYCOMA      shift and go to state 197
+
+
+state 177
+
+    (32) function -> FUNCION tiporegreso ID PARENIZQUIERDO functionpam PARENDERECHO bloquefun . function
+    (32) function -> . FUNCION tiporegreso ID PARENIZQUIERDO functionpam PARENDERECHO bloquefun function
+    (33) function -> .
+
+    FUNCION         shift and go to state 14
+    INICIO          reduce using rule 33 (function -> .)
+
+    function                       shift and go to state 198
+
+state 178
+
+    (25) bloquefun -> LLAVEIZQUIERDO . declaracion bloqueaux regreso LLAVEDERECHO
+    (18) declaracion -> . VAR tipo cteid PUNTOYCOMA declaracion
+    (19) declaracion -> .
+
+    VAR             shift and go to state 5
+    ENTRADA         reduce using rule 19 (declaracion -> .)
+    DESPLEGAR       reduce using rule 19 (declaracion -> .)
+    INSERTATEXTO    reduce using rule 19 (declaracion -> .)
+    INSERTARECTANGULO reduce using rule 19 (declaracion -> .)
+    INSERTACIRCULO  reduce using rule 19 (declaracion -> .)
+    INSERTAOVALO    reduce using rule 19 (declaracion -> .)
+    INSERTATRIANGULO reduce using rule 19 (declaracion -> .)
+    INSERTAPUNTO    reduce using rule 19 (declaracion -> .)
+    INSERTALINEA    reduce using rule 19 (declaracion -> .)
+    INSERTACURVA    reduce using rule 19 (declaracion -> .)
+    ID              reduce using rule 19 (declaracion -> .)
+    SI              reduce using rule 19 (declaracion -> .)
+    MIENTRAS        reduce using rule 19 (declaracion -> .)
+    REGRESAR        reduce using rule 19 (declaracion -> .)
+    LLAVEDERECHO    reduce using rule 19 (declaracion -> .)
+
+    declaracion                    shift and go to state 199
+
+state 179
+
+    (28) functionpam -> VAR tipo ID . functionpam2
+    (30) functionpam2 -> . COMA functionpam
+    (31) functionpam2 -> .
+
+    COMA            shift and go to state 201
+    PARENDERECHO    reduce using rule 31 (functionpam2 -> .)
+
+    functionpam2                   shift and go to state 200
+
+state 180
+
+    (71) expresionaux -> comparacion exp .
+
+    PARENDERECHO    reduce using rule 71 (expresionaux -> comparacion exp .)
+    COMA            reduce using rule 71 (expresionaux -> comparacion exp .)
+
+
+state 181
+
+    (102) args2 -> COMA args .
+
+    PARENDERECHO    reduce using rule 102 (args2 -> COMA args .)
+
+
+state 182
+
+    (109) punto -> INSERTAPUNTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .
+
+    ENTRADA         reduce using rule 109 (punto -> INSERTAPUNTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    DESPLEGAR       reduce using rule 109 (punto -> INSERTAPUNTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTATEXTO    reduce using rule 109 (punto -> INSERTAPUNTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTARECTANGULO reduce using rule 109 (punto -> INSERTAPUNTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTACIRCULO  reduce using rule 109 (punto -> INSERTAPUNTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTAOVALO    reduce using rule 109 (punto -> INSERTAPUNTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTATRIANGULO reduce using rule 109 (punto -> INSERTAPUNTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTAPUNTO    reduce using rule 109 (punto -> INSERTAPUNTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTALINEA    reduce using rule 109 (punto -> INSERTAPUNTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTACURVA    reduce using rule 109 (punto -> INSERTAPUNTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    ID              reduce using rule 109 (punto -> INSERTAPUNTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    SI              reduce using rule 109 (punto -> INSERTAPUNTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    MIENTRAS        reduce using rule 109 (punto -> INSERTAPUNTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    REGRESAR        reduce using rule 109 (punto -> INSERTAPUNTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    LLAVEDERECHO    reduce using rule 109 (punto -> INSERTAPUNTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+
+
+state 183
+
+    (4) cteidaux -> PARENIZQUIERDO exp . PARENDERECHO
+    (35) llamadapar -> exp . llamadaparaux
+    (37) llamadaparaux -> . COMA llamadapar
+    (38) llamadaparaux -> .
+
+  ! shift/reduce conflict for PARENDERECHO resolved as shift
+    PARENDERECHO    shift and go to state 91
+    COMA            shift and go to state 167
+
+  ! PARENDERECHO    [ reduce using rule 38 (llamadaparaux -> .) ]
+
+    llamadaparaux                  shift and go to state 168
+
+state 184
+
+    (93) escritura -> DESPLEGAR PARENIZQUIERDO escrituraaux PARENDERECHO PUNTOYCOMA .
+
+    ENTRADA         reduce using rule 93 (escritura -> DESPLEGAR PARENIZQUIERDO escrituraaux PARENDERECHO PUNTOYCOMA .)
+    DESPLEGAR       reduce using rule 93 (escritura -> DESPLEGAR PARENIZQUIERDO escrituraaux PARENDERECHO PUNTOYCOMA .)
+    INSERTATEXTO    reduce using rule 93 (escritura -> DESPLEGAR PARENIZQUIERDO escrituraaux PARENDERECHO PUNTOYCOMA .)
+    INSERTARECTANGULO reduce using rule 93 (escritura -> DESPLEGAR PARENIZQUIERDO escrituraaux PARENDERECHO PUNTOYCOMA .)
+    INSERTACIRCULO  reduce using rule 93 (escritura -> DESPLEGAR PARENIZQUIERDO escrituraaux PARENDERECHO PUNTOYCOMA .)
+    INSERTAOVALO    reduce using rule 93 (escritura -> DESPLEGAR PARENIZQUIERDO escrituraaux PARENDERECHO PUNTOYCOMA .)
+    INSERTATRIANGULO reduce using rule 93 (escritura -> DESPLEGAR PARENIZQUIERDO escrituraaux PARENDERECHO PUNTOYCOMA .)
+    INSERTAPUNTO    reduce using rule 93 (escritura -> DESPLEGAR PARENIZQUIERDO escrituraaux PARENDERECHO PUNTOYCOMA .)
+    INSERTALINEA    reduce using rule 93 (escritura -> DESPLEGAR PARENIZQUIERDO escrituraaux PARENDERECHO PUNTOYCOMA .)
+    INSERTACURVA    reduce using rule 93 (escritura -> DESPLEGAR PARENIZQUIERDO escrituraaux PARENDERECHO PUNTOYCOMA .)
+    ID              reduce using rule 93 (escritura -> DESPLEGAR PARENIZQUIERDO escrituraaux PARENDERECHO PUNTOYCOMA .)
+    SI              reduce using rule 93 (escritura -> DESPLEGAR PARENIZQUIERDO escrituraaux PARENDERECHO PUNTOYCOMA .)
+    MIENTRAS        reduce using rule 93 (escritura -> DESPLEGAR PARENIZQUIERDO escrituraaux PARENDERECHO PUNTOYCOMA .)
+    REGRESAR        reduce using rule 93 (escritura -> DESPLEGAR PARENIZQUIERDO escrituraaux PARENDERECHO PUNTOYCOMA .)
+    LLAVEDERECHO    reduce using rule 93 (escritura -> DESPLEGAR PARENIZQUIERDO escrituraaux PARENDERECHO PUNTOYCOMA .)
+
+
+state 185
+
+    (95) escritura2aux -> COMA escrituraaux .
+
+    PARENDERECHO    reduce using rule 95 (escritura2aux -> COMA escrituraaux .)
+
+
+state 186
+
+    (111) curva -> INSERTACURVA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .
+
+    ENTRADA         reduce using rule 111 (curva -> INSERTACURVA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    DESPLEGAR       reduce using rule 111 (curva -> INSERTACURVA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTATEXTO    reduce using rule 111 (curva -> INSERTACURVA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTARECTANGULO reduce using rule 111 (curva -> INSERTACURVA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTACIRCULO  reduce using rule 111 (curva -> INSERTACURVA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTAOVALO    reduce using rule 111 (curva -> INSERTACURVA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTATRIANGULO reduce using rule 111 (curva -> INSERTACURVA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTAPUNTO    reduce using rule 111 (curva -> INSERTACURVA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTALINEA    reduce using rule 111 (curva -> INSERTACURVA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTACURVA    reduce using rule 111 (curva -> INSERTACURVA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    ID              reduce using rule 111 (curva -> INSERTACURVA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    SI              reduce using rule 111 (curva -> INSERTACURVA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    MIENTRAS        reduce using rule 111 (curva -> INSERTACURVA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    LLAVEDERECHO    reduce using rule 111 (curva -> INSERTACURVA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    REGRESAR        reduce using rule 111 (curva -> INSERTACURVA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+
+
+state 187
+
+    (104) texto -> INSERTATEXTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .
+
+    ENTRADA         reduce using rule 104 (texto -> INSERTATEXTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    DESPLEGAR       reduce using rule 104 (texto -> INSERTATEXTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTATEXTO    reduce using rule 104 (texto -> INSERTATEXTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTARECTANGULO reduce using rule 104 (texto -> INSERTATEXTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTACIRCULO  reduce using rule 104 (texto -> INSERTATEXTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTAOVALO    reduce using rule 104 (texto -> INSERTATEXTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTATRIANGULO reduce using rule 104 (texto -> INSERTATEXTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTAPUNTO    reduce using rule 104 (texto -> INSERTATEXTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTALINEA    reduce using rule 104 (texto -> INSERTATEXTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTACURVA    reduce using rule 104 (texto -> INSERTATEXTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    ID              reduce using rule 104 (texto -> INSERTATEXTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    SI              reduce using rule 104 (texto -> INSERTATEXTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    MIENTRAS        reduce using rule 104 (texto -> INSERTATEXTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    LLAVEDERECHO    reduce using rule 104 (texto -> INSERTATEXTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    REGRESAR        reduce using rule 104 (texto -> INSERTATEXTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+
+
+state 188
+
+    (105) rectangulo -> INSERTARECTANGULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .
+
+    ENTRADA         reduce using rule 105 (rectangulo -> INSERTARECTANGULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    DESPLEGAR       reduce using rule 105 (rectangulo -> INSERTARECTANGULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTATEXTO    reduce using rule 105 (rectangulo -> INSERTARECTANGULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTARECTANGULO reduce using rule 105 (rectangulo -> INSERTARECTANGULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTACIRCULO  reduce using rule 105 (rectangulo -> INSERTARECTANGULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTAOVALO    reduce using rule 105 (rectangulo -> INSERTARECTANGULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTATRIANGULO reduce using rule 105 (rectangulo -> INSERTARECTANGULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTAPUNTO    reduce using rule 105 (rectangulo -> INSERTARECTANGULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTALINEA    reduce using rule 105 (rectangulo -> INSERTARECTANGULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTACURVA    reduce using rule 105 (rectangulo -> INSERTARECTANGULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    ID              reduce using rule 105 (rectangulo -> INSERTARECTANGULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    SI              reduce using rule 105 (rectangulo -> INSERTARECTANGULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    MIENTRAS        reduce using rule 105 (rectangulo -> INSERTARECTANGULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    LLAVEDERECHO    reduce using rule 105 (rectangulo -> INSERTARECTANGULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    REGRESAR        reduce using rule 105 (rectangulo -> INSERTARECTANGULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+
+
+state 189
+
+    (107) circulo -> INSERTACIRCULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .
+
+    ENTRADA         reduce using rule 107 (circulo -> INSERTACIRCULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    DESPLEGAR       reduce using rule 107 (circulo -> INSERTACIRCULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTATEXTO    reduce using rule 107 (circulo -> INSERTACIRCULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTARECTANGULO reduce using rule 107 (circulo -> INSERTACIRCULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTACIRCULO  reduce using rule 107 (circulo -> INSERTACIRCULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTAOVALO    reduce using rule 107 (circulo -> INSERTACIRCULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTATRIANGULO reduce using rule 107 (circulo -> INSERTACIRCULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTAPUNTO    reduce using rule 107 (circulo -> INSERTACIRCULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTALINEA    reduce using rule 107 (circulo -> INSERTACIRCULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTACURVA    reduce using rule 107 (circulo -> INSERTACIRCULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    ID              reduce using rule 107 (circulo -> INSERTACIRCULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    SI              reduce using rule 107 (circulo -> INSERTACIRCULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    MIENTRAS        reduce using rule 107 (circulo -> INSERTACIRCULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    LLAVEDERECHO    reduce using rule 107 (circulo -> INSERTACIRCULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    REGRESAR        reduce using rule 107 (circulo -> INSERTACIRCULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+
+
+state 190
+
+    (37) llamadaparaux -> COMA llamadapar .
+
+    PARENDERECHO    reduce using rule 37 (llamadaparaux -> COMA llamadapar .)
+
+
+state 191
+
+    (97) ingreso -> ENTRADA PARENIZQUIERDO ingresoaux PARENDERECHO PUNTOYCOMA .
+
+    ENTRADA         reduce using rule 97 (ingreso -> ENTRADA PARENIZQUIERDO ingresoaux PARENDERECHO PUNTOYCOMA .)
+    DESPLEGAR       reduce using rule 97 (ingreso -> ENTRADA PARENIZQUIERDO ingresoaux PARENDERECHO PUNTOYCOMA .)
+    INSERTATEXTO    reduce using rule 97 (ingreso -> ENTRADA PARENIZQUIERDO ingresoaux PARENDERECHO PUNTOYCOMA .)
+    INSERTARECTANGULO reduce using rule 97 (ingreso -> ENTRADA PARENIZQUIERDO ingresoaux PARENDERECHO PUNTOYCOMA .)
+    INSERTACIRCULO  reduce using rule 97 (ingreso -> ENTRADA PARENIZQUIERDO ingresoaux PARENDERECHO PUNTOYCOMA .)
+    INSERTAOVALO    reduce using rule 97 (ingreso -> ENTRADA PARENIZQUIERDO ingresoaux PARENDERECHO PUNTOYCOMA .)
+    INSERTATRIANGULO reduce using rule 97 (ingreso -> ENTRADA PARENIZQUIERDO ingresoaux PARENDERECHO PUNTOYCOMA .)
+    INSERTAPUNTO    reduce using rule 97 (ingreso -> ENTRADA PARENIZQUIERDO ingresoaux PARENDERECHO PUNTOYCOMA .)
+    INSERTALINEA    reduce using rule 97 (ingreso -> ENTRADA PARENIZQUIERDO ingresoaux PARENDERECHO PUNTOYCOMA .)
+    INSERTACURVA    reduce using rule 97 (ingreso -> ENTRADA PARENIZQUIERDO ingresoaux PARENDERECHO PUNTOYCOMA .)
+    ID              reduce using rule 97 (ingreso -> ENTRADA PARENIZQUIERDO ingresoaux PARENDERECHO PUNTOYCOMA .)
+    SI              reduce using rule 97 (ingreso -> ENTRADA PARENIZQUIERDO ingresoaux PARENDERECHO PUNTOYCOMA .)
+    MIENTRAS        reduce using rule 97 (ingreso -> ENTRADA PARENIZQUIERDO ingresoaux PARENDERECHO PUNTOYCOMA .)
+    LLAVEDERECHO    reduce using rule 97 (ingreso -> ENTRADA PARENIZQUIERDO ingresoaux PARENDERECHO PUNTOYCOMA .)
+    REGRESAR        reduce using rule 97 (ingreso -> ENTRADA PARENIZQUIERDO ingresoaux PARENDERECHO PUNTOYCOMA .)
+
+
+state 192
+
+    (99) ingreso2aux -> COMA ingresoaux .
+
+    PARENDERECHO    reduce using rule 99 (ingreso2aux -> COMA ingresoaux .)
+
+
+state 193
+
+    (106) triangulo -> INSERTATRIANGULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .
+
+    ENTRADA         reduce using rule 106 (triangulo -> INSERTATRIANGULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    DESPLEGAR       reduce using rule 106 (triangulo -> INSERTATRIANGULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTATEXTO    reduce using rule 106 (triangulo -> INSERTATRIANGULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTARECTANGULO reduce using rule 106 (triangulo -> INSERTATRIANGULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTACIRCULO  reduce using rule 106 (triangulo -> INSERTATRIANGULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTAOVALO    reduce using rule 106 (triangulo -> INSERTATRIANGULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTATRIANGULO reduce using rule 106 (triangulo -> INSERTATRIANGULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTAPUNTO    reduce using rule 106 (triangulo -> INSERTATRIANGULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTALINEA    reduce using rule 106 (triangulo -> INSERTATRIANGULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTACURVA    reduce using rule 106 (triangulo -> INSERTATRIANGULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    ID              reduce using rule 106 (triangulo -> INSERTATRIANGULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    SI              reduce using rule 106 (triangulo -> INSERTATRIANGULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    MIENTRAS        reduce using rule 106 (triangulo -> INSERTATRIANGULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    LLAVEDERECHO    reduce using rule 106 (triangulo -> INSERTATRIANGULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    REGRESAR        reduce using rule 106 (triangulo -> INSERTATRIANGULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+
+
+state 194
+
+    (92) ciclo -> MIENTRAS PARENIZQUIERDO expresion PARENDERECHO bloque .
+
+    ENTRADA         reduce using rule 92 (ciclo -> MIENTRAS PARENIZQUIERDO expresion PARENDERECHO bloque .)
+    DESPLEGAR       reduce using rule 92 (ciclo -> MIENTRAS PARENIZQUIERDO expresion PARENDERECHO bloque .)
+    INSERTATEXTO    reduce using rule 92 (ciclo -> MIENTRAS PARENIZQUIERDO expresion PARENDERECHO bloque .)
+    INSERTARECTANGULO reduce using rule 92 (ciclo -> MIENTRAS PARENIZQUIERDO expresion PARENDERECHO bloque .)
+    INSERTACIRCULO  reduce using rule 92 (ciclo -> MIENTRAS PARENIZQUIERDO expresion PARENDERECHO bloque .)
+    INSERTAOVALO    reduce using rule 92 (ciclo -> MIENTRAS PARENIZQUIERDO expresion PARENDERECHO bloque .)
+    INSERTATRIANGULO reduce using rule 92 (ciclo -> MIENTRAS PARENIZQUIERDO expresion PARENDERECHO bloque .)
+    INSERTAPUNTO    reduce using rule 92 (ciclo -> MIENTRAS PARENIZQUIERDO expresion PARENDERECHO bloque .)
+    INSERTALINEA    reduce using rule 92 (ciclo -> MIENTRAS PARENIZQUIERDO expresion PARENDERECHO bloque .)
+    INSERTACURVA    reduce using rule 92 (ciclo -> MIENTRAS PARENIZQUIERDO expresion PARENDERECHO bloque .)
+    ID              reduce using rule 92 (ciclo -> MIENTRAS PARENIZQUIERDO expresion PARENDERECHO bloque .)
+    SI              reduce using rule 92 (ciclo -> MIENTRAS PARENIZQUIERDO expresion PARENDERECHO bloque .)
+    MIENTRAS        reduce using rule 92 (ciclo -> MIENTRAS PARENIZQUIERDO expresion PARENDERECHO bloque .)
+    REGRESAR        reduce using rule 92 (ciclo -> MIENTRAS PARENIZQUIERDO expresion PARENDERECHO bloque .)
+    LLAVEDERECHO    reduce using rule 92 (ciclo -> MIENTRAS PARENIZQUIERDO expresion PARENDERECHO bloque .)
+
+
+state 195
+
+    (110) linea -> INSERTALINEA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .
+
+    ENTRADA         reduce using rule 110 (linea -> INSERTALINEA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    DESPLEGAR       reduce using rule 110 (linea -> INSERTALINEA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTATEXTO    reduce using rule 110 (linea -> INSERTALINEA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTARECTANGULO reduce using rule 110 (linea -> INSERTALINEA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTACIRCULO  reduce using rule 110 (linea -> INSERTALINEA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTAOVALO    reduce using rule 110 (linea -> INSERTALINEA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTATRIANGULO reduce using rule 110 (linea -> INSERTALINEA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTAPUNTO    reduce using rule 110 (linea -> INSERTALINEA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTALINEA    reduce using rule 110 (linea -> INSERTALINEA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTACURVA    reduce using rule 110 (linea -> INSERTALINEA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    ID              reduce using rule 110 (linea -> INSERTALINEA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    SI              reduce using rule 110 (linea -> INSERTALINEA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    MIENTRAS        reduce using rule 110 (linea -> INSERTALINEA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    REGRESAR        reduce using rule 110 (linea -> INSERTALINEA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    LLAVEDERECHO    reduce using rule 110 (linea -> INSERTALINEA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+
+
+state 196
+
+    (83) condicion -> SI PARENIZQUIERDO expresion PARENDERECHO ENTONCES . bloque condicionaux
+    (22) bloque -> . LLAVEIZQUIERDO bloqueaux LLAVEDERECHO
+
+    LLAVEIZQUIERDO  shift and go to state 25
+
+    bloque                         shift and go to state 202
+
+state 197
+
+    (108) ovalo -> INSERTAOVALO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .
+
+    ENTRADA         reduce using rule 108 (ovalo -> INSERTAOVALO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    DESPLEGAR       reduce using rule 108 (ovalo -> INSERTAOVALO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTATEXTO    reduce using rule 108 (ovalo -> INSERTAOVALO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTARECTANGULO reduce using rule 108 (ovalo -> INSERTAOVALO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTACIRCULO  reduce using rule 108 (ovalo -> INSERTAOVALO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTAOVALO    reduce using rule 108 (ovalo -> INSERTAOVALO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTATRIANGULO reduce using rule 108 (ovalo -> INSERTAOVALO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTAPUNTO    reduce using rule 108 (ovalo -> INSERTAOVALO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTALINEA    reduce using rule 108 (ovalo -> INSERTAOVALO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    INSERTACURVA    reduce using rule 108 (ovalo -> INSERTAOVALO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    ID              reduce using rule 108 (ovalo -> INSERTAOVALO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    SI              reduce using rule 108 (ovalo -> INSERTAOVALO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    MIENTRAS        reduce using rule 108 (ovalo -> INSERTAOVALO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    LLAVEDERECHO    reduce using rule 108 (ovalo -> INSERTAOVALO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+    REGRESAR        reduce using rule 108 (ovalo -> INSERTAOVALO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA .)
+
+
+state 198
+
+    (32) function -> FUNCION tiporegreso ID PARENIZQUIERDO functionpam PARENDERECHO bloquefun function .
+
+    INICIO          reduce using rule 32 (function -> FUNCION tiporegreso ID PARENIZQUIERDO functionpam PARENDERECHO bloquefun function .)
+
+
+state 199
+
+    (25) bloquefun -> LLAVEIZQUIERDO declaracion . bloqueaux regreso LLAVEDERECHO
+    (23) bloqueaux -> . estatuto bloqueaux
+    (24) bloqueaux -> .
+    (45) estatuto -> . ingreso
+    (46) estatuto -> . escritura
+    (47) estatuto -> . texto
+    (48) estatuto -> . rectangulo
+    (49) estatuto -> . circulo
+    (50) estatuto -> . ovalo
+    (51) estatuto -> . triangulo
+    (52) estatuto -> . punto
+    (53) estatuto -> . linea
+    (54) estatuto -> . curva
+    (55) estatuto -> . llamada PUNTOYCOMA
+    (56) estatuto -> . asignacion
+    (57) estatuto -> . condicion
+    (58) estatuto -> . ciclo
+    (97) ingreso -> . ENTRADA PARENIZQUIERDO ingresoaux PARENDERECHO PUNTOYCOMA
+    (93) escritura -> . DESPLEGAR PARENIZQUIERDO escrituraaux PARENDERECHO PUNTOYCOMA
+    (104) texto -> . INSERTATEXTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA
+    (105) rectangulo -> . INSERTARECTANGULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA
+    (107) circulo -> . INSERTACIRCULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA
+    (108) ovalo -> . INSERTAOVALO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA
+    (106) triangulo -> . INSERTATRIANGULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA
+    (109) punto -> . INSERTAPUNTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA
+    (110) linea -> . INSERTALINEA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA
+    (111) curva -> . INSERTACURVA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA
+    (34) llamada -> . ID PARENIZQUIERDO llamadapar PARENDERECHO
+    (42) asignacion -> . asignacionizq ASIGNACION asignacionaux PUNTOYCOMA
+    (83) condicion -> . SI PARENIZQUIERDO expresion PARENDERECHO ENTONCES bloque condicionaux
+    (92) ciclo -> . MIENTRAS PARENIZQUIERDO expresion PARENDERECHO bloque
+    (39) asignacionizq -> . ID asignacionizqaux
+
+    REGRESAR        reduce using rule 24 (bloqueaux -> .)
+    LLAVEDERECHO    reduce using rule 24 (bloqueaux -> .)
+    ENTRADA         shift and go to state 58
+    DESPLEGAR       shift and go to state 46
+    INSERTATEXTO    shift and go to state 51
+    INSERTARECTANGULO shift and go to state 52
+    INSERTACIRCULO  shift and go to state 54
+    INSERTAOVALO    shift and go to state 69
+    INSERTATRIANGULO shift and go to state 60
+    INSERTAPUNTO    shift and go to state 42
+    INSERTALINEA    shift and go to state 63
+    INSERTACURVA    shift and go to state 47
+    ID              shift and go to state 55
+    SI              shift and go to state 67
+    MIENTRAS        shift and go to state 62
+
+    asignacionizq                  shift and go to state 43
+    texto                          shift and go to state 44
+    bloqueaux                      shift and go to state 203
+    ingreso                        shift and go to state 48
+    triangulo                      shift and go to state 49
+    ciclo                          shift and go to state 50
+    estatuto                       shift and go to state 53
+    llamada                        shift and go to state 56
+    condicion                      shift and go to state 57
+    rectangulo                     shift and go to state 59
+    ovalo                          shift and go to state 68
+    punto                          shift and go to state 61
+    circulo                        shift and go to state 64
+    asignacion                     shift and go to state 65
+    curva                          shift and go to state 66
+    linea                          shift and go to state 70
+    escritura                      shift and go to state 71
+
+state 200
+
+    (28) functionpam -> VAR tipo ID functionpam2 .
+
+    PARENDERECHO    reduce using rule 28 (functionpam -> VAR tipo ID functionpam2 .)
+
+
+state 201
+
+    (30) functionpam2 -> COMA . functionpam
+    (28) functionpam -> . VAR tipo ID functionpam2
+    (29) functionpam -> .
+
+    VAR             shift and go to state 112
+    PARENDERECHO    reduce using rule 29 (functionpam -> .)
+
+    functionpam                    shift and go to state 204
+
+state 202
+
+    (83) condicion -> SI PARENIZQUIERDO expresion PARENDERECHO ENTONCES bloque . condicionaux
+    (84) condicionaux -> . SINO ENTONCES bloque
+    (85) condicionaux -> .
+
+    SINO            shift and go to state 205
+    ENTRADA         reduce using rule 85 (condicionaux -> .)
+    DESPLEGAR       reduce using rule 85 (condicionaux -> .)
+    INSERTATEXTO    reduce using rule 85 (condicionaux -> .)
+    INSERTARECTANGULO reduce using rule 85 (condicionaux -> .)
+    INSERTACIRCULO  reduce using rule 85 (condicionaux -> .)
+    INSERTAOVALO    reduce using rule 85 (condicionaux -> .)
+    INSERTATRIANGULO reduce using rule 85 (condicionaux -> .)
+    INSERTAPUNTO    reduce using rule 85 (condicionaux -> .)
+    INSERTALINEA    reduce using rule 85 (condicionaux -> .)
+    INSERTACURVA    reduce using rule 85 (condicionaux -> .)
+    ID              reduce using rule 85 (condicionaux -> .)
+    SI              reduce using rule 85 (condicionaux -> .)
+    MIENTRAS        reduce using rule 85 (condicionaux -> .)
+    LLAVEDERECHO    reduce using rule 85 (condicionaux -> .)
+    REGRESAR        reduce using rule 85 (condicionaux -> .)
+
+    condicionaux                   shift and go to state 206
+
+state 203
+
+    (25) bloquefun -> LLAVEIZQUIERDO declaracion bloqueaux . regreso LLAVEDERECHO
+    (20) regreso -> . REGRESAR exp PUNTOYCOMA
+    (21) regreso -> .
+
+    REGRESAR        shift and go to state 208
+    LLAVEDERECHO    reduce using rule 21 (regreso -> .)
+
+    regreso                        shift and go to state 207
+
+state 204
+
+    (30) functionpam2 -> COMA functionpam .
+
+    PARENDERECHO    reduce using rule 30 (functionpam2 -> COMA functionpam .)
+
+
+state 205
+
+    (84) condicionaux -> SINO . ENTONCES bloque
+
+    ENTONCES        shift and go to state 209
+
+
+state 206
+
+    (83) condicion -> SI PARENIZQUIERDO expresion PARENDERECHO ENTONCES bloque condicionaux .
+
+    ENTRADA         reduce using rule 83 (condicion -> SI PARENIZQUIERDO expresion PARENDERECHO ENTONCES bloque condicionaux .)
+    DESPLEGAR       reduce using rule 83 (condicion -> SI PARENIZQUIERDO expresion PARENDERECHO ENTONCES bloque condicionaux .)
+    INSERTATEXTO    reduce using rule 83 (condicion -> SI PARENIZQUIERDO expresion PARENDERECHO ENTONCES bloque condicionaux .)
+    INSERTARECTANGULO reduce using rule 83 (condicion -> SI PARENIZQUIERDO expresion PARENDERECHO ENTONCES bloque condicionaux .)
+    INSERTACIRCULO  reduce using rule 83 (condicion -> SI PARENIZQUIERDO expresion PARENDERECHO ENTONCES bloque condicionaux .)
+    INSERTAOVALO    reduce using rule 83 (condicion -> SI PARENIZQUIERDO expresion PARENDERECHO ENTONCES bloque condicionaux .)
+    INSERTATRIANGULO reduce using rule 83 (condicion -> SI PARENIZQUIERDO expresion PARENDERECHO ENTONCES bloque condicionaux .)
+    INSERTAPUNTO    reduce using rule 83 (condicion -> SI PARENIZQUIERDO expresion PARENDERECHO ENTONCES bloque condicionaux .)
+    INSERTALINEA    reduce using rule 83 (condicion -> SI PARENIZQUIERDO expresion PARENDERECHO ENTONCES bloque condicionaux .)
+    INSERTACURVA    reduce using rule 83 (condicion -> SI PARENIZQUIERDO expresion PARENDERECHO ENTONCES bloque condicionaux .)
+    ID              reduce using rule 83 (condicion -> SI PARENIZQUIERDO expresion PARENDERECHO ENTONCES bloque condicionaux .)
+    SI              reduce using rule 83 (condicion -> SI PARENIZQUIERDO expresion PARENDERECHO ENTONCES bloque condicionaux .)
+    MIENTRAS        reduce using rule 83 (condicion -> SI PARENIZQUIERDO expresion PARENDERECHO ENTONCES bloque condicionaux .)
+    LLAVEDERECHO    reduce using rule 83 (condicion -> SI PARENIZQUIERDO expresion PARENDERECHO ENTONCES bloque condicionaux .)
+    REGRESAR        reduce using rule 83 (condicion -> SI PARENIZQUIERDO expresion PARENDERECHO ENTONCES bloque condicionaux .)
+
+
+state 207
+
+    (25) bloquefun -> LLAVEIZQUIERDO declaracion bloqueaux regreso . LLAVEDERECHO
+
+    LLAVEDERECHO    shift and go to state 210
+
+
+state 208
+
+    (20) regreso -> REGRESAR . exp PUNTOYCOMA
+    (73) exp -> . termino exp2
+    (77) termino -> . factor termino2
+    (81) factor -> . PARENIZQUIERDO expresion PARENDERECHO
+    (82) factor -> . cte
+    (6) cte -> . cteid
+    (7) cte -> . CENTERO
+    (8) cte -> . CFLOTANTE
+    (9) cte -> . CCADENA
+    (10) cte -> . CCARACTER
+    (11) cte -> . VERDADERO
+    (12) cte -> . FALSO
+    (2) cteid -> . ID cteidaux
+
+    PARENIZQUIERDO  shift and go to state 30
+    CENTERO         shift and go to state 31
+    CFLOTANTE       shift and go to state 40
+    CCADENA         shift and go to state 32
+    CCARACTER       shift and go to state 29
+    VERDADERO       shift and go to state 38
+    FALSO           shift and go to state 33
+    ID              shift and go to state 16
+
+    cte                            shift and go to state 34
+    termino                        shift and go to state 35
+    exp                            shift and go to state 211
+    factor                         shift and go to state 37
+    cteid                          shift and go to state 39
+
+state 209
+
+    (84) condicionaux -> SINO ENTONCES . bloque
+    (22) bloque -> . LLAVEIZQUIERDO bloqueaux LLAVEDERECHO
+
+    LLAVEIZQUIERDO  shift and go to state 25
+
+    bloque                         shift and go to state 212
+
+state 210
+
+    (25) bloquefun -> LLAVEIZQUIERDO declaracion bloqueaux regreso LLAVEDERECHO .
+
+    FUNCION         reduce using rule 25 (bloquefun -> LLAVEIZQUIERDO declaracion bloqueaux regreso LLAVEDERECHO .)
+    INICIO          reduce using rule 25 (bloquefun -> LLAVEIZQUIERDO declaracion bloqueaux regreso LLAVEDERECHO .)
+
+
+state 211
+
+    (20) regreso -> REGRESAR exp . PUNTOYCOMA
+
+    PUNTOYCOMA      shift and go to state 213
+
+
+state 212
+
+    (84) condicionaux -> SINO ENTONCES bloque .
+
+    ENTRADA         reduce using rule 84 (condicionaux -> SINO ENTONCES bloque .)
+    DESPLEGAR       reduce using rule 84 (condicionaux -> SINO ENTONCES bloque .)
+    INSERTATEXTO    reduce using rule 84 (condicionaux -> SINO ENTONCES bloque .)
+    INSERTARECTANGULO reduce using rule 84 (condicionaux -> SINO ENTONCES bloque .)
+    INSERTACIRCULO  reduce using rule 84 (condicionaux -> SINO ENTONCES bloque .)
+    INSERTAOVALO    reduce using rule 84 (condicionaux -> SINO ENTONCES bloque .)
+    INSERTATRIANGULO reduce using rule 84 (condicionaux -> SINO ENTONCES bloque .)
+    INSERTAPUNTO    reduce using rule 84 (condicionaux -> SINO ENTONCES bloque .)
+    INSERTALINEA    reduce using rule 84 (condicionaux -> SINO ENTONCES bloque .)
+    INSERTACURVA    reduce using rule 84 (condicionaux -> SINO ENTONCES bloque .)
+    ID              reduce using rule 84 (condicionaux -> SINO ENTONCES bloque .)
+    SI              reduce using rule 84 (condicionaux -> SINO ENTONCES bloque .)
+    MIENTRAS        reduce using rule 84 (condicionaux -> SINO ENTONCES bloque .)
+    LLAVEDERECHO    reduce using rule 84 (condicionaux -> SINO ENTONCES bloque .)
+    REGRESAR        reduce using rule 84 (condicionaux -> SINO ENTONCES bloque .)
+
+
+state 213
+
+    (20) regreso -> REGRESAR exp PUNTOYCOMA .
+
+    LLAVEDERECHO    reduce using rule 20 (regreso -> REGRESAR exp PUNTOYCOMA .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for PARENDERECHO in state 183 resolved as shift

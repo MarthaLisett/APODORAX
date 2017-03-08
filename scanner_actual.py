@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------
-#  Jose Gonzalez Ayerdi - A01036121
-#  Martha Benavides - A01280115
-#  Proyecto Final, Diseño de Compiladores
-#  Sintaxis para el lenguaje APODORAX
-#  Gramatica regular para el analisis sintactico con PLY
+#  José González Ayerdi - A01036121
+#  3/02/17
+#  Tarea 3, Diseño de Compiladores
+#  Sintaxis para el lenguaje MyLittleDuck2017
+#  Archivo con expresiones regulares para el análisis lexico con PLY
 # ------------------------------------------------------------
 import ply.lex as lex
 
@@ -71,12 +71,14 @@ tokens = (
    'PUNTOYCOMA',
    'COMA',
    'DOSPUNTOS',
-   'ASIGNACION',
+   'ASIGNACION'
 )
 
 # expresiones regulares que definen los tokens
+t_CFLOTANTE                    = r'[-]?[0-9]+.[0-9]+'
+t_CENTERO                      = r'[-]?[0-9]+'
 t_CCADENA                      = r'\"(\\.|[^"])*\"'
-t_CCARACTER                    = r'\'[a-z]\'|\'[A-Z]\''
+t_CCARACTER                    =r'\'[a-z]\'|\'[A-Z]\''
 t_PUNTOYCOMA                   = r'\;'
 t_DOSPUNTOS                    = r'\:'
 t_COMA                         = r'\,'
@@ -97,8 +99,6 @@ t_MENORIGUAL                   = r'\>\='
 t_ASIGNACION                   = r'\='
 t_IGUAL                        = r'\=\='
 t_DIFERENTE                    = r'\!\='
-t_CONJUNCION                   = r'\&\&'
-t_DISYUNCION                   = r'\|\|'
 
 reserved = {
    'si'                : 'SI',
@@ -127,6 +127,8 @@ reserved = {
    'amarillo'          : 'AMARILLO',
    'verde'             : 'VERDE',
    'rojo'              : 'ROJO',
+   'y'                 : 'CONJUNCION',
+   'o'                 : 'DISYUNCION',
    'vacio'             : 'VACIO',
    'insertaTexto'      : 'INSERTATEXTO',
    'insertaRectangulo' : 'INSERTARECTANGULO',
@@ -135,22 +137,11 @@ reserved = {
    'insertaOvalo'      : 'INSERTAOVALO',
    'insertaPunto'      : 'INSERTAPUNTO',
    'insertaCurva'      : 'INSERTACURVA',
-   'insertaLinea'      : 'INSERTALINEA',
+   'insertaLinea'      : 'INSERTALINEA'
 }
-
-def t_CFLOTANTE (t):
-    r'([\+|-]?[0-9]+[.])[0-9]+'
-    t.value = float(t.value)
-    return t
-
-def t_CENTERO(t):
-    r'[-]?[0-9]+'
-    t.value = int(t.value)
-    return t
-
 # funcion con la regla para definir la identificacion de un ID TODO:regex para id comienza con mayusculas??
 def t_ID(t):
-    r'[a-zA-Z](_?[a-zA-Z0-9]+)*'
+    r'[A-Z]([a-z0-9])*'
     t.type = reserved.get(t.value,'ID')
     return t
 # funcion para saber el numero de linea que se esta analizando
@@ -171,27 +162,26 @@ def t_COMMENT(t):
     r'\#.*'
     pass
 
+# Metodo para manejar EOF ()
+'''
+def t_eof(t):
+    # Get more input (Example)
+    more = raw_input('... ')
+    if more:
+        self.lexer.input(more)
+        return self.lexer.token()
+    return None
+'''
 # construccion del lexer
 lexer = lex.lex()
 
-<<<<<<< HEAD
-'''
 data = '''
 # comentario
 inicio
-var ? mientras_tanto = 10 'a' ; fin
-||||||| merged common ancestors
-data = '''
-# comentario
-inicio
-var ? mientras_tanto = 10 'a' ; fin
-=======
-data = '''  = "alicia" '''
+var ? mientras_tanto = 10 'a' ; fin '''
 
-#data_err = '''? | .'''
+data_err = '''? | .'''
 
->>>>>>> df3d18be5fb154ea9c03782f04c7dae4c33a1d1e
-'''
 # string para probar el analizador lexico con tokens incorrectos
 # se corre el lexer con el string de prueba, descomentar para probar
 lexer.input(data)
@@ -201,4 +191,3 @@ while True:
     if not tok: 
         break
     print(tok)  # se imprime el tipo de token que se encontro
-'''
