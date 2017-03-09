@@ -1,6 +1,5 @@
 programa Martha0295:
 
-var entero hola; 
 var entero hola;
 var flotante crayola; 
 var cadena hello;
