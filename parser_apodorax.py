@@ -8,7 +8,6 @@
 #  Sintaxis para el lenguaje APODORAX
 #  Gramatica regular para el analisis sintactico con PLY
 # ------------------------------------------------------------
-
 import ply.yacc as yacc
 import sys
 # obtenemos la lista de tokens generadas por el analizador lexico
@@ -17,16 +16,20 @@ from scanner_apodorax import tokens
 # Reglas Gramaticales
 
 function_dict = {}
-function_dict['global'] = {}
 error_list = []
 repeated_id = ''
-scope = 0
+scope = None
 
 # Programa
 def p_program(p):
   '''program : PROGRAMA ID DOSPUNTOS declaracion function INICIO bloque FIN'''
+  pass
+  global scope
+  global function_dict
+  function_dict['global'] = {}
+  scope = 'global'
   p[0]="Interpretado Correctamente"
-  scope = 0
+
 # Constante ID
 def p_cteid(p):
     '''cteid : ID cteidaux'''
@@ -37,6 +40,36 @@ def p_cteidaux(p):
     '''cteidaux : CORCHETEIZQ exp CORCHETEDER
                | PARENIZQUIERDO exp PARENDERECHO
                | '''
+
+
+# Instrucciones de las funciones
+def p_bloquefun(p):
+  '''bloquefun : LLAVEIZQUIERDO declaracion bloqueaux regreso LLAVEDERECHO'''
+
+# Tipo de regreso de las funciones
+def p_tiporegreso(p):
+    '''tiporegreso : tipo
+                   | VACIO'''
+
+# Parametros de las funciones
+def p_functionpam(p):
+   '''functionpam : VAR tipo ID functionpam2
+                 | '''
+
+# Auxiliar Parametros de las funciones
+def p_functionpam2(p):
+   '''functionpam2 : COMA functionpam
+                    | '''
+# Funcion
+def p_function(p):
+  '''function : FUNCION tiporegreso ID PARENIZQUIERDO functionpam PARENDERECHO bloquefun function
+            | '''
+  if len(p) > 1:
+    global function_dict
+    global scope
+    function_dict[p[3]] = {}
+    scope =p[3]
+    print 'nuevo:', scope
 
 # Valores constantes
 def p_cte(p):
@@ -62,12 +95,15 @@ def p_declaracion(p):
   '''declaracion : VAR tipo cteid PUNTOYCOMA declaracion
                 | '''                
   pass
-  if len(p) >= 3:
-    print p[3]
-    error_message = insertVariable(p[0], p[3], scope)
+  if len(p) > 1:
+    #print p[3]
+    global function_dict
+    global scope
+    print 'scope  actual: ', scope
+    error_message = insert_variable(function_dict, p[1], p[3], scope)
     if error_message != None:
       repeated_id = p[3]
-      error_list.append(error_message)
+      raise KeyError("variable repetida: " + "'" + repeated_id + "'")
 
 # Return de las funciones
 def p_regreso(p):
@@ -83,28 +119,6 @@ def p_bloqueaux(p):
   '''bloqueaux : estatuto bloqueaux
               | '''
 
-# Instrucciones de las funciones
-def p_bloquefun(p):
-  '''bloquefun : LLAVEIZQUIERDO declaracion bloqueaux regreso LLAVEDERECHO'''
-
-# Tipo de regreso de las funciones
-def p_tiporegreso(p):
-    '''tiporegreso : tipo
-                   | VACIO'''
-
-# Parametros de las funciones
-def p_functionpam(p):
-   '''functionpam : VAR tipo ID functionpam2
-                 | '''
-
-# Auxiliar Parametros de las funciones
-def p_functionpam2(p):
-   '''functionpam2 : COMA functionpam
-                    | '''
-# Funcion
-def p_function(p):
-  '''function : FUNCION tiporegreso ID PARENIZQUIERDO functionpam PARENDERECHO bloquefun function
-            | '''
 
 # Llamada a funcion
 def p_llamada(p):
@@ -305,15 +319,18 @@ def p_error(p):
   print("Error de sintaxis: '%s' en linea: %s."  % (p.value, p.lineno))
 
 
-def insertVariable(var_type, var_id, var_scope):
-  if var_scope is 0:
-    if function_dict.get('global').get(var_id) is None:
-      function_dict['global'][var_id] = [var_id, var_type, scope]
+parser = yacc.yacc()
+
+def insert_variable(fun_dict, var_type, var_id, var_scope):
+  if fun_dict.get(var_scope) is not None:
+    if fun_dict.get(var_scope).get(var_id) is None:
+      fun_dict[var_scope][var_id] = [var_id, var_type, scope]
       return None
     else:
       return 'Variable repetida.'
-
-parser = yacc.yacc()
+  else:
+    fun_dict[var_scope] = {}
+  return fun_dict
 
 if __name__ == '__main__':
   if (len(sys.argv) > 1):

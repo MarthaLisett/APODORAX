@@ -7,11 +7,13 @@ var caracter letra ;
 var entero arrs[10]; 
 var bool pregunta;
 var entero I;
+var flotante resultado;
 funcion entero carro (var entero x, var flotante y)
 {
 	var flotante resultadofinal;
 	var flotante resultado;
 	resultadofinal = resultado + 1;
+
 
 	regresar resultadofinal;
 }
