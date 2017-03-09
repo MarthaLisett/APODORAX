@@ -174,24 +174,11 @@ def t_COMMENT(t):
 # construccion del lexer
 lexer = lex.lex()
 
-<<<<<<< HEAD
-'''
-data = '''
-# comentario
-inicio
-var ? mientras_tanto = 10 'a' ; fin
-||||||| merged common ancestors
-data = '''
-# comentario
-inicio
-var ? mientras_tanto = 10 'a' ; fin
-=======
-data = '''  = "alicia" '''
 
-#data_err = '''? | .'''
-
->>>>>>> df3d18be5fb154ea9c03782f04c7dae4c33a1d1e
 '''
+
+
+
 # string para probar el analizador lexico con tokens incorrectos
 # se corre el lexer con el string de prueba, descomentar para probar
 lexer.input(data)

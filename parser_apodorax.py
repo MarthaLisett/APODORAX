@@ -16,10 +16,17 @@ from scanner_apodorax import tokens
 
 # Reglas Gramaticales
 
+function_dict = {}
+function_dict['global'] = {}
+error_list = []
+repeated_id = ''
+scope = 0
+
 # Programa
 def p_program(p):
   '''program : PROGRAMA ID DOSPUNTOS declaracion function INICIO bloque FIN'''
-  p[0]="Interpretado Correctamente"
+  #p[0]="Interpretado Correctamente"
+  scope = 0
 # Constante ID
 def p_cteid(p):
     '''cteid : ID cteidaux'''
@@ -52,6 +59,18 @@ def p_tipo(p):
 def p_declaracion(p):
   '''declaracion : VAR tipo cteid PUNTOYCOMA declaracion
                 | '''
+
+
+def p_declaracion_error(p):
+  '''declaracion : VAR tipo error PUNTOYCOMA declaracion
+                | '''
+  pass
+  if len(p) > 1:
+    error_message = insertVariable(p[0], p[1], scope)
+    if error_message != None:
+      repeated_id = p[3]
+      error_list.append(error_message)
+
 
 # Return de las funciones
 def p_regreso(p):
@@ -280,8 +299,22 @@ def p_curva(p):
     '''curva : INSERTACURVA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA'''
 
 def p_error(p):
-    print("Error de sintaxis: '%s' en linea: %s."  % (p.value, p.lineno))
-    
+  print 'adlrgkhskjf'
+  for em in error_list:
+    print '{} : {}'.format(em, repeated_id)
+  if p: print('Error de sintaxis.')
+
+  #print("Error de sintaxis: '%s' en linea: %s."  % (p.value, p.lineno))
+
+
+def insertVariable(var_type, var_id, var_scope):
+  if var_scope is 0:
+    if function_dict.get('global').get(var_id) is None:
+      function_dict['global'][var_id] = [var_id, var_type, scope]
+      return None
+    else:
+      return 'Variable repetida.'
+
 parser = yacc.yacc()
 
 if __name__ == '__main__':

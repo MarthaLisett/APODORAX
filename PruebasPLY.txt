@@ -1,7 +1,8 @@
 programa Martha0295:
 
+var entero hola; 
 var entero hola;
-var flotante crayola;
+var flotante crayola; 
 var cadena hello;
 var caracter letra ;
 var entero arrs[10]; 
@@ -18,7 +19,7 @@ funcion entero carro (var entero x, var flotante y)
 
 funcion vacio camioneta()
 {
-	desplegar ("hola") si;
+	desplegar ("hola");
 }
 
 inicio
