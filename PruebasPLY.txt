@@ -1,5 +1,6 @@
 programa Martha0295:
 
+# --- variables globales
 var entero hola;
 var flotante crayola; 
 var cadena hello;
@@ -8,23 +9,34 @@ var entero arrs[10];
 var bool pregunta;
 var entero I;
 var flotante resultado;
+var flotante flores;
+
+
 funcion entero carro (var entero x, var flotante y)
 {
 	var flotante resultadofinal;
-	var flotante resultado;
+    #var entero I;
+    var entero y;
+
 	resultadofinal = resultado + 1;
+
 
 
 	regresar resultadofinal;
 }
 
-funcion vacio camioneta()
+funcion vacio camioneta(var entero y)
 {
+	carro(y);
+    #flor3 = flores + 1;
 	desplegar ("hola");
 }
 
 inicio
 {
+	#crayola = bar + 1;
+	#bar = bar + 1;
+	#carrito();
 	entrada (hola, flores[9]);
 	insertaCirculo(4,4.5,7,8,3.2, amarillo, falso);
 

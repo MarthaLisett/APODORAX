@@ -16,23 +16,44 @@ from scanner_apodorax import tokens
 # Reglas Gramaticales
 
 function_dict = {}
+#function_dict['global'] = {}
 error_list = []
 repeated_id = ''
 scope = None
 
 # Programa
 def p_program(p):
-  '''program : PROGRAMA ID DOSPUNTOS declaracion function INICIO bloque FIN'''
-  pass
-  global scope
-  global function_dict
-  function_dict['global'] = {}
-  scope = 'global'
-  p[0]="Interpretado Correctamente"
+  '''program : PROGRAMA ID inicializar DOSPUNTOS declaracion function INICIO bloque FIN'''
+
+def p_inicializar(p):
+	'''inicializar : '''
+	pass
+	global scope
+	global function_dict
+	function_dict['global'] = {}
+	scope = 'global'
+	p[0]="Interpretado Correctamente"
 
 # Constante ID
 def p_cteid(p):
-    '''cteid : ID cteidaux'''
+    '''cteid : ID buscarId cteidaux'''
+    p[0] = p[1]
+
+def p_buscarId(p):
+	''' buscarId : '''
+	pass
+	if len(p) >= 1:
+		error_message = buscarVar(p[-1])
+		if error_message is None:
+			# TODO: necesario???
+			p[0] = p[-1]
+		else:
+			raise KeyError(p[-1] + ' ' + error_message)
+
+
+ # Constante ID declaracion
+def p_cteid_declaracion(p):
+    '''cteid_declaracion : ID cteidaux'''
     p[0] = p[1]
 
 # Auxiliar Constante ID
@@ -40,6 +61,17 @@ def p_cteidaux(p):
     '''cteidaux : CORCHETEIZQ exp CORCHETEDER
                | PARENIZQUIERDO exp PARENDERECHO
                | '''
+
+def p_buscarFuncion(p):
+	''' buscarFuncion : '''
+	if len(p) >= 1:
+		global function_dict
+		error_message = buscarFuncion(p[-1])
+		if error_message is None:
+			p[0] = p[-1]
+		else:
+			raise KeyError(error_message)
+
 
 
 # Instrucciones de las funciones
@@ -53,8 +85,9 @@ def p_tiporegreso(p):
 
 # Parametros de las funciones
 def p_functionpam(p):
-   '''functionpam : VAR tipo ID functionpam2
+    '''functionpam : VAR tipo ID revisarId functionpam2
                  | '''
+    
 
 # Auxiliar Parametros de las funciones
 def p_functionpam2(p):
@@ -62,14 +95,24 @@ def p_functionpam2(p):
                     | '''
 # Funcion
 def p_function(p):
-  '''function : FUNCION tiporegreso ID PARENIZQUIERDO functionpam PARENDERECHO bloquefun function
+    '''function : FUNCION tiporegreso ID idFunctionCheck PARENIZQUIERDO functionpam PARENDERECHO bloquefun resetScope function
             | '''
-  if len(p) > 1:
-    global function_dict
-    global scope
-    function_dict[p[3]] = {}
-    scope =p[3]
-    print 'nuevo:', scope
+
+def p_resetScope(p):
+	'''resetScope : '''
+	global scope
+	scope = 'global'
+
+def p_idFunctionCheck(p):
+	''' idFunctionCheck : '''
+	if len(p) >= 1:
+	   global function_dict
+	   global scope
+	   error_message = insertarFuncion(p[-1])
+	   if error_message is None:
+	   	scope = p[-1]
+	   else:
+	   	raise KeyError(error_message + ":"  + "'" + p[-1] + "'")
 
 # Valores constantes
 def p_cte(p):
@@ -80,6 +123,7 @@ def p_cte(p):
            | CCARACTER
            | VERDADERO
            | FALSO'''
+    p[0] = p[1]
 
 # Tipo de dato
 def p_tipo(p):
@@ -92,18 +136,19 @@ def p_tipo(p):
     p[0] = p[1]
 # Declaracion de variables
 def p_declaracion(p):
-  '''declaracion : VAR tipo cteid PUNTOYCOMA declaracion
-                | '''                
-  pass
-  if len(p) > 1:
-    #print p[3]
-    global function_dict
-    global scope
-    print 'scope  actual: ', scope
-    error_message = insert_variable(function_dict, p[1], p[3], scope)
-    if error_message != None:
-      repeated_id = p[3]
-      raise KeyError("variable repetida: " + "'" + repeated_id + "'")
+    '''declaracion : VAR tipo cteid_declaracion revisarId PUNTOYCOMA declaracion
+                | '''
+
+def p_revisarId(p):
+	'''revisarId : '''
+	pass
+  	if len(p) >= 1:
+  		global function_dict
+  		global scope
+  		error_message = insert_variable(p[-2], p[-1], scope)
+  		if error_message != None:
+  			repeated_id = p[-1]
+  			raise KeyError("Variable repetida: " + "'" + repeated_id + "'")
 
 # Return de las funciones
 def p_regreso(p):
@@ -122,7 +167,7 @@ def p_bloqueaux(p):
 
 # Llamada a funcion
 def p_llamada(p):
-    '''llamada : ID PARENIZQUIERDO llamadapar PARENDERECHO'''
+    '''llamada : ID buscarFuncion PARENIZQUIERDO llamadapar PARENDERECHO'''
 
 # Parametros de la llamada
 def p_llamadapar(p):
@@ -136,7 +181,7 @@ def p_llamadaparaux(p):
 
 # Lado izquierdo de la asignacion para saber si es id normal o arreglo
 def p_asignacionizq(p):
-  '''asignacionizq : ID asignacionizqaux'''
+  '''asignacionizq : ID buscarId asignacionizqaux'''
 
 # Auxiliar asignacionizq
 def p_asignacionizqaux(p):
@@ -316,21 +361,48 @@ def p_error(p):
     print '{} : {}'.format(em, repeated_id)
   if p: print('Error de sintaxis.')
   '''
-  print("Error de sintaxis: '%s' en linea: %s."  % (p.value, p.lineno))
+  print("Error de sintaxis: '%s' en línea: %s."  % (p.value, p.lineno))
+  pass
 
 
 parser = yacc.yacc()
 
-def insert_variable(fun_dict, var_type, var_id, var_scope):
-  if fun_dict.get(var_scope) is not None:
-    if fun_dict.get(var_scope).get(var_id) is None:
-      fun_dict[var_scope][var_id] = [var_id, var_type, scope]
-      return None
+def buscarFuncion(fun_id):
+	global function_dict
+	if fun_id not in function_dict:
+		return "La funcion '" + fun_id + "' no esta desclarada."
+	else:
+		return None
+
+def buscarVar(var_id):
+	global function_dict
+	global scope
+	if function_dict.get(scope).get(var_id) is None:
+		if function_dict.get('global').get(var_id) is None:
+			return ' no ha sido declarada.'
+		else:
+			return None
+	else:
+		return None
+
+def insert_variable(var_type, var_id, var_scope):
+    global function_dict
+    if function_dict.get(var_scope) is not None:
+      if function_dict.get(var_scope).get(var_id) is None:
+        function_dict[var_scope][var_id] = [var_id, var_type, scope]
+        return None
+      else:
+      	return 'Variable repetida.'
     else:
-      return 'Variable repetida.'
-  else:
-    fun_dict[var_scope] = {}
-  return fun_dict
+    	raise KeyError('Error en estructura de funciones.')
+
+def insertarFuncion(fun_id):
+	global function_dict
+	if function_dict.get(fun_id) is None:
+		function_dict[fun_id] = {}
+		return None
+	else:
+		return "Funcion repetida"
 
 if __name__ == '__main__':
   if (len(sys.argv) > 1):
