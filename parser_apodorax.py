@@ -54,7 +54,7 @@ def p_cteidaux(p):
 def p_buscarFuncion(p):
 	''' buscarFuncion : '''
 	pass
-	if len(p) >= 0:
+	if len(p) >= 1:
 		global st
 		st.search_function(p[-1])
 
