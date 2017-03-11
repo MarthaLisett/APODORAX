@@ -24,9 +24,9 @@ def p_program(p):
   '''program : PROGRAMA ID inicializar DOSPUNTOS declaracion function INICIO bloque FIN'''
 
 def p_inicializar(p):
-	'''inicializar : '''
-	pass
-	p[0]="Interpretado Correctamente"
+  '''inicializar : '''
+  pass
+  p[0]="Interpretado Correctamente"
 
 # Constante ID
 def p_cteid(p):
@@ -34,11 +34,11 @@ def p_cteid(p):
     p[0] = p[1]
 
 def p_buscarId(p):
-	'''buscarId : '''
-	pass
-	if len(p) >= 1:
-		global st
-		st.search_variable(p[-1])
+  '''buscarId : '''
+  pass
+  if len(p) >= 1:
+    global st
+    st.search_variable(p[-1])
 
  # Constante ID declaracion
 def p_cteid_declaracion(p):
@@ -52,11 +52,11 @@ def p_cteidaux(p):
                | '''
 
 def p_buscarFuncion(p):
-	''' buscarFuncion : '''
-	pass
-	if len(p) >= 1:
-		global st
-		st.search_function(p[-1])
+  ''' buscarFuncion : '''
+  pass
+  if len(p) >= 1:
+    global st
+    st.search_function(p[-1])
 
 # Instrucciones de las funciones
 def p_bloquefun(p):
@@ -82,14 +82,14 @@ def p_function(p):
             | '''
 
 def p_resetScope(p):
-	'''resetScope : '''
-	st.scope ='global'
+  '''resetScope : '''
+  st.scope ='global'
 
 def p_idFunctionCheck(p):
-	''' idFunctionCheck : '''
-	if len(p) >= 1:
-	   global st
-	   st.insert_function(p[-1])
+  ''' idFunctionCheck : '''
+  if len(p) >= 1:
+     global st
+     st.insert_function(p[-1])
 
 # Valores constantes
 def p_cte(p):
@@ -117,12 +117,11 @@ def p_declaracion(p):
                 | '''
 
 def p_revisarId(p):
-	'''revisarId : '''
-	pass
-
-  	if len(p) >= 1:
-  		global st
-  		st.insert_variable(p[-2], p[-1])
+  '''revisarId : '''
+  pass
+  if len(p) >= 1:
+      global st
+      st.insert_variable(p[-2], p[-1])
 
 # Return de las funciones
 def p_regreso(p):
