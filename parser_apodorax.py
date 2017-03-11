@@ -8,6 +8,7 @@
 #  Sintaxis para el lenguaje APODORAX
 #  Gramatica regular para el analisis sintactico con PLY
 # ------------------------------------------------------------
+from symbol_table import symbol_table
 import ply.yacc as yacc
 import sys
 # obtenemos la lista de tokens generadas por el analizador lexico
@@ -15,11 +16,8 @@ from scanner_apodorax import tokens
 
 # Reglas Gramaticales
 
-function_dict = {}
-#function_dict['global'] = {}
 error_list = []
-repeated_id = ''
-scope = None
+st = symbol_table()
 
 # Programa
 def p_program(p):
@@ -28,10 +26,6 @@ def p_program(p):
 def p_inicializar(p):
 	'''inicializar : '''
 	pass
-	global scope
-	global function_dict
-	function_dict['global'] = {}
-	scope = 'global'
 	p[0]="Interpretado Correctamente"
 
 # Constante ID
@@ -40,16 +34,11 @@ def p_cteid(p):
     p[0] = p[1]
 
 def p_buscarId(p):
-	''' buscarId : '''
+	'''buscarId : '''
 	pass
 	if len(p) >= 1:
-		error_message = buscarVar(p[-1])
-		if error_message is None:
-			# TODO: necesario???
-			p[0] = p[-1]
-		else:
-			raise KeyError(p[-1] + ' ' + error_message)
-
+		global st
+		st.search_variable(p[-1])
 
  # Constante ID declaracion
 def p_cteid_declaracion(p):
@@ -64,15 +53,10 @@ def p_cteidaux(p):
 
 def p_buscarFuncion(p):
 	''' buscarFuncion : '''
-	if len(p) >= 1:
-		global function_dict
-		error_message = buscarFuncion(p[-1])
-		if error_message is None:
-			p[0] = p[-1]
-		else:
-			raise KeyError(error_message)
-
-
+	pass
+	if len(p) >= 0:
+		global st
+		st.search_function(p[-1])
 
 # Instrucciones de las funciones
 def p_bloquefun(p):
@@ -88,7 +72,6 @@ def p_functionpam(p):
     '''functionpam : VAR tipo ID revisarId functionpam2
                  | '''
     
-
 # Auxiliar Parametros de las funciones
 def p_functionpam2(p):
    '''functionpam2 : COMA functionpam
@@ -100,19 +83,13 @@ def p_function(p):
 
 def p_resetScope(p):
 	'''resetScope : '''
-	global scope
-	scope = 'global'
+	st.scope ='global'
 
 def p_idFunctionCheck(p):
 	''' idFunctionCheck : '''
 	if len(p) >= 1:
-	   global function_dict
-	   global scope
-	   error_message = insertarFuncion(p[-1])
-	   if error_message is None:
-	   	scope = p[-1]
-	   else:
-	   	raise KeyError(error_message + ":"  + "'" + p[-1] + "'")
+	   global st
+	   st.insert_function(p[-1])
 
 # Valores constantes
 def p_cte(p):
@@ -142,13 +119,10 @@ def p_declaracion(p):
 def p_revisarId(p):
 	'''revisarId : '''
 	pass
+
   	if len(p) >= 1:
-  		global function_dict
-  		global scope
-  		error_message = insert_variable(p[-2], p[-1], scope)
-  		if error_message != None:
-  			repeated_id = p[-1]
-  			raise KeyError("Variable repetida: " + "'" + repeated_id + "'")
+  		global st
+  		st.insert_variable(p[-2], p[-1])
 
 # Return de las funciones
 def p_regreso(p):
@@ -163,7 +137,6 @@ def p_bloque(p):
 def p_bloqueaux(p): 
   '''bloqueaux : estatuto bloqueaux
               | '''
-
 
 # Llamada a funcion
 def p_llamada(p):
@@ -355,54 +328,9 @@ def p_curva(p):
     '''curva : INSERTACURVA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA'''
 
 def p_error(p):
-  '''
-  print 'adlrgkhskjf'
-  for em in error_list:
-    print '{} : {}'.format(em, repeated_id)
-  if p: print('Error de sintaxis.')
-  '''
   print("Error de sintaxis: '%s' en línea: %s."  % (p.value, p.lineno))
-  pass
-
 
 parser = yacc.yacc()
-
-def buscarFuncion(fun_id):
-	global function_dict
-	if fun_id not in function_dict:
-		return "La funcion '" + fun_id + "' no esta desclarada."
-	else:
-		return None
-
-def buscarVar(var_id):
-	global function_dict
-	global scope
-	if function_dict.get(scope).get(var_id) is None:
-		if function_dict.get('global').get(var_id) is None:
-			return ' no ha sido declarada.'
-		else:
-			return None
-	else:
-		return None
-
-def insert_variable(var_type, var_id, var_scope):
-    global function_dict
-    if function_dict.get(var_scope) is not None:
-      if function_dict.get(var_scope).get(var_id) is None:
-        function_dict[var_scope][var_id] = [var_id, var_type, scope]
-        return None
-      else:
-      	return 'Variable repetida.'
-    else:
-    	raise KeyError('Error en estructura de funciones.')
-
-def insertarFuncion(fun_id):
-	global function_dict
-	if function_dict.get(fun_id) is None:
-		function_dict[fun_id] = {}
-		return None
-	else:
-		return "Funcion repetida"
 
 if __name__ == '__main__':
   if (len(sys.argv) > 1):

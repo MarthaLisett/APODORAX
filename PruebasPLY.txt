@@ -11,23 +11,17 @@ var entero I;
 var flotante resultado;
 var flotante flores;
 
-
 funcion entero carro (var entero x, var flotante y)
 {
 	var flotante resultadofinal;
     #var entero I;
-    var entero y;
-
 	resultadofinal = resultado + 1;
-
-
 
 	regresar resultadofinal;
 }
 
 funcion vacio camioneta(var entero y)
 {
-	carro(y);
     #flor3 = flores + 1;
 	desplegar ("hola");
 }
