@@ -66,6 +66,6 @@ class symbol_table:
 	def get_func_dic(self):
 		return self.__func_dic
 
-	""" Sección para especificación de propiedades de la clase """
+	""" Sección para declarar propiedades de la clase. """
 	scope    = property(get_scope, set_scope)
 	func_dic = property(get_func_dic, set_func_dic)
