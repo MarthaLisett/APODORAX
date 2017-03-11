@@ -119,10 +119,9 @@ def p_declaracion(p):
 def p_revisarId(p):
 	'''revisarId : '''
 	pass
-
-  	if len(p) >= 1:
-  		global st
-  		st.insert_variable(p[-2], p[-1])
+	if len(p) >= 1:
+		global st
+		st.insert_variable(p[-2], p[-1])
 
 # Return de las funciones
 def p_regreso(p):
