@@ -176,9 +176,6 @@ lexer = lex.lex()
 
 
 '''
-
-
-
 # string para probar el analizador lexico con tokens incorrectos
 # se corre el lexer con el string de prueba, descomentar para probar
 lexer.input(data)

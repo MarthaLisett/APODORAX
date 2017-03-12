@@ -6,28 +6,29 @@ var flotante crayola;
 var cadena hello;
 var caracter letra ;
 var entero arrs[10]; 
-var bool pregunta;
+var bool Pregunta;
 var entero I;
 var flotante resultado;
 var flotante flores;
 
-funcion entero carro (var entero x, var flotante y)
-{
+funcion entero carro (var entero x, var flotante y) {
 	var flotante resultadofinal;
     #var entero I;
-	resultadofinal = resultado + 1;
+    var entero flores;
+    resultadofinal = resultado + 1;
+    flores = flores + 1;
 
+	hello = "hola mundo";
 	regresar resultadofinal;
 }
 
-funcion vacio camioneta(var entero y)
-{
+funcion vacio camioneta(var entero y) {
     #flor3 = flores + 1;
+    I = I * 1;
 	desplegar ("hola");
 }
 
-inicio
-{
+inicio {
 	#crayola = bar + 1;
 	#bar = bar + 1;
 	#carrito();
@@ -50,7 +51,7 @@ inicio
 				desplegar (5);
 			}
 			desplegar (5);
-			I = I - 1;
+			I = I + 1;
 		}
 
 		desplegar (5 - (-1));
@@ -59,7 +60,7 @@ inicio
 	mientras (10 < I)
 	{
 		desplegar (5);
-		I = I - 1;
+		I = I + 1;
 	}
 }
 

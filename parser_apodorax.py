@@ -9,6 +9,7 @@
 #  Gramatica regular para el analisis sintactico con PLY
 # ------------------------------------------------------------
 from symbol_table import symbol_table
+from stack import Stack
 import ply.yacc as yacc
 import sys
 # obtenemos la lista de tokens generadas por el analizador lexico
@@ -16,8 +17,17 @@ from scanner_apodorax import tokens
 
 # Reglas Gramaticales
 
-error_list = []
-st = symbol_table()
+precedence = (
+    ('nonassoc', 'MENORQUE', 'MAYORQUE'),
+    ('left', 'SUMA', 'RESTA'),
+    ('left', 'MULTIPLICACION', 'DIVISION'),
+)
+
+operators_s = Stack()
+operands_s  = Stack()
+types_s     = Stack()
+error_list  = []
+st          = symbol_table()
 
 # Programa
 def p_program(p):
@@ -30,8 +40,24 @@ def p_inicializar(p):
 
 # Constante ID
 def p_cteid(p):
-    '''cteid : ID buscarId cteidaux'''
+    '''cteid : ID buscarId guardarId cteidaux'''
     p[0] = p[1]
+
+def p_guardarId(p):
+	''' guardarId : '''
+	if len(p) >= 1:
+		if (not operands_s.isEmpty()):
+			if operators_s.isEmpty():
+				while not operands_s.isEmpty():
+					operands_s.pop()
+					types_s.pop()
+				operands_s.push(p[-2])
+				if st.get_var(p[-2]) is not None:
+					types_s.push(st.get_var(p[-2])[1])
+		else:
+			operands_s.push(p[-2])
+			types_s.push(st.get_var(p[-2]))
+
 
 def p_buscarId(p):
   '''buscarId : '''
@@ -89,7 +115,7 @@ def p_idFunctionCheck(p):
   ''' idFunctionCheck : '''
   if len(p) >= 1:
      global st
-     st.insert_function(p[-1])
+     st.insert_function(p[-1], p[-2])
 
 # Valores constantes
 def p_cte(p):
@@ -214,12 +240,18 @@ def p_expresionaux(p) :
 
 # Exp suma y resta
 def p_exp(p):
-    '''exp : termino exp2'''
+    '''exp : termino exp2 '''
+
+def p_addExp(p):
+	''' addExp : '''
+	if len(p) >= 1:
+		if operands_s.size() > 1:
+			operators_s.push(p[-1])
 
 # Auxiliar de exp que permite tener 1 o más terminos
 def p_exp2(p):
-    '''exp2 : SUMA exp
-          | RESTA exp
+    '''exp2 : SUMA addExp exp
+          | RESTA addExp exp
           | '''
 
 # Termino multiplicacion y division
@@ -228,9 +260,13 @@ def p_termino(p):
 
 # Auxiliar termino que permite tener 1 o mas factores
 def p_termino2(p):
-  '''termino2 : MULTIPLICACION termino
-             | DIVISION termino
+  '''termino2 : MULTIPLICACION addFactor termino
+             | DIVISION addFactor termino
              | '''
+
+def p_addFactor(p):
+	'''addFactor : '''
+	operators_s.push(p[-1])
 
 # Factor numerico o mediante IDs
 def p_factor(p):

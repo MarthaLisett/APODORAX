@@ -16,7 +16,7 @@ class symbol_table:
 	id de las variables y sus valores son sus propiedades. """
 	def __init__(self, func_dic={}, scope='global'):
 		self.__func_dic           = func_dic
-		self.__func_dic['global'] = {}
+		self.__func_dic['global'] = (None, {})
 		self.__scope              = scope
 
 	""" search_function busca el id de una función en la tabla de funciones,
@@ -28,16 +28,16 @@ class symbol_table:
 	""" search_variable busca el id de una vairable primero dentro del scope actual,
 	si no la encuentra busca en el scope global, si no la encuentra despliega un error. """
 	def search_variable(self, var_id):
-		if self. __func_dic.get(self.__scope).get(var_id) is None:
-			if self.__func_dic.get('global').get(var_id) is None:
+		if self. __func_dic.get(self.__scope)[1].get(var_id) is None:
+			if self.__func_dic.get('global')[1].get(var_id) is None:
 				raise KeyError('La variable: ' + var_id + ' no ha sido declarada.')
 
 	""" insert_variable busca enla tabla de variables (dado un scope) si la variable existe,
 	si no existe la agrega a la tabla, de lo contrario despliega un error. """
 	def insert_variable(self, var_type, var_id):
 		if self.__func_dic.get(self.__scope) is not None:
-			if self.__func_dic.get(self.__scope).get(var_id) is None:
-				self.__func_dic[self.__scope][var_id] = [var_id, var_type, self.__scope]
+			if self.__func_dic.get(self.__scope)[1].get(var_id) is None:
+				self.__func_dic[self.__scope][1][var_id] = [var_id, var_type, self.__scope]
 			else:
 				raise KeyError("Variable repetida: " + "'" + var_id + "'")
 		else:
@@ -45,9 +45,9 @@ class symbol_table:
 
 	""" insert_function revisa si el id de esta funciónya existe en la tabla de funciones,
 	si no existe la inserta y la inicializa con vacío como valor. """
-	def insert_function(self, fun_id):
+	def insert_function(self, fun_id, return_type):
 		if self.__func_dic.get(fun_id) is None:
-			self.__func_dic[fun_id] = {}
+			self.__func_dic[fun_id] = (return_type, {})
 			self.set_scope(fun_id)
 		else:
 			raise KeyError("Funcion '" + fun_id +"' repetida.")
@@ -65,6 +65,12 @@ class symbol_table:
 
 	def get_func_dic(self):
 		return self.__func_dic
+
+	def get_var(self, var_id):
+		if var_id  in self.__func_dic.get(self.__scope)[1]:
+			return self.__func_dic.get(self.__scope)[1].get(var_id)
+		elif var_id  in self.__func_dic.get('global')[1]:
+			return self.__func_dic.get('global')[1].get(var_id)
 
 	""" Sección para declarar propiedades de la clase. """
 	scope    = property(get_scope, set_scope)
