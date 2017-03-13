@@ -85,13 +85,26 @@ class semantic_cube:
             return 'Compatibles.'
 
     def get_val(self, val):
-        if type(val) is int:
+        if val in self.operadores:
+            return self.operadores.index(val)
+        elif type(val) is int:
+            print('entero')
             return 0
         elif type(val) is float:
+            print('flotante')
             return 1
         elif type(val) is str and len(val) is 1 and val not in self.operadores:
+            print('caracter')
             return 3
         elif type(val) is str and val in self.booleanos:
+            print('booleano')
             return 4
-        elif type(val) is str:
+        elif type(val) is str and val not in self.operadores:
+            print('cadena')
             return 2
+
+
+
+
+
+
