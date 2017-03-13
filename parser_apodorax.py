@@ -8,8 +8,9 @@
 #  Sintaxis para el lenguaje APODORAX
 #  Gramatica regular para el analisis sintactico con PLY
 # ------------------------------------------------------------
-from symbol_table import symbol_table
-from stack import Stack
+from symbol_table  import symbol_table
+from stack         import Stack
+from semantic_cube import semantic_cube
 import ply.yacc as yacc
 import sys
 # obtenemos la lista de tokens generadas por el analizador lexico
@@ -28,7 +29,7 @@ operands_s  = Stack()
 types_s     = Stack()
 error_list  = []
 st          = symbol_table()
-
+sc          = semantic_cube()
 # Programa
 def p_program(p):
   '''program : PROGRAMA ID inicializar DOSPUNTOS declaracion function INICIO bloque FIN'''
