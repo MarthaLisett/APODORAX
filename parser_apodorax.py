@@ -27,6 +27,7 @@ precedence = (
 operators_s = Stack()
 operands_s  = Stack()
 types_s     = Stack()
+quad_s      = Stack()
 error_list  = []
 st          = symbol_table()
 sc          = semantic_cube()
@@ -241,7 +242,29 @@ def p_expresionaux(p) :
 
 # Exp suma y resta
 def p_exp(p):
-    '''exp : termino exp2 '''
+    '''exp : termino checkExpTypes exp2 '''
+
+def p_checkExpTypes(p):
+  '''checkExpTypes : '''
+  if len(p) >= 1:
+    if operators_s.size() > 0:
+      if operators_s.peek() == '+' or operators_s.peek() == '-':
+        right_op    = operands_s.pop()
+        print(right_op)
+        right_type  = types_s.pop()
+        left_op     = operands_s.pop()
+        left_type   = types_s.pop()
+        operator    = operators_s.pop()
+        result_type = sc.verify_type_match(left_type, right_type, operator)
+        if result_type != -1:
+          result = left_op + right_op if operator is '+' else left_op - right_op
+          quad = (operator, left_op, right_op, result)
+          quad_s.push(quad)
+          operands_s.push(result)
+          types_s.push(result_type)
+          # TODO: if any operand were a temporal space, return it to AVAIL
+        else:
+          raise TypeError("Tipos incompatibles.")
 
 def p_addExp(p):
 	''' addExp : '''
@@ -257,7 +280,28 @@ def p_exp2(p):
 
 # Termino multiplicacion y division
 def p_termino(p):
-  '''termino : factor termino2'''
+  '''termino : factor checkTermTypes termino2'''
+
+def p_checkTermTypes(p):
+  '''checkTermTypes : '''
+  if len(p) >= 1:
+    if operators_s.size() > 0:
+      if operators_s.peek() == '*' or operators_s.peek() == '/':
+        right_op    = operands_s.pop()
+        right_type  = types_s.pop()
+        left_op     = operands_s.pop()
+        left_type   = types_s.pop()
+        operator    = operators_s.pop()
+        result_type = sc.verify_type_match(left_type, right_type, operator)
+        if result_type != -1:
+          result = left_op * right_op if operator is '*' else left_op / right_op
+          quad = (operator, left_op, right_op, result)
+          quad_s.push(quad)
+          operands_s.push(result)
+          types_s.push(result_type)
+          # TODO: if any operand were a temporal space, return it to AVAIL
+        else:
+          raise TypeError("Tipos incompatibles.")
 
 # Auxiliar termino que permite tener 1 o mas factores
 def p_termino2(p):
@@ -266,8 +310,10 @@ def p_termino2(p):
              | '''
 
 def p_addFactor(p):
-	'''addFactor : '''
-	operators_s.push(p[-1])
+  '''addFactor : '''
+  if len(p) >= 1:
+    if operands_s.size() > 1:
+      operators_s.push(p[-1])
 
 # Factor numerico o mediante IDs
 def p_factor(p):

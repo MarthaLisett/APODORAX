@@ -1,0 +1,7 @@
+programa Martha0296:
+var entero x;
+
+inicio {
+	x = 3+4;
+}
+fin

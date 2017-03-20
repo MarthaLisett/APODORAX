@@ -80,9 +80,18 @@ class semantic_cube:
         result = cube[l][r][op]
 
         if result is 0:
-            return 'Tipos incompatibles.'
-        else:
-            return 'Compatibles.'
+            return -1
+        elif result is 1:
+            return "entero"
+        elif result is 2:
+            return "flotante"
+        elif result is 3:
+            return "cadena"
+        elif result is 4:
+            return "caracter"
+        elif result is 5:
+            return "bool"
+
 
     def get_val(self, val):
         if val in self.operadores:
