@@ -50,7 +50,7 @@ class symbol_table:
 			self.__func_dic[fun_id] = (return_type, {})
 			self.set_scope(fun_id)
 		else:
-			raise KeyError("Funcion '" + fun_id +"' repetida.")
+			raise KeyError("Funcion '" + fun_id + "' repetida.")
 
 	""" Sección de setters """
 	def set_scope(self, scope):
@@ -58,6 +58,9 @@ class symbol_table:
 
 	def set_func_dic(self, func_dic):
 		self.__func_dic = func_dic
+
+	def set_var_val(self, var_id, val):
+		self.__func_dic[self.__scope][1][var_id].append(val)
 
 	""" Sección de getters  """
 	def get_scope(self):

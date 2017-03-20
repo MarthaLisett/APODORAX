@@ -1,7 +1,13 @@
 programa Martha0296:
 var entero x;
-
+var entero y;
+var entero z;
+var entero w;
+var cadena a;
 inicio {
-	x = 3+4;
+	z = 14/2 + 11;
+	y = 10;
+	w = 4.3 + 1;
+	x = 8.3 + z * 3 + y * 8;
 }
 fin

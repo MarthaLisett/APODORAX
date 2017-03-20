@@ -11,6 +11,7 @@
 from symbol_table  import symbol_table
 from stack         import Stack
 from semantic_cube import semantic_cube
+from queue         import Queue
 import ply.yacc as yacc
 import sys
 # obtenemos la lista de tokens generadas por el analizador lexico
@@ -27,7 +28,7 @@ precedence = (
 operators_s = Stack()
 operands_s  = Stack()
 types_s     = Stack()
-quad_s      = Stack()
+quad_q      = Queue()
 error_list  = []
 st          = symbol_table()
 sc          = semantic_cube()
@@ -38,27 +39,30 @@ def p_program(p):
 def p_inicializar(p):
   '''inicializar : '''
   pass
-  p[0]="Interpretado Correctamente"
+  p[0]="Interpretado Correctamente."
 
 # Constante ID
 def p_cteid(p):
-    '''cteid : ID buscarId guardarId cteidaux'''
+    '''cteid : ID buscarId cteidaux'''
     p[0] = p[1]
 
 def p_guardarId(p):
-	''' guardarId : '''
-	if len(p) >= 1:
-		if (not operands_s.isEmpty()):
-			if operators_s.isEmpty():
-				while not operands_s.isEmpty():
-					operands_s.pop()
-					types_s.pop()
-				operands_s.push(p[-2])
-				if st.get_var(p[-2]) is not None:
-					types_s.push(st.get_var(p[-2])[1])
-		else:
-			operands_s.push(p[-2])
-			types_s.push(st.get_var(p[-2]))
+  ''' guardarId : '''
+  #print("tamaño:",operands_s.size())
+  if len(p) >= 1:
+    if (not operands_s.isEmpty()):
+      if operators_s.isEmpty():
+        while not operands_s.isEmpty():
+          operands_s.pop()
+          types_s.pop()
+        operands_s.push(p[-2])
+        if st.get_var(p[-2]) is not None:
+          types_s.push(p[-2])
+      else:
+        operands_s.push(st.get_var(p[-2])[0])
+    else:
+      operands_s.push(st.get_var(p[-2])[0])
+      types_s.push(st.get_var(p[-2])[1])
 
 
 def p_buscarId(p):
@@ -129,6 +133,12 @@ def p_cte(p):
            | VERDADERO
            | FALSO'''
     p[0] = p[1]
+    if st.get_var(p[1]) is not None and get_type(p[1]) != "entero" and len(st.get_var(p[1])) >= 4:
+      operands_s.push(st.get_var(p[1])[3])
+      types_s.push(st.get_var(p[1])[1])
+    else:
+      operands_s.push(p[1])
+      types_s.push(get_type(p[1]))
 
 # Tipo de dato
 def p_tipo(p):
@@ -181,8 +191,8 @@ def p_llamadaparaux(p):
 
 # Lado izquierdo de la asignacion para saber si es id normal o arreglo
 def p_asignacionizq(p):
-  '''asignacionizq : ID buscarId asignacionizqaux'''
-
+  '''asignacionizq : ID buscarId guardarId asignacionizqaux'''
+  p[0] = p[1]
 # Auxiliar asignacionizq
 def p_asignacionizqaux(p):
   '''asignacionizqaux : CORCHETEIZQ exp CORCHETEDER
@@ -190,7 +200,32 @@ def p_asignacionizqaux(p):
 
 # Asignacion de valores
 def p_asignacion(p):
-  '''asignacion : asignacionizq ASIGNACION asignacionaux PUNTOYCOMA'''
+  '''asignacion : asignacionizq ASIGNACION insertarAsignacion asignacionaux setAssignment PUNTOYCOMA'''
+
+def p_insertarAsignacion(p):
+  '''insertarAsignacion : '''
+  operators_s.push(p[-1])
+
+def p_setAssignment(p):
+  '''setAssignment : '''
+  if len(p) >= 1:
+    #print('sim actual:', operators_s.peek())
+    if operators_s.size() > 0:
+      if operators_s.peek() == '=':
+        right_op    = operands_s.pop()
+        right_type  = types_s.pop()
+        left_op     = operands_s.pop()
+        left_type   = types_s.pop()
+        operator    = operators_s.pop()
+        result_type = sc.verify_type_match(left_type, right_type, operator)
+
+        if result_type != -1:
+          result = right_op
+          st.set_var_val(left_op, result)
+          print("resultado final:", st.get_var(left_op))
+          # TODO: if any operand were a temporal space, return it to AVAIL
+        else:
+          raise TypeError("Tipos incompatibles.")
 
 # Auxiliar de asignacion
 def p_asignacionaux(p):
@@ -228,7 +263,7 @@ def p_comparacion(p):
                   | IGUAL
                   | DIFERENTE
                   | CONJUNCION
-                  | DISYUNCION'''
+                 | DISYUNCION'''
 
 # Expresion que permite la comparacion
 def p_expresion(p): 
@@ -250,7 +285,6 @@ def p_checkExpTypes(p):
     if operators_s.size() > 0:
       if operators_s.peek() == '+' or operators_s.peek() == '-':
         right_op    = operands_s.pop()
-        print(right_op)
         right_type  = types_s.pop()
         left_op     = operands_s.pop()
         left_type   = types_s.pop()
@@ -259,18 +293,19 @@ def p_checkExpTypes(p):
         if result_type != -1:
           result = left_op + right_op if operator is '+' else left_op - right_op
           quad = (operator, left_op, right_op, result)
-          quad_s.push(quad)
+          quad_q.enqueue(quad)
           operands_s.push(result)
-          types_s.push(result_type)
+          types_s.push(get_type(result))
+          print(result)
           # TODO: if any operand were a temporal space, return it to AVAIL
         else:
           raise TypeError("Tipos incompatibles.")
 
 def p_addExp(p):
-	''' addExp : '''
-	if len(p) >= 1:
-		if operands_s.size() > 1:
-			operators_s.push(p[-1])
+  ''' addExp : '''
+  if len(p) > 0:
+    if operands_s.size() > 0:
+      operators_s.push(p[-1])
 
 # Auxiliar de exp que permite tener 1 o más terminos
 def p_exp2(p):
@@ -296,9 +331,10 @@ def p_checkTermTypes(p):
         if result_type != -1:
           result = left_op * right_op if operator is '*' else left_op / right_op
           quad = (operator, left_op, right_op, result)
-          quad_s.push(quad)
+          quad_q.enqueue(quad)
           operands_s.push(result)
-          types_s.push(result_type)
+          print("resultado parcial:", result)
+          types_s.push(get_type(result))
           # TODO: if any operand were a temporal space, return it to AVAIL
         else:
           raise TypeError("Tipos incompatibles.")
@@ -311,8 +347,8 @@ def p_termino2(p):
 
 def p_addFactor(p):
   '''addFactor : '''
-  if len(p) >= 1:
-    if operands_s.size() > 1:
+  if len(p) > 0:
+    if operands_s.size() > 0:
       operators_s.push(p[-1])
 
 # Factor numerico o mediante IDs
@@ -342,7 +378,7 @@ def p_color(p):
 def p_ciclo(p):
     '''ciclo : MIENTRAS PARENIZQUIERDO expresion PARENDERECHO bloque'''
 
-# Desplegar en consola
+# Desplegar en consola  
 def p_escritura(p):
     '''escritura : DESPLEGAR PARENIZQUIERDO escrituraaux PARENDERECHO PUNTOYCOMA'''
  
@@ -411,6 +447,21 @@ def p_curva(p):
 
 def p_error(p):
   print("Error de sintaxis: '%s' en línea: %s."  % (p.value, p.lineno))
+
+def get_type(symbol):
+  t = str(type(symbol))[7:10]
+  if t == 'int':
+    return "entero"
+  elif t == 'flo':
+    return "flotante"
+  elif t == 'str' and (t == "Verdadero" or t == "Falso"):
+    return "bool"
+  elif t == 'str' and len(symbol) == 1:
+    return "caracter"
+  elif t == 'str':
+    return "cadena"
+  else:
+    return st.get_var(symbol)[3]
 
 parser = yacc.yacc()
 

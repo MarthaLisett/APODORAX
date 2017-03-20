@@ -38,6 +38,7 @@ class semantic_cube:
         self.operadores = ("=", "+", "*", "/", "&&", "||", ">", "<", ">=", "<=", "!=", "==", "=")
 
     def verify_type_match(self, left, right, operator):
+
         l  = self.get_val(left)
         r  = self.get_val(right)
         op = self.get_val(operator)
@@ -80,7 +81,7 @@ class semantic_cube:
         result = cube[l][r][op]
 
         if result is 0:
-            return -1
+            return -1 
         elif result is 1:
             return "entero"
         elif result is 2:
@@ -96,19 +97,19 @@ class semantic_cube:
     def get_val(self, val):
         if val in self.operadores:
             return self.operadores.index(val)
-        elif type(val) is int:
+        elif val == 'entero' :#or type(val) is int:
             print('entero')
             return 0
-        elif type(val) is float:
+        elif val == "flotante" :#or type(val) is float:
             print('flotante')
             return 1
-        elif type(val) is str and len(val) is 1 and val not in self.operadores:
+        elif val == "caracter" :#or type(val) is str and len(val) is 1 and val not in self.operadores:
             print('caracter')
             return 3
-        elif type(val) is str and val in self.booleanos:
+        elif val == "bool" :#or type(val) is str and val in self.booleanos:
             print('booleano')
             return 4
-        elif type(val) is str and val not in self.operadores:
+        elif val == "cadena" :#or type(val) is str and val not in self.operadores:
             print('cadena')
             return 2
 
