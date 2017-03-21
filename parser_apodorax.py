@@ -263,17 +263,46 @@ def p_comparacion(p):
                   | IGUAL
                   | DIFERENTE
                   | CONJUNCION
-                 | DISYUNCION'''
+                  | DISYUNCION'''
 
 # Expresion que permite la comparacion
 def p_expresion(p): 
-    '''expresion : negacion exp expresionaux
+    '''expresion : negacion exp expresionaux checkRelopTypes
                 | color'''  
+
+
+def p_checkRelopTypes(p):
+  '''checkRelopTypes : '''
+  if len(p) >= 1:
+    if operators_s.size() > 0:
+      if operators_s.peek() == '*' or operators_s.peek() == '/':
+        right_op    = operands_s.pop()
+        right_type  = types_s.pop()
+        left_op     = operands_s.pop()
+        left_type   = types_s.pop()
+        operator    = operators_s.pop()
+        result_type = sc.verify_type_match(left_type, right_type, operator)
+        if result_type != -1:
+          result = left_op * right_op if operator is '*' else left_op / right_op
+          quad = (operator, left_op, right_op, result)
+          quad_q.enqueue(quad)
+          operands_s.push(result)
+          print("resultado parcial:", result)
+          types_s.push(get_type(result))
+          # TODO: if any operand were a temporal space, return it to AVAIL
+        else:
+          raise TypeError("Tipos incompatibles.")
+
 
 # Auxiliar de expresion
 def p_expresionaux(p) :
-    '''expresionaux : comparacion exp
+    '''expresionaux : comparacion addRelop exp 
                    | '''
+
+def p_addRelop(p):
+  '''addRelop : '''
+  if len(p) > 0:
+    operators_s.push(p[-1])
 
 # Exp suma y resta
 def p_exp(p):
@@ -353,8 +382,19 @@ def p_addFactor(p):
 
 # Factor numerico o mediante IDs
 def p_factor(p):
-    '''factor : PARENIZQUIERDO expresion PARENDERECHO
+    '''factor : PARENIZQUIERDO crearFondoFalso expresion PARENDERECHO quitarFondoFalso
             | cte'''
+
+def p_crearFondoFalso(p):
+  '''crearFondoFalso : '''
+  if len(p) > 0:
+    operators_s.push(p[-1])
+
+def p_quitarFondoFalso(p):
+  '''quitarFondoFalso : '''
+  if len(p) > 0:
+    operators_s.pop()
+
 
 # Condicion que maneja si, sino, entonces
 def p_condicion(p):
