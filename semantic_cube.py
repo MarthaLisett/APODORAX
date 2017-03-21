@@ -1,7 +1,7 @@
 class semantic_cube:
 
     # Formato del cubo semantico
-    # var1        var2       =       +       *      /       &&      ||       >      <     >=     <=    !=    ==    =   
+    # var1        var2       -       +       *      /       &&      ||       >      <     >=     <=    !=    ==    =   
 
     # entero     entero     ENT     ENT     ENT   FLOAT   ERROR    ERROR    BOOL   BOOL  BOOL   BOOL  BOOL  BOOL  ENT
     # entero     flotante  FLOAT   FLOAT   FLOAT  FLOAT   ERROR    ERROR    BOOL   BOOL  BOOL   BOOL  BOOL  BOOL  ENT
@@ -35,7 +35,7 @@ class semantic_cube:
 
     def __init__(self,booleanos=[], operadores=[]):
         self.booleanos = ("verdadero", "falso")
-        self.operadores = ("=", "+", "*", "/", "&&", "||", ">", "<", ">=", "<=", "!=", "==", "=")
+        self.operadores = ("-", "+", "*", "/", "&&", "||", ">", "<", ">=", "<=", "!=", "==", "=")
 
     def verify_type_match(self, left, right, operator):
 
