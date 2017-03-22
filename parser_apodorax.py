@@ -20,7 +20,7 @@ from scanner_apodorax import tokens
 # Reglas Gramaticales
 
 precedence = (
-    ('nonassoc', 'MENORQUE', 'MAYORQUE'),
+    ('nonassoc', 'MENORQUE', 'MAYORQUE', 'MAYORIGUAL', 'MENORIGUAL'),
     ('left', 'SUMA', 'RESTA'),
     ('left', 'MULTIPLICACION', 'DIVISION'),
 )
@@ -32,6 +32,7 @@ quad_q      = Queue()
 error_list  = []
 st          = symbol_table()
 sc          = semantic_cube()
+relops      = ["&&", "||", ">", "<", ">=", "<=", "!=", "=="]
 # Programa
 def p_program(p):
   '''program : PROGRAMA ID inicializar DOSPUNTOS declaracion function INICIO bloque FIN'''
@@ -48,7 +49,6 @@ def p_cteid(p):
 
 def p_guardarId(p):
   ''' guardarId : '''
-  #print("tamaño:",operands_s.size())
   if len(p) >= 1:
     if (not operands_s.isEmpty()):
       if operators_s.isEmpty():
@@ -57,7 +57,7 @@ def p_guardarId(p):
           types_s.pop()
         operands_s.push(p[-2])
         if st.get_var(p[-2]) is not None:
-          types_s.push(p[-2])
+          types_s.push(st.get_var(p[-2])[1])
       else:
         operands_s.push(st.get_var(p[-2])[0])
     else:
@@ -155,11 +155,11 @@ def p_declaracion(p):
                 | '''
 
 def p_revisarId(p):
-	'''revisarId : '''
-	pass
-	if len(p) >= 1:
-		global st
-		st.insert_variable(p[-2], p[-1])
+  '''revisarId : '''
+  pass
+  if len(p) >= 1:
+    global st
+    st.insert_variable(p[-2], p[-1])
 
 # Return de las funciones
 def p_regreso(p):
@@ -209,7 +209,6 @@ def p_insertarAsignacion(p):
 def p_setAssignment(p):
   '''setAssignment : '''
   if len(p) >= 1:
-    #print('sim actual:', operators_s.peek())
     if operators_s.size() > 0:
       if operators_s.peek() == '=':
         right_op    = operands_s.pop()
@@ -264,18 +263,19 @@ def p_comparacion(p):
                   | DIFERENTE
                   | CONJUNCION
                   | DISYUNCION'''
+    p[0] = p[1]
 
 # Expresion que permite la comparacion
 def p_expresion(p): 
-    '''expresion : negacion exp expresionaux checkRelopTypes
+    '''expresion : negacion exp expresionaux
                 | color'''  
 
 
 def p_checkRelopTypes(p):
   '''checkRelopTypes : '''
   if len(p) >= 1:
-    if operators_s.size() > 0:
-      if operators_s.peek() == '*' or operators_s.peek() == '/':
+    if operators_s.size() >= 0:
+      if operators_s.peek() in relops:
         right_op    = operands_s.pop()
         right_type  = types_s.pop()
         left_op     = operands_s.pop()
@@ -283,25 +283,39 @@ def p_checkRelopTypes(p):
         operator    = operators_s.pop()
         result_type = sc.verify_type_match(left_type, right_type, operator)
         if result_type != -1:
-          result = left_op * right_op if operator is '*' else left_op / right_op
+          if operator == '<':
+            result = left_op < right_op
+          elif operator == '>':
+            result = left_op > right_op
+          elif operator == '<=':
+            result = left_op <= right_op
+          elif operator == '>=':
+            result = left_op >= right_op
+          elif operator == '==':
+            result = left_op == right_op
+          elif operator == '!=':
+            result = left_op != right_op            
+          if result:
+            result = 'verdadero'
+          else:
+            result = 'falso' 
           quad = (operator, left_op, right_op, result)
           quad_q.enqueue(quad)
           operands_s.push(result)
-          print("resultado parcial:", result)
-          types_s.push(get_type(result))
+          print("resultado if:", result)
+          types_s.push('bool')
           # TODO: if any operand were a temporal space, return it to AVAIL
         else:
           raise TypeError("Tipos incompatibles.")
 
-
 # Auxiliar de expresion
 def p_expresionaux(p) :
-    '''expresionaux : comparacion addRelop exp 
+    '''expresionaux : comparacion addRelop exp checkRelopTypes
                    | '''
 
 def p_addRelop(p):
   '''addRelop : '''
-  if len(p) > 0:
+  if len(p) >= 0:
     operators_s.push(p[-1])
 
 # Exp suma y resta

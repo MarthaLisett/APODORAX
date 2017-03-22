@@ -38,10 +38,20 @@ class semantic_cube:
         self.operadores = ("-", "+", "*", "/", "&&", "||", ">", "<", ">=", "<=", "!=", "==", "=")
 
     def verify_type_match(self, left, right, operator):
+        print('antes')
+        print('l: ',  left)
+        print('r: ',  right)
+        print('op: ', operator)
+        
 
         l  = self.get_val(left)
         r  = self.get_val(right)
         op = self.get_val(operator)
+
+        print('despues')
+        print('l: ',  l)
+        print('r: ',  r)
+        print('op: ', op)
 
         ERROR, ENT, FLOAT, CADENA, CHAR, BOOL = 0, 1, 2, 3, 4, 5
 
@@ -112,9 +122,3 @@ class semantic_cube:
         elif val == "cadena" :#or type(val) is str and val not in self.operadores:
             print('cadena')
             return 2
-
-
-
-
-
-
