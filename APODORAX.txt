@@ -14,19 +14,9 @@ FACTOR ::= '(' EXPRESION ')' | CTE
 CTE ::= CTE_ID | 'c_entero' | 'c_flotante' | 'c_cadena' | 'c_bool' | 'c_caracter'
 CTE_ID ::= 'id' | 'id' '[' EXP ']'| 'id' '(' EXP ')'
 CONDICION ::= 'si' '(' EXPRESION ')' 'entonces' BLOQUE ( 'sino' 'entonces' BLOQUE | )
-<<<<<<< HEAD
-COMPARACION ::= '<' | '>' | '!=' | '==' | '<=' | '>='
-PARAMETROS ::= 'var' TIPO 'id' | 'var' TIPO 'id' ',' PARAMETROS  
-LLAMADA ::= 'id' '(' LLAMADA2 ')' ';'
-||||||| merged common ancestors
-COMPARACION ::= '<' | '>' | '!=' | '==' | '<=' | '>='
-PARAMETROS ::= TIPO 'id' | TIPO 'id' ',' PARAMETROS  
-LLAMADA ::= 'id' '(' LLAMADA2 ')' ';'
-=======
 COMPARACION ::= '<' | '>' | '!=' | '==' | '<=' | '>=' | '&&' | '||'
 PARAMETROS ::= 'var' TIPO 'id' | 'var' TIPO 'id' ',' PARAMETROS  
 LLAMADA ::= 'id' '(' (LLAMADA2 |) ')' ';'
->>>>>>> df3d18be5fb154ea9c03782f04c7dae4c33a1d1e
 LLAMADA2 ::= EXPRESION | EXPRESION ',' LLAMADA2
 COLOR ::= 'negro' | 'gris' | 'azul' | 'amarillo' | 'verde' | 'rojo'
 CICLO ::= 'mientras' '('EXPRESION ')' BLOQUE 
