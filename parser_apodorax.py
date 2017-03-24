@@ -304,6 +304,7 @@ def p_checarLogico(p):
             result = (lo or ro) 
 
           quad = (operator, left_op, right_op, result)
+          global counter
           quad_q.enqueue(quad)
           counter += 1
           if result:
@@ -357,6 +358,7 @@ def p_checkRelopTypes(p):
             result = "falso"
           quad = (operator, left_op, right_op, result)
           quad_q.enqueue(quad)
+          global counter
           counter += 1
           operands_s.push(result)
           print("resultado if:", result)
@@ -394,6 +396,7 @@ def p_checkExpTypes(p):
           result = left_op + right_op if operator is '+' else left_op - right_op
           quad = (operator, left_op, right_op, result)
           quad_q.enqueue(quad)
+          global counter
           counter += 1
           operands_s.push(result)
           types_s.push(get_type(result))
@@ -433,6 +436,7 @@ def p_checkTermTypes(p):
           result = left_op * right_op if operator is '*' else left_op / right_op
           quad = (operator, left_op, right_op, result)
           quad_q.enqueue(quad)
+          global counter
           counter += 1
           operands_s.push(result)
           print("resultado parcial:", result)
@@ -483,6 +487,7 @@ def p_generarCond(p):
       result = operands_s.pop()
       quad = ('GotoF', result, None)
       quad_q.enqueue(quad)
+      global counter
       counter += 1
       jumps_s.push(counter - 1)
 
@@ -493,6 +498,7 @@ def p_condicionaux(p):
 
 def p_rellenarCond(p):
   '''rellenarCond : '''
+  # global counter
   # fill(jumps_s.pop(), counter)
 
 # Colores a usar en las figuras
