@@ -485,7 +485,7 @@ def p_generarCond(p):
       raise TypeError('Tipos incompatibles.')
     else:
       result = operands_s.pop()
-      quad = ('GotoF', result, None)
+      quad = ('GotoF', result, None, None)
       quad_q.enqueue(quad)
       global counter
       counter += 1
@@ -493,8 +493,19 @@ def p_generarCond(p):
 
 # Auxiliar de condicion que maneja el sino
 def p_condicionaux(p):
-   '''condicionaux : SINO ENTONCES bloque
+   '''condicionaux : SINO ENTONCES generarElse bloque
                   | rellenarCond '''
+
+def p_generarElse(p):
+  '''generarElse : '''
+  if len(p) > 0:
+    quad = ('Goto', None, None, None)
+    quad_q.enqueue(quad)
+    global counter
+    counter += 1
+    false = jumps_s.pop()
+    jumps_s.push(counter - 1)
+    # FILL(false, counter)
 
 def p_rellenarCond(p):
   '''rellenarCond : '''
@@ -512,7 +523,33 @@ def p_color(p):
 
 # Mientras (while)
 def p_ciclo(p):
-    '''ciclo : MIENTRAS PARENIZQUIERDO logico PARENDERECHO bloque'''
+    '''ciclo : MIENTRAS insertarSalto PARENIZQUIERDO logico PARENDERECHO crearCiclo bloque crearRegreso '''
+
+def p_crearRegreso(p):
+  '''crearRegreso : '''
+  end = jumps_s.pop()
+  ret = jumps_s.pop()
+  quad = ('Goto', ret, None, None)
+  global counter
+  # FILL(end, counter)
+
+def p_crearCiclo(p):
+  '''crearCiclo : '''
+  if len(p) > 0:
+    exp_type = types_s.pop()
+    if (exp_type != 'bool'):
+      raise TypeError('Tipos incompatibles.')
+    else:
+      result = operands_s.pop()
+      quad = ('GotoF', result, None, None)
+      quad_q.enqueue(quad)
+      global counter
+      counter += 1
+      jumps_s.push(counter - 1)
+
+def p_insertarSalto(p):
+  '''insertarSalto : '''
+  jumps_s.push(counter)
 
 # Desplegar en consola  
 def p_escritura(p):
