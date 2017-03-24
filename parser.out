@@ -110,7 +110,7 @@ Rule 104   crearFondoFalso -> <empty>
 Rule 105   quitarFondoFalso -> <empty>
 Rule 106   condicion -> SI PARENIZQUIERDO logico PARENDERECHO generarCond ENTONCES bloque condicionaux
 Rule 107   generarCond -> <empty>
-Rule 108   condicionaux -> SINO ENTONCES generarElse bloque
+Rule 108   condicionaux -> SINO ENTONCES generarElse bloque rellenarCond
 Rule 109   condicionaux -> rellenarCond
 Rule 110   generarElse -> <empty>
 Rule 111   rellenarCond -> <empty>
@@ -124,7 +124,7 @@ Rule 118   ciclo -> MIENTRAS insertarSalto PARENIZQUIERDO logico PARENDERECHO cr
 Rule 119   crearRegreso -> <empty>
 Rule 120   crearCiclo -> <empty>
 Rule 121   insertarSalto -> <empty>
-Rule 122   escritura -> DESPLEGAR PARENIZQUIERDO exp PARENDERECHO generarEscritura PUNTOYCOMA
+Rule 122   escritura -> DESPLEGAR PARENIZQUIERDO expresion PARENDERECHO generarEscritura PUNTOYCOMA
 Rule 123   generarEscritura -> <empty>
 Rule 124   ingreso -> ENTRADA PARENIZQUIERDO cteid PARENDERECHO generarEntrada PUNTOYCOMA
 Rule 125   generarEntrada -> <empty>
@@ -244,9 +244,9 @@ curva                : 65
 declaracion          : 1 12 35
 escritura            : 57
 estatuto             : 41
-exp                  : 8 9 38 44 49 54 78 87 93 94 122
+exp                  : 8 9 38 44 49 54 78 87 93 94
 exp2                 : 90
-expresion            : 80
+expresion            : 80 122
 expresionaux         : 78
 factor               : 96
 function             : 1 19
@@ -276,7 +276,7 @@ punto                : 63
 quitarFondoFalso     : 102
 rectangulo           : 59
 regreso              : 12
-rellenarCond         : 109
+rellenarCond         : 108 109
 resetScope           : 19
 revisarId            : 15 35
 setAssignment        : 51
@@ -587,7 +587,7 @@ state 26
     (68) estatuto -> . condicion
     (69) estatuto -> . ciclo
     (124) ingreso -> . ENTRADA PARENIZQUIERDO cteid PARENDERECHO generarEntrada PUNTOYCOMA
-    (122) escritura -> . DESPLEGAR PARENIZQUIERDO exp PARENDERECHO generarEscritura PUNTOYCOMA
+    (122) escritura -> . DESPLEGAR PARENIZQUIERDO expresion PARENDERECHO generarEscritura PUNTOYCOMA
     (129) texto -> . INSERTATEXTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA
     (130) rectangulo -> . INSERTARECTANGULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA
     (132) circulo -> . INSERTACIRCULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA
@@ -1007,7 +1007,7 @@ state 47
 
 state 48
 
-    (122) escritura -> DESPLEGAR . PARENIZQUIERDO exp PARENDERECHO generarEscritura PUNTOYCOMA
+    (122) escritura -> DESPLEGAR . PARENIZQUIERDO expresion PARENDERECHO generarEscritura PUNTOYCOMA
 
     PARENIZQUIERDO  shift and go to state 86
 
@@ -1116,7 +1116,7 @@ state 55
     (68) estatuto -> . condicion
     (69) estatuto -> . ciclo
     (124) ingreso -> . ENTRADA PARENIZQUIERDO cteid PARENDERECHO generarEntrada PUNTOYCOMA
-    (122) escritura -> . DESPLEGAR PARENIZQUIERDO exp PARENDERECHO generarEscritura PUNTOYCOMA
+    (122) escritura -> . DESPLEGAR PARENIZQUIERDO expresion PARENDERECHO generarEscritura PUNTOYCOMA
     (129) texto -> . INSERTATEXTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA
     (130) rectangulo -> . INSERTARECTANGULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA
     (132) circulo -> . INSERTACIRCULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA
@@ -1702,34 +1702,37 @@ state 85
 
 state 86
 
-    (122) escritura -> DESPLEGAR PARENIZQUIERDO . exp PARENDERECHO generarEscritura PUNTOYCOMA
-    (90) exp -> . termino checkExpTypes exp2
-    (96) termino -> . factor checkTermTypes termino2
-    (102) factor -> . PARENIZQUIERDO crearFondoFalso logico PARENDERECHO quitarFondoFalso
-    (103) factor -> . cte
-    (23) cte -> . cteid
-    (24) cte -> . CENTERO
-    (25) cte -> . CFLOTANTE
-    (26) cte -> . CCADENA
-    (27) cte -> . CCARACTER
-    (28) cte -> . VERDADERO
-    (29) cte -> . FALSO
-    (4) cteid -> . ID buscarId cteidaux
+    (122) escritura -> DESPLEGAR PARENIZQUIERDO . expresion PARENDERECHO generarEscritura PUNTOYCOMA
+    (78) expresion -> . negacion exp expresionaux
+    (79) expresion -> . color
+    (70) negacion -> . NO
+    (71) negacion -> .
+    (112) color -> . NEGRO
+    (113) color -> . GRIS
+    (114) color -> . AZUL
+    (115) color -> . AMARILLO
+    (116) color -> . VERDE
+    (117) color -> . ROJO
 
-    PARENIZQUIERDO  shift and go to state 32
-    CENTERO         shift and go to state 35
-    CFLOTANTE       shift and go to state 34
-    CCADENA         shift and go to state 39
-    CCARACTER       shift and go to state 36
-    VERDADERO       shift and go to state 38
-    FALSO           shift and go to state 40
-    ID              shift and go to state 37
+    NO              shift and go to state 108
+    PARENIZQUIERDO  reduce using rule 71 (negacion -> .)
+    CENTERO         reduce using rule 71 (negacion -> .)
+    CFLOTANTE       reduce using rule 71 (negacion -> .)
+    CCADENA         reduce using rule 71 (negacion -> .)
+    CCARACTER       reduce using rule 71 (negacion -> .)
+    VERDADERO       reduce using rule 71 (negacion -> .)
+    FALSO           reduce using rule 71 (negacion -> .)
+    ID              reduce using rule 71 (negacion -> .)
+    NEGRO           shift and go to state 111
+    GRIS            shift and go to state 107
+    AZUL            shift and go to state 113
+    AMARILLO        shift and go to state 112
+    VERDE           shift and go to state 114
+    ROJO            shift and go to state 110
 
-    cte                            shift and go to state 41
-    termino                        shift and go to state 30
-    exp                            shift and go to state 124
-    factor                         shift and go to state 33
-    cteid                          shift and go to state 31
+    expresion                      shift and go to state 124
+    negacion                       shift and go to state 115
+    color                          shift and go to state 109
 
 state 87
 
@@ -2181,8 +2184,8 @@ state 107
 
     CONJUNCION      reduce using rule 113 (color -> GRIS .)
     DISYUNCION      reduce using rule 113 (color -> GRIS .)
-    PARENDERECHO    reduce using rule 113 (color -> GRIS .)
     COMA            reduce using rule 113 (color -> GRIS .)
+    PARENDERECHO    reduce using rule 113 (color -> GRIS .)
 
 
 state 108
@@ -2215,8 +2218,8 @@ state 110
 
     CONJUNCION      reduce using rule 117 (color -> ROJO .)
     DISYUNCION      reduce using rule 117 (color -> ROJO .)
-    PARENDERECHO    reduce using rule 117 (color -> ROJO .)
     COMA            reduce using rule 117 (color -> ROJO .)
+    PARENDERECHO    reduce using rule 117 (color -> ROJO .)
 
 
 state 111
@@ -2225,8 +2228,8 @@ state 111
 
     CONJUNCION      reduce using rule 112 (color -> NEGRO .)
     DISYUNCION      reduce using rule 112 (color -> NEGRO .)
-    PARENDERECHO    reduce using rule 112 (color -> NEGRO .)
     COMA            reduce using rule 112 (color -> NEGRO .)
+    PARENDERECHO    reduce using rule 112 (color -> NEGRO .)
 
 
 state 112
@@ -2235,8 +2238,8 @@ state 112
 
     CONJUNCION      reduce using rule 115 (color -> AMARILLO .)
     DISYUNCION      reduce using rule 115 (color -> AMARILLO .)
-    PARENDERECHO    reduce using rule 115 (color -> AMARILLO .)
     COMA            reduce using rule 115 (color -> AMARILLO .)
+    PARENDERECHO    reduce using rule 115 (color -> AMARILLO .)
 
 
 state 113
@@ -2245,8 +2248,8 @@ state 113
 
     CONJUNCION      reduce using rule 114 (color -> AZUL .)
     DISYUNCION      reduce using rule 114 (color -> AZUL .)
-    PARENDERECHO    reduce using rule 114 (color -> AZUL .)
     COMA            reduce using rule 114 (color -> AZUL .)
+    PARENDERECHO    reduce using rule 114 (color -> AZUL .)
 
 
 state 114
@@ -2255,8 +2258,8 @@ state 114
 
     CONJUNCION      reduce using rule 116 (color -> VERDE .)
     DISYUNCION      reduce using rule 116 (color -> VERDE .)
-    PARENDERECHO    reduce using rule 116 (color -> VERDE .)
     COMA            reduce using rule 116 (color -> VERDE .)
+    PARENDERECHO    reduce using rule 116 (color -> VERDE .)
 
 
 state 115
@@ -2427,7 +2430,7 @@ state 123
 
 state 124
 
-    (122) escritura -> DESPLEGAR PARENIZQUIERDO exp . PARENDERECHO generarEscritura PUNTOYCOMA
+    (122) escritura -> DESPLEGAR PARENIZQUIERDO expresion . PARENDERECHO generarEscritura PUNTOYCOMA
 
     PARENDERECHO    shift and go to state 153
 
@@ -2883,7 +2886,7 @@ state 152
 
 state 153
 
-    (122) escritura -> DESPLEGAR PARENIZQUIERDO exp PARENDERECHO . generarEscritura PUNTOYCOMA
+    (122) escritura -> DESPLEGAR PARENIZQUIERDO expresion PARENDERECHO . generarEscritura PUNTOYCOMA
     (123) generarEscritura -> .
 
     PUNTOYCOMA      reduce using rule 123 (generarEscritura -> .)
@@ -3099,8 +3102,8 @@ state 173
 
     (80) logico -> expresion checarLogico logicoAux .
 
-    COMA            reduce using rule 80 (logico -> expresion checarLogico logicoAux .)
     PARENDERECHO    reduce using rule 80 (logico -> expresion checarLogico logicoAux .)
+    COMA            reduce using rule 80 (logico -> expresion checarLogico logicoAux .)
 
 
 state 174
@@ -3335,7 +3338,7 @@ state 188
 
 state 189
 
-    (122) escritura -> DESPLEGAR PARENIZQUIERDO exp PARENDERECHO generarEscritura . PUNTOYCOMA
+    (122) escritura -> DESPLEGAR PARENIZQUIERDO expresion PARENDERECHO generarEscritura . PUNTOYCOMA
 
     PUNTOYCOMA      shift and go to state 211
 
@@ -3737,23 +3740,23 @@ state 210
 
 state 211
 
-    (122) escritura -> DESPLEGAR PARENIZQUIERDO exp PARENDERECHO generarEscritura PUNTOYCOMA .
+    (122) escritura -> DESPLEGAR PARENIZQUIERDO expresion PARENDERECHO generarEscritura PUNTOYCOMA .
 
-    ENTRADA         reduce using rule 122 (escritura -> DESPLEGAR PARENIZQUIERDO exp PARENDERECHO generarEscritura PUNTOYCOMA .)
-    DESPLEGAR       reduce using rule 122 (escritura -> DESPLEGAR PARENIZQUIERDO exp PARENDERECHO generarEscritura PUNTOYCOMA .)
-    INSERTATEXTO    reduce using rule 122 (escritura -> DESPLEGAR PARENIZQUIERDO exp PARENDERECHO generarEscritura PUNTOYCOMA .)
-    INSERTARECTANGULO reduce using rule 122 (escritura -> DESPLEGAR PARENIZQUIERDO exp PARENDERECHO generarEscritura PUNTOYCOMA .)
-    INSERTACIRCULO  reduce using rule 122 (escritura -> DESPLEGAR PARENIZQUIERDO exp PARENDERECHO generarEscritura PUNTOYCOMA .)
-    INSERTAOVALO    reduce using rule 122 (escritura -> DESPLEGAR PARENIZQUIERDO exp PARENDERECHO generarEscritura PUNTOYCOMA .)
-    INSERTATRIANGULO reduce using rule 122 (escritura -> DESPLEGAR PARENIZQUIERDO exp PARENDERECHO generarEscritura PUNTOYCOMA .)
-    INSERTAPUNTO    reduce using rule 122 (escritura -> DESPLEGAR PARENIZQUIERDO exp PARENDERECHO generarEscritura PUNTOYCOMA .)
-    INSERTALINEA    reduce using rule 122 (escritura -> DESPLEGAR PARENIZQUIERDO exp PARENDERECHO generarEscritura PUNTOYCOMA .)
-    INSERTACURVA    reduce using rule 122 (escritura -> DESPLEGAR PARENIZQUIERDO exp PARENDERECHO generarEscritura PUNTOYCOMA .)
-    ID              reduce using rule 122 (escritura -> DESPLEGAR PARENIZQUIERDO exp PARENDERECHO generarEscritura PUNTOYCOMA .)
-    SI              reduce using rule 122 (escritura -> DESPLEGAR PARENIZQUIERDO exp PARENDERECHO generarEscritura PUNTOYCOMA .)
-    MIENTRAS        reduce using rule 122 (escritura -> DESPLEGAR PARENIZQUIERDO exp PARENDERECHO generarEscritura PUNTOYCOMA .)
-    LLAVEDERECHO    reduce using rule 122 (escritura -> DESPLEGAR PARENIZQUIERDO exp PARENDERECHO generarEscritura PUNTOYCOMA .)
-    REGRESAR        reduce using rule 122 (escritura -> DESPLEGAR PARENIZQUIERDO exp PARENDERECHO generarEscritura PUNTOYCOMA .)
+    ENTRADA         reduce using rule 122 (escritura -> DESPLEGAR PARENIZQUIERDO expresion PARENDERECHO generarEscritura PUNTOYCOMA .)
+    DESPLEGAR       reduce using rule 122 (escritura -> DESPLEGAR PARENIZQUIERDO expresion PARENDERECHO generarEscritura PUNTOYCOMA .)
+    INSERTATEXTO    reduce using rule 122 (escritura -> DESPLEGAR PARENIZQUIERDO expresion PARENDERECHO generarEscritura PUNTOYCOMA .)
+    INSERTARECTANGULO reduce using rule 122 (escritura -> DESPLEGAR PARENIZQUIERDO expresion PARENDERECHO generarEscritura PUNTOYCOMA .)
+    INSERTACIRCULO  reduce using rule 122 (escritura -> DESPLEGAR PARENIZQUIERDO expresion PARENDERECHO generarEscritura PUNTOYCOMA .)
+    INSERTAOVALO    reduce using rule 122 (escritura -> DESPLEGAR PARENIZQUIERDO expresion PARENDERECHO generarEscritura PUNTOYCOMA .)
+    INSERTATRIANGULO reduce using rule 122 (escritura -> DESPLEGAR PARENIZQUIERDO expresion PARENDERECHO generarEscritura PUNTOYCOMA .)
+    INSERTAPUNTO    reduce using rule 122 (escritura -> DESPLEGAR PARENIZQUIERDO expresion PARENDERECHO generarEscritura PUNTOYCOMA .)
+    INSERTALINEA    reduce using rule 122 (escritura -> DESPLEGAR PARENIZQUIERDO expresion PARENDERECHO generarEscritura PUNTOYCOMA .)
+    INSERTACURVA    reduce using rule 122 (escritura -> DESPLEGAR PARENIZQUIERDO expresion PARENDERECHO generarEscritura PUNTOYCOMA .)
+    ID              reduce using rule 122 (escritura -> DESPLEGAR PARENIZQUIERDO expresion PARENDERECHO generarEscritura PUNTOYCOMA .)
+    SI              reduce using rule 122 (escritura -> DESPLEGAR PARENIZQUIERDO expresion PARENDERECHO generarEscritura PUNTOYCOMA .)
+    MIENTRAS        reduce using rule 122 (escritura -> DESPLEGAR PARENIZQUIERDO expresion PARENDERECHO generarEscritura PUNTOYCOMA .)
+    LLAVEDERECHO    reduce using rule 122 (escritura -> DESPLEGAR PARENIZQUIERDO expresion PARENDERECHO generarEscritura PUNTOYCOMA .)
+    REGRESAR        reduce using rule 122 (escritura -> DESPLEGAR PARENIZQUIERDO expresion PARENDERECHO generarEscritura PUNTOYCOMA .)
 
 
 state 212
@@ -3840,7 +3843,7 @@ state 218
     (68) estatuto -> . condicion
     (69) estatuto -> . ciclo
     (124) ingreso -> . ENTRADA PARENIZQUIERDO cteid PARENDERECHO generarEntrada PUNTOYCOMA
-    (122) escritura -> . DESPLEGAR PARENIZQUIERDO exp PARENDERECHO generarEscritura PUNTOYCOMA
+    (122) escritura -> . DESPLEGAR PARENIZQUIERDO expresion PARENDERECHO generarEscritura PUNTOYCOMA
     (129) texto -> . INSERTATEXTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA
     (130) rectangulo -> . INSERTARECTANGULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA
     (132) circulo -> . INSERTACIRCULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA
@@ -3954,7 +3957,7 @@ state 223
 state 224
 
     (106) condicion -> SI PARENIZQUIERDO logico PARENDERECHO generarCond ENTONCES bloque . condicionaux
-    (108) condicionaux -> . SINO ENTONCES generarElse bloque
+    (108) condicionaux -> . SINO ENTONCES generarElse bloque rellenarCond
     (109) condicionaux -> . rellenarCond
     (111) rellenarCond -> .
 
@@ -4047,7 +4050,7 @@ state 230
 
 state 231
 
-    (108) condicionaux -> SINO . ENTONCES generarElse bloque
+    (108) condicionaux -> SINO . ENTONCES generarElse bloque rellenarCond
 
     ENTONCES        shift and go to state 237
 
@@ -4141,7 +4144,7 @@ state 236
 
 state 237
 
-    (108) condicionaux -> SINO ENTONCES . generarElse bloque
+    (108) condicionaux -> SINO ENTONCES . generarElse bloque rellenarCond
     (110) generarElse -> .
 
     LLAVEIZQUIERDO  reduce using rule 110 (generarElse -> .)
@@ -4165,7 +4168,7 @@ state 239
 
 state 240
 
-    (108) condicionaux -> SINO ENTONCES generarElse . bloque
+    (108) condicionaux -> SINO ENTONCES generarElse . bloque rellenarCond
     (40) bloque -> . LLAVEIZQUIERDO bloqueaux LLAVEDERECHO
 
     LLAVEIZQUIERDO  shift and go to state 26
@@ -4181,23 +4184,46 @@ state 241
 
 state 242
 
-    (108) condicionaux -> SINO ENTONCES generarElse bloque .
+    (108) condicionaux -> SINO ENTONCES generarElse bloque . rellenarCond
+    (111) rellenarCond -> .
 
-    ENTRADA         reduce using rule 108 (condicionaux -> SINO ENTONCES generarElse bloque .)
-    DESPLEGAR       reduce using rule 108 (condicionaux -> SINO ENTONCES generarElse bloque .)
-    INSERTATEXTO    reduce using rule 108 (condicionaux -> SINO ENTONCES generarElse bloque .)
-    INSERTARECTANGULO reduce using rule 108 (condicionaux -> SINO ENTONCES generarElse bloque .)
-    INSERTACIRCULO  reduce using rule 108 (condicionaux -> SINO ENTONCES generarElse bloque .)
-    INSERTAOVALO    reduce using rule 108 (condicionaux -> SINO ENTONCES generarElse bloque .)
-    INSERTATRIANGULO reduce using rule 108 (condicionaux -> SINO ENTONCES generarElse bloque .)
-    INSERTAPUNTO    reduce using rule 108 (condicionaux -> SINO ENTONCES generarElse bloque .)
-    INSERTALINEA    reduce using rule 108 (condicionaux -> SINO ENTONCES generarElse bloque .)
-    INSERTACURVA    reduce using rule 108 (condicionaux -> SINO ENTONCES generarElse bloque .)
-    ID              reduce using rule 108 (condicionaux -> SINO ENTONCES generarElse bloque .)
-    SI              reduce using rule 108 (condicionaux -> SINO ENTONCES generarElse bloque .)
-    MIENTRAS        reduce using rule 108 (condicionaux -> SINO ENTONCES generarElse bloque .)
-    LLAVEDERECHO    reduce using rule 108 (condicionaux -> SINO ENTONCES generarElse bloque .)
-    REGRESAR        reduce using rule 108 (condicionaux -> SINO ENTONCES generarElse bloque .)
+    ENTRADA         reduce using rule 111 (rellenarCond -> .)
+    DESPLEGAR       reduce using rule 111 (rellenarCond -> .)
+    INSERTATEXTO    reduce using rule 111 (rellenarCond -> .)
+    INSERTARECTANGULO reduce using rule 111 (rellenarCond -> .)
+    INSERTACIRCULO  reduce using rule 111 (rellenarCond -> .)
+    INSERTAOVALO    reduce using rule 111 (rellenarCond -> .)
+    INSERTATRIANGULO reduce using rule 111 (rellenarCond -> .)
+    INSERTAPUNTO    reduce using rule 111 (rellenarCond -> .)
+    INSERTALINEA    reduce using rule 111 (rellenarCond -> .)
+    INSERTACURVA    reduce using rule 111 (rellenarCond -> .)
+    ID              reduce using rule 111 (rellenarCond -> .)
+    SI              reduce using rule 111 (rellenarCond -> .)
+    MIENTRAS        reduce using rule 111 (rellenarCond -> .)
+    LLAVEDERECHO    reduce using rule 111 (rellenarCond -> .)
+    REGRESAR        reduce using rule 111 (rellenarCond -> .)
+
+    rellenarCond                   shift and go to state 243
+
+state 243
+
+    (108) condicionaux -> SINO ENTONCES generarElse bloque rellenarCond .
+
+    ENTRADA         reduce using rule 108 (condicionaux -> SINO ENTONCES generarElse bloque rellenarCond .)
+    DESPLEGAR       reduce using rule 108 (condicionaux -> SINO ENTONCES generarElse bloque rellenarCond .)
+    INSERTATEXTO    reduce using rule 108 (condicionaux -> SINO ENTONCES generarElse bloque rellenarCond .)
+    INSERTARECTANGULO reduce using rule 108 (condicionaux -> SINO ENTONCES generarElse bloque rellenarCond .)
+    INSERTACIRCULO  reduce using rule 108 (condicionaux -> SINO ENTONCES generarElse bloque rellenarCond .)
+    INSERTAOVALO    reduce using rule 108 (condicionaux -> SINO ENTONCES generarElse bloque rellenarCond .)
+    INSERTATRIANGULO reduce using rule 108 (condicionaux -> SINO ENTONCES generarElse bloque rellenarCond .)
+    INSERTAPUNTO    reduce using rule 108 (condicionaux -> SINO ENTONCES generarElse bloque rellenarCond .)
+    INSERTALINEA    reduce using rule 108 (condicionaux -> SINO ENTONCES generarElse bloque rellenarCond .)
+    INSERTACURVA    reduce using rule 108 (condicionaux -> SINO ENTONCES generarElse bloque rellenarCond .)
+    ID              reduce using rule 108 (condicionaux -> SINO ENTONCES generarElse bloque rellenarCond .)
+    SI              reduce using rule 108 (condicionaux -> SINO ENTONCES generarElse bloque rellenarCond .)
+    MIENTRAS        reduce using rule 108 (condicionaux -> SINO ENTONCES generarElse bloque rellenarCond .)
+    LLAVEDERECHO    reduce using rule 108 (condicionaux -> SINO ENTONCES generarElse bloque rellenarCond .)
+    REGRESAR        reduce using rule 108 (condicionaux -> SINO ENTONCES generarElse bloque rellenarCond .)
 
 WARNING: 
 WARNING: Conflicts:

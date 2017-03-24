@@ -60,7 +60,10 @@ class symbol_table:
 		self.__func_dic = func_dic
 
 	def set_var_val(self, var_id, val):
-		self.__func_dic[self.__scope][1][var_id].append(val)
+		if self. __func_dic.get(self.__scope)[1].get(var_id) is not None:
+			self.__func_dic[self.__scope][1][var_id].append(val)
+		else:
+			self.__func_dic['global'][1][var_id].append(val)
 
 	""" Sección de getters  """
 	def get_scope(self):

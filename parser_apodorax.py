@@ -230,9 +230,10 @@ def p_setAssignment(p):
           result = right_op
           st.set_var_val(left_op, result)
           print("resultado final:", st.get_var(left_op))
-          quad = [operator, left_op, "", result]
-          quad_lst.append(quad)
           global counter
+          result = 't_' + str(counter)
+          quad = [operator, result, "", left_op]
+          quad_lst.append(quad)
           counter += 1
           # TODO: if any operand were a temporal space, return it to AVAIL
         else:
@@ -306,27 +307,29 @@ def p_checarLogico(p):
           print('lo:', left_op)
           print('ro:', right_op)
           print('op:', operator)
-
+          '''
           if operator == '&&':
             result = (lo and ro)
           elif operator == '||': 
             print('res:', (left_op or right_op))
             result = (lo or ro) 
-
+          
           if result:
             result = "verdadero"
           else:
             result = "falso"
-
-          quad = [operator, left_op, right_op, result]
+          '''
           global counter
+          #tipo_actual = get_type(result)
+          result = 't_' + str(counter)
+          quad = [operator, left_op, right_op, result]
           quad_lst.append(quad)
           print('counter en logico:', counter)
           for c in quad_lst:
             print(c)
           counter += 1
           operands_s.push(result)
-          types_s.push(get_type(result))
+          types_s.push(result_type)
           print("resultado bool:", result)
           # TODO: if any operand were a temporal space, return it to AVAIL
         else:
@@ -354,6 +357,7 @@ def p_checkRelopTypes(p):
         operator    = operators_s.pop()
         result_type = sc.verify_type_match(left_type, right_type, operator)
         if result_type != -1:
+          '''
           if operator == '<':
             result = left_op < right_op
           elif operator == '>':
@@ -370,13 +374,15 @@ def p_checkRelopTypes(p):
             result = "verdadero"
           else:
             result = "falso"
-          quad = [operator, left_op, right_op, result]
+          '''
           global counter
+          result = 't_' + str(counter)
+          quad = [operator, left_op, right_op, result]
           quad_lst.append(quad)
           counter += 1
           operands_s.push(result)
           print("resultado if:", result)
-          types_s.push('bool')
+          types_s.push(result_type)
           # TODO: if any operand were a temporal space, return it to AVAIL
         else:
           raise TypeError("Tipos incompatibles.")
@@ -401,19 +407,23 @@ def p_checkExpTypes(p):
     if operators_s.size() > 0:
       if operators_s.peek() == '+' or operators_s.peek() == '-':
         right_op    = operands_s.pop()
+        print('DERECHO:', right_op)
         right_type  = types_s.pop()
         left_op     = operands_s.pop()
+        print('IZQUIERDO:', right_op)
         left_type   = types_s.pop()
         operator    = operators_s.pop()
         result_type = sc.verify_type_match(left_type, right_type, operator)
         if result_type != -1:
-          result = left_op + right_op if operator is '+' else left_op - right_op
+          #result = left_op + right_op if operator is '+' else left_op - right_op
           global counter
+          #tipo_actual = get_type(result)
+          result = 't_' + str(counter)
           quad = [operator, left_op, right_op, result]
           quad_lst.append(quad)
           counter += 1
           operands_s.push(result)
-          types_s.push(get_type(result))
+          types_s.push(result_type)
           print(result)
           # TODO: if any operand were a temporal space, return it to AVAIL
         else:
@@ -447,14 +457,16 @@ def p_checkTermTypes(p):
         operator    = operators_s.pop()
         result_type = sc.verify_type_match(left_type, right_type, operator)
         if result_type != -1:
-          result = left_op * right_op if operator is '*' else left_op / right_op
+          #result = left_op * right_op if operator is '*' else left_op / right_op
           global counter
+          #tipo_actual = get_type(result)
+          result = 't_' + str(counter)
           quad = [operator, left_op, right_op, result]
           quad_lst.append(quad)
           counter += 1
           operands_s.push(result)
           print("resultado parcial:", result)
-          types_s.push(get_type(result))
+          types_s.push(result_type)
           # TODO: if any operand were a temporal space, return it to AVAIL
         else:
           raise TypeError("Tipos incompatibles.")
@@ -499,6 +511,7 @@ def p_generarCond(p):
     else:
       result = operands_s.pop()
       global counter
+      result = 't_' + str(counter)
       quad = ['GotoF', result, "", ""]
       quad_lst.append(quad)
       counter += 1
@@ -507,7 +520,7 @@ def p_generarCond(p):
 
 # Auxiliar de condicion que maneja el sino
 def p_condicionaux(p):
-   '''condicionaux : SINO ENTONCES generarElse bloque
+   '''condicionaux : SINO ENTONCES generarElse bloque rellenarCond
                   | rellenarCond '''
 
 def p_generarElse(p):
@@ -526,6 +539,7 @@ def p_rellenarCond(p):
   '''rellenarCond : '''
   global counter
   # fill
+  print("counter else:", counter)
   quad_lst[jumps_s.pop()][3] = counter
 # Colores a usar en las figuras
 def p_color(p):
@@ -571,7 +585,7 @@ def p_insertarSalto(p):
 
 # Desplegar en consola  
 def p_escritura(p):
-    '''escritura : DESPLEGAR PARENIZQUIERDO exp PARENDERECHO generarEscritura PUNTOYCOMA'''
+    '''escritura : DESPLEGAR PARENIZQUIERDO expresion PARENDERECHO generarEscritura PUNTOYCOMA'''
 
 def p_generarEscritura(p):
   '''generarEscritura : '''
