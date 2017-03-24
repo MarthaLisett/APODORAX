@@ -29,6 +29,8 @@ operators_s = Stack()
 operands_s  = Stack()
 types_s     = Stack()
 quad_q      = Queue()
+jumps_s     = Stack()
+counter     = 0
 error_list  = []
 st          = symbol_table()
 sc          = semantic_cube()
@@ -260,9 +262,7 @@ def p_comparacion(p):
                   | MAYORIGUAL
                   | MENORIGUAL
                   | IGUAL
-                  | DIFERENTE
-                  | CONJUNCION
-                  | DISYUNCION'''
+                  | DIFERENTE '''
     p[0] = p[1]
 
 # Expresion que permite la comparacion
@@ -270,6 +270,62 @@ def p_expresion(p):
     '''expresion : negacion exp expresionaux
                 | color'''  
 
+def p_logico(p):
+  '''logico : expresion checarLogico logicoAux '''
+
+
+def p_checarLogico(p):
+  '''checarLogico : '''
+  if len(p) >= 1:
+    if operators_s.size() > 0:
+      if operators_s.peek() == '&&' or operators_s.peek() == '||':
+        right_op    = operands_s.pop()
+        right_type  = types_s.pop()
+        left_op     = operands_s.pop()
+        left_type   = types_s.pop()
+        operator    = operators_s.pop()
+        result_type = sc.verify_type_match(left_type, right_type, operator)
+        if result_type != -1:
+          lo = False
+          ro = False
+          if left_op == 'verdadero':
+            lo = True
+          if right_op == 'verdadero':
+            ro = True
+
+          print('lo:', left_op)
+          print('ro:', right_op)
+          print('op:', operator)
+
+          if operator == '&&':
+            result = (lo and ro)
+          elif operator == '||': 
+            print('res:', (left_op or right_op))
+            result = (lo or ro) 
+
+          quad = (operator, left_op, right_op, result)
+          quad_q.enqueue(quad)
+          counter += 1
+          if result:
+            result = "verdadero"
+          else:
+            result = "falso"
+          operands_s.push(result)
+          types_s.push(get_type(result))
+          print("resultado bool:", result)
+          # TODO: if any operand were a temporal space, return it to AVAIL
+        else:
+          raise TypeError("Tipos incompatibles.")
+
+def p_logicoAux(p):
+  '''logicoAux : CONJUNCION agregarLogico logico
+                | DISYUNCION agregarLogico logico
+                | '''
+
+def p_agregarLogico(p):
+  '''agregarLogico : '''
+  if len(p) > 0:
+    operators_s.push(p[-1])
 
 def p_checkRelopTypes(p):
   '''checkRelopTypes : '''
@@ -294,13 +350,14 @@ def p_checkRelopTypes(p):
           elif operator == '==':
             result = left_op == right_op
           elif operator == '!=':
-            result = left_op != right_op            
+            result = left_op != right_op
           if result:
-            result = 'verdadero'
+            result = "verdadero"
           else:
-            result = 'falso' 
+            result = "falso"
           quad = (operator, left_op, right_op, result)
           quad_q.enqueue(quad)
+          counter += 1
           operands_s.push(result)
           print("resultado if:", result)
           types_s.push('bool')
@@ -337,6 +394,7 @@ def p_checkExpTypes(p):
           result = left_op + right_op if operator is '+' else left_op - right_op
           quad = (operator, left_op, right_op, result)
           quad_q.enqueue(quad)
+          counter += 1
           operands_s.push(result)
           types_s.push(get_type(result))
           print(result)
@@ -375,6 +433,7 @@ def p_checkTermTypes(p):
           result = left_op * right_op if operator is '*' else left_op / right_op
           quad = (operator, left_op, right_op, result)
           quad_q.enqueue(quad)
+          counter += 1
           operands_s.push(result)
           print("resultado parcial:", result)
           types_s.push(get_type(result))
@@ -396,7 +455,7 @@ def p_addFactor(p):
 
 # Factor numerico o mediante IDs
 def p_factor(p):
-    '''factor : PARENIZQUIERDO crearFondoFalso expresion PARENDERECHO quitarFondoFalso
+    '''factor : PARENIZQUIERDO crearFondoFalso logico PARENDERECHO quitarFondoFalso
             | cte'''
 
 def p_crearFondoFalso(p):
@@ -412,12 +471,29 @@ def p_quitarFondoFalso(p):
 
 # Condicion que maneja si, sino, entonces
 def p_condicion(p):
-    '''condicion : SI PARENIZQUIERDO expresion PARENDERECHO ENTONCES bloque condicionaux'''
+    '''condicion : SI PARENIZQUIERDO logico PARENDERECHO generarCond ENTONCES bloque condicionaux'''
+
+def p_generarCond(p):
+  '''generarCond : '''
+  if len(p) > 0:
+    tipo_exp = types_s.pop()
+    if tipo_exp != 'bool':
+      raise TypeError('Tipos incompatibles.')
+    else:
+      result = operands_s.pop()
+      quad = ('GotoF', result, None)
+      quad_q.enqueue(quad)
+      counter += 1
+      jumps_s.push(counter - 1)
 
 # Auxiliar de condicion que maneja el sino
 def p_condicionaux(p):
    '''condicionaux : SINO ENTONCES bloque
-                  | '''
+                  | rellenarCond '''
+
+def p_rellenarCond(p):
+  '''rellenarCond : '''
+  # fill(jumps_s.pop(), counter)
 
 # Colores a usar en las figuras
 def p_color(p):
@@ -430,7 +506,7 @@ def p_color(p):
 
 # Mientras (while)
 def p_ciclo(p):
-    '''ciclo : MIENTRAS PARENIZQUIERDO expresion PARENDERECHO bloque'''
+    '''ciclo : MIENTRAS PARENIZQUIERDO logico PARENDERECHO bloque'''
 
 # Desplegar en consola  
 def p_escritura(p):
@@ -447,20 +523,11 @@ def p_escritura2aux(p):
 
 # Aceptar/ingresar info del usuario
 def p_ingreso(p):
-    '''ingreso : ENTRADA PARENIZQUIERDO ingresoaux PARENDERECHO PUNTOYCOMA'''
-
-# Auxiliar ingreso
-def p_ingresoaux(p):
-    '''ingresoaux : cteid ingreso2aux'''
-
-# Auxiliar ingreso para que acepte uno o varios cteid
-def p_ingreso2aux(p):
-    '''ingreso2aux : COMA ingresoaux
-                  | '''
+    '''ingreso : ENTRADA PARENIZQUIERDO cteid PARENDERECHO PUNTOYCOMA'''
 
 # Argumentos para las funciones de figura, pueden ser cualquier constante o color
 def p_args(p):
-    '''args : expresion args2'''
+    '''args : logico args2'''
 
 # Auxiliar argumentos
 def p_args2(p):
@@ -503,13 +570,13 @@ def p_error(p):
   print("Error de sintaxis: '%s' en línea: %s."  % (p.value, p.lineno))
 
 def get_type(symbol):
+  if symbol == "verdadero" or symbol == "falso":
+    return 'bool'
   t = str(type(symbol))[7:10]
   if t == 'int':
     return "entero"
   elif t == 'flo':
     return "flotante"
-  elif t == 'str' and (t == "Verdadero" or t == "Falso"):
-    return "bool"
   elif t == 'str' and len(symbol) == 1:
     return "caracter"
   elif t == 'str':
