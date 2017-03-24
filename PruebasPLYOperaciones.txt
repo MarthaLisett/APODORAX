@@ -10,7 +10,9 @@ inicio {
 	}
 	#y = 11 - 5;
 	#x = (1 * (3 + 8 / 2) + (2 * 8)) - y;
-	#z = 11;
+	z = 11;
+
+	entrada(z);
 
 	mientras (10 < 11) {
 		a = 12;		
@@ -19,5 +21,7 @@ inicio {
 	mientras (10 < 11) {
 		a = 12;		
 	}
+
+	desplegar (a);
 }
 fin

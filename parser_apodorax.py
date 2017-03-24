@@ -571,14 +571,25 @@ def p_insertarSalto(p):
 
 # Desplegar en consola  
 def p_escritura(p):
-    '''escritura : DESPLEGAR PARENIZQUIERDO exp PARENDERECHO generarEscrutira PUNTOYCOMA'''
+    '''escritura : DESPLEGAR PARENIZQUIERDO exp PARENDERECHO generarEscritura PUNTOYCOMA'''
 
 def p_generarEscritura(p):
   '''generarEscritura : '''
- 
+  quad = ['escritura', "", "", operands_s.pop()]
+  quad_lst.append(quad)
+  global counter
+  counter += 1
+
 # Aceptar/ingresar info del usuario
 def p_ingreso(p):
-    '''ingreso : ENTRADA PARENIZQUIERDO cteid PARENDERECHO PUNTOYCOMA'''
+    '''ingreso : ENTRADA PARENIZQUIERDO cteid PARENDERECHO generarEntrada PUNTOYCOMA'''
+
+def p_generarEntrada(p):
+  '''generarEntrada : '''
+  quad = ["entrada", "", "", p[-2]]
+  quad_lst.append(quad)
+  global counter
+  counter += 1
 
 # Argumentos para las funciones de figura, pueden ser cualquier constante o color
 def p_args(p):
