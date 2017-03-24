@@ -28,7 +28,7 @@ precedence = (
 operators_s = Stack()
 operands_s  = Stack()
 types_s     = Stack()
-quad_q      = Queue()
+quad_lst    = []
 jumps_s     = Stack()
 counter     = 0
 error_list  = []
@@ -37,7 +37,13 @@ sc          = semantic_cube()
 relops      = ["&&", "||", ">", "<", ">=", "<=", "!=", "=="]
 # Programa
 def p_program(p):
-  '''program : PROGRAMA ID inicializar DOSPUNTOS declaracion function INICIO bloque FIN'''
+  '''program : PROGRAMA ID inicializar DOSPUNTOS declaracion function INICIO bloque FIN generarCuadruplos '''
+
+def p_generarCuadruplos(p):
+  '''generarCuadruplos : '''
+  archivo = open('cuadruplos.bigsheep', 'w')
+  for cuadruplo in quad_lst:
+    archivo.write("%s\n" % cuadruplo)
 
 def p_inicializar(p):
   '''inicializar : '''
@@ -224,6 +230,10 @@ def p_setAssignment(p):
           result = right_op
           st.set_var_val(left_op, result)
           print("resultado final:", st.get_var(left_op))
+          quad = [operator, left_op, "", result]
+          quad_lst.append(quad)
+          global counter
+          counter += 1
           # TODO: if any operand were a temporal space, return it to AVAIL
         else:
           raise TypeError("Tipos incompatibles.")
@@ -303,14 +313,18 @@ def p_checarLogico(p):
             print('res:', (left_op or right_op))
             result = (lo or ro) 
 
-          quad = (operator, left_op, right_op, result)
-          global counter
-          quad_q.enqueue(quad)
-          counter += 1
           if result:
             result = "verdadero"
           else:
             result = "falso"
+
+          quad = [operator, left_op, right_op, result]
+          global counter
+          quad_lst.append(quad)
+          print('counter en logico:', counter)
+          for c in quad_lst:
+            print(c)
+          counter += 1
           operands_s.push(result)
           types_s.push(get_type(result))
           print("resultado bool:", result)
@@ -356,9 +370,9 @@ def p_checkRelopTypes(p):
             result = "verdadero"
           else:
             result = "falso"
-          quad = (operator, left_op, right_op, result)
-          quad_q.enqueue(quad)
+          quad = [operator, left_op, right_op, result]
           global counter
+          quad_lst.append(quad)
           counter += 1
           operands_s.push(result)
           print("resultado if:", result)
@@ -394,9 +408,9 @@ def p_checkExpTypes(p):
         result_type = sc.verify_type_match(left_type, right_type, operator)
         if result_type != -1:
           result = left_op + right_op if operator is '+' else left_op - right_op
-          quad = (operator, left_op, right_op, result)
-          quad_q.enqueue(quad)
           global counter
+          quad = [operator, left_op, right_op, result]
+          quad_lst.append(quad)
           counter += 1
           operands_s.push(result)
           types_s.push(get_type(result))
@@ -434,9 +448,9 @@ def p_checkTermTypes(p):
         result_type = sc.verify_type_match(left_type, right_type, operator)
         if result_type != -1:
           result = left_op * right_op if operator is '*' else left_op / right_op
-          quad = (operator, left_op, right_op, result)
-          quad_q.enqueue(quad)
           global counter
+          quad = [operator, left_op, right_op, result]
+          quad_lst.append(quad)
           counter += 1
           operands_s.push(result)
           print("resultado parcial:", result)
@@ -472,7 +486,6 @@ def p_quitarFondoFalso(p):
   if len(p) > 0:
     operators_s.pop()
 
-
 # Condicion que maneja si, sino, entonces
 def p_condicion(p):
     '''condicion : SI PARENIZQUIERDO logico PARENDERECHO generarCond ENTONCES bloque condicionaux'''
@@ -485,10 +498,11 @@ def p_generarCond(p):
       raise TypeError('Tipos incompatibles.')
     else:
       result = operands_s.pop()
-      quad = ('GotoF', result, None, None)
-      quad_q.enqueue(quad)
       global counter
+      quad = ['GotoF', result, "", ""]
+      quad_lst.append(quad)
       counter += 1
+      print('contador actual:', counter)
       jumps_s.push(counter - 1)
 
 # Auxiliar de condicion que maneja el sino
@@ -499,19 +513,20 @@ def p_condicionaux(p):
 def p_generarElse(p):
   '''generarElse : '''
   if len(p) > 0:
-    quad = ('Goto', None, None, None)
-    quad_q.enqueue(quad)
+    quad = ['Goto', "", "", ""]
     global counter
+    quad_lst.append(quad)
     counter += 1
     false = jumps_s.pop()
     jumps_s.push(counter - 1)
     # FILL(false, counter)
+    quad_lst[false][3] = counter
 
 def p_rellenarCond(p):
   '''rellenarCond : '''
-  # global counter
-  # fill(jumps_s.pop(), counter)
-
+  global counter
+  # fill
+  quad_lst[jumps_s.pop()][3] = counter
 # Colores a usar en las figuras
 def p_color(p):
     '''color : NEGRO
@@ -529,21 +544,24 @@ def p_crearRegreso(p):
   '''crearRegreso : '''
   end = jumps_s.pop()
   ret = jumps_s.pop()
-  quad = ('Goto', ret, None, None)
+  quad = ['Goto', "", "", ret]
   global counter
+  quad_lst.append(quad)
+  counter += 1
   # FILL(end, counter)
+  quad_lst[end][3] = counter
 
 def p_crearCiclo(p):
   '''crearCiclo : '''
   if len(p) > 0:
     exp_type = types_s.pop()
     if (exp_type != 'bool'):
-      raise TypeError('Tipos incompatibles.')
+      raise TypeError('Tipos incompatibles en ciclo.')
     else:
       result = operands_s.pop()
-      quad = ('GotoF', result, None, None)
-      quad_q.enqueue(quad)
+      quad = ['GotoF', result, "", ""]
       global counter
+      quad_lst.append(quad)
       counter += 1
       jumps_s.push(counter - 1)
 
@@ -553,17 +571,11 @@ def p_insertarSalto(p):
 
 # Desplegar en consola  
 def p_escritura(p):
-    '''escritura : DESPLEGAR PARENIZQUIERDO escrituraaux PARENDERECHO PUNTOYCOMA'''
+    '''escritura : DESPLEGAR PARENIZQUIERDO exp PARENDERECHO generarEscrutira PUNTOYCOMA'''
+
+def p_generarEscritura(p):
+  '''generarEscritura : '''
  
-# Auxiliar para desplegar
-def p_escrituraaux(p):
-    '''escrituraaux : exp escritura2aux'''
-
-# Auxiliar para desplegar aceptando uno o mas exp
-def p_escritura2aux(p):
-    '''escritura2aux : COMA escrituraaux
-                    | '''
-
 # Aceptar/ingresar info del usuario
 def p_ingreso(p):
     '''ingreso : ENTRADA PARENIZQUIERDO cteid PARENDERECHO PUNTOYCOMA'''
