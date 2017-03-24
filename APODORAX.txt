@@ -11,7 +11,7 @@ EXPRESION ::= NEGACION EXP | NEGACION EXP COMPARACION EXP | COLOR
 EXP ::= TERMINO | TERMINO '+' EXP | TERMINO '-' EXP
 TERMINO ::= FACTOR | FACTOR '*' TERMINO | FACTOR '/' TERMINO 
 FACTOR ::= '(' EXPRESION ')' | CTE
-CTE ::= CTE_ID | 'c_entero' | 'c_flotante' | 'c_cadena' | 'c_bool' | 'c_caracter'
+CTE ::= CTE_ID | 'c_entero' | 'c_flotante' | 'c_cadena' | 'c_caracter' | 'verdadero' | 'falso 
 CTE_ID ::= 'id' | 'id' '[' EXP ']'| 'id' '(' EXP ')'
 CONDICION ::= 'si' '(' EXPRESION ')' 'entonces' BLOQUE ( 'sino' 'entonces' BLOQUE | )
 COMPARACION ::= '<' | '>' | '!=' | '==' | '<=' | '>=' | '&&' | '||'
