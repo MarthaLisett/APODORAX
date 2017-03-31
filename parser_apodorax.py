@@ -231,7 +231,7 @@ def p_setAssignment(p):
           st.set_var_val(left_op, result)
           print("resultado final:", st.get_var(left_op))
           global counter
-          result = 't_' + str(counter)
+          result = right_op
           quad = [operator, result, "", left_op]
           quad_lst.append(quad)
           counter += 1
