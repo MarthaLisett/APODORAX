@@ -680,7 +680,6 @@ if __name__ == '__main__':
     except EOFError:
         print(EOFError)
   else:
-=======
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #------------------------------------------------------------
