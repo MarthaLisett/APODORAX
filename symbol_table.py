@@ -3,10 +3,8 @@
 """ Clase symbol_table
 Implementa funcionalidad para el manejo de las tablas
 de variables y funciones para el compilador APODORAX.
-
 José González Ayerdi - A01036121
 Martha Benavides - A01280115
-
 10/03/2017 """
 
 class symbol_table:
@@ -18,6 +16,13 @@ class symbol_table:
 		self.__func_dic           = func_dic
 		self.__func_dic['global'] = (None, {})
 		self.__scope              = scope
+		self.__no_args            = {}
+
+	def add_no_args(self, fun_id, num_arg):
+		self.__no_args[fun_id] = num_args
+
+	def get_no_args(self, id):
+		return self.__no_args.get(fun_id)
 
 	""" search_function busca el id de una función en la tabla de funciones,
 	si no la encuentra despliega un error """
