@@ -1,0 +1,41 @@
+programa Martha0295:
+var entero a;
+var entero b;
+var flotante f;
+
+
+funcion vacio uno (var entero a)
+{
+	a = a + b * a;
+	desplegar(a);
+	desplegar(b);
+	desplegar(a + b);
+}
+
+funcion vacio dos (var entero a, var entero b, var flotante g)
+{
+	var entero i;
+	i = b;
+	mientras(i > 0)
+	{
+		a = a + b * i + b;
+		uno(i * 2);
+		desplegar(a);
+		i = i - 1;
+	}
+}
+
+
+inicio {
+
+	a = 3;
+	b = a + 1;
+	desplegar(a);
+	desplegar(b);
+	f = 3.14;
+	dos(a + b * 2, b, f * 3);
+	desplegar(a);
+	desplegar(b);
+	desplegar(f * 2 + 1);
+}
+fin
