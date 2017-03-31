@@ -35,6 +35,7 @@ error_list  = []
 st          = symbol_table()
 sc          = semantic_cube()
 relops      = ["&&", "||", ">", "<", ">=", "<=", "!=", "=="]
+args_count  = 0
 # Programa
 def p_program(p):
   '''program : PROGRAMA ID inicializar DOSPUNTOS declaracion function INICIO bloque FIN generarCuadruplos '''
@@ -109,13 +110,27 @@ def p_tiporegreso(p):
 
 # Parametros de las funciones
 def p_functionpam(p):
-    '''functionpam : VAR tipo ID revisarId functionpam2
+    '''functionpam : VAR tipo ID agregarParam functionpam2 addParamCount
                  | '''
-    
+
+def p_addParamCount(p):
+	'''addParam : '''
+	global args_count
+	st.add_no_args(p[-4], args_count)
+	args_count = 0
+
+def p_agregarParam(p):
+	'''agregarParam : '''
+	if len(p) > 0:
+		st.insert_variable(p[-2], p[-1])
+
 # Auxiliar Parametros de las funciones
 def p_functionpam2(p):
    '''functionpam2 : COMA functionpam
                     | '''
+    global args_count
+    args_count += 1
+
 # Funcion
 def p_function(p):
     '''function : FUNCION tiporegreso ID idFunctionCheck PARENIZQUIERDO functionpam PARENDERECHO bloquefun resetScope function
