@@ -18,7 +18,7 @@ class symbol_table:
 		self.__scope              = scope
 		self.__no_args            = {}
 
-	def add_no_args(self, fun_id, num_arg):
+	def add_no_args(self, fun_id, num_args):
 		self.__no_args[fun_id] = num_args
 
 	def get_no_args(self, id):
