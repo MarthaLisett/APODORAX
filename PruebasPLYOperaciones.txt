@@ -6,27 +6,16 @@ var entero w;
 var entero a;
 
 inicio {
-	si (verdadero && falso) entonces {
 
-	} sino entonces {
-		x = 10;
+	mientras (10 < 11) {
+		a = 12;		
 	}
-	y = 11 - 5;
-
 	
-	#x = (1 * (3 + 8 / 2) + (2 * 8)) - y;
-	#z = a*11;
+	z = 10;
+	mientras (10 < 11) {
+		a = 12;		
+	}
 
-	#entrada(z);
-
-	#mientras (10 < 11) {
-		#a = 12;		
-	#}
-	#z = 10;
-	#mientras (10 < 11) {
-		#a = 12;		
-	#}
-
-	#desplegar (5 + 4);
+	desplegar (5 + 4);
 }
 fin

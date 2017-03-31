@@ -36,6 +36,7 @@ st          = symbol_table()
 sc          = semantic_cube()
 relops      = ["&&", "||", ">", "<", ">=", "<=", "!=", "=="]
 args_count  = 0
+tmp_var_num = 0
 # Programa
 def p_program(p):
   '''program : PROGRAMA ID inicializar DOSPUNTOS declaracion function INICIO bloque FIN generarCuadruplos '''
@@ -246,7 +247,7 @@ def p_setAssignment(p):
           st.set_var_val(left_op, result)
           print("resultado final:", st.get_var(left_op))
           global counter
-          result = 't_' + str(counter)
+          result = right_op#'t_' + str(counter)
           quad = [operator, result, "", left_op]
           quad_lst.append(quad)
           counter += 1
@@ -335,13 +336,15 @@ def p_checarLogico(p):
             result = "falso"
           '''
           global counter
+          global tmp_var_num
           #tipo_actual = get_type(result)
-          result = 't_' + str(counter)
+          result = 't_' + str(tmp_var_num)
           quad = [operator, left_op, right_op, result]
           quad_lst.append(quad)
           print('counter en logico:', counter)
           for c in quad_lst:
             print(c)
+          tmp_var_num += 1
           counter += 1
           operands_s.push(result)
           types_s.push(result_type)
@@ -391,9 +394,11 @@ def p_checkRelopTypes(p):
             result = "falso"
           '''
           global counter
-          result = 't_' + str(counter)
+          global tmp_var_num
+          result = 't_' + str(tmp_var_num)
           quad = [operator, left_op, right_op, result]
           quad_lst.append(quad)
+          tmp_var_num += 1
           counter += 1
           operands_s.push(result)
           print("resultado if:", result)
@@ -432,11 +437,13 @@ def p_checkExpTypes(p):
         if result_type != -1:
           #result = left_op + right_op if operator is '+' else left_op - right_op
           global counter
+          global tmp_var_num
           #tipo_actual = get_type(result)
-          result = 't_' + str(counter)
+          result = 't_' + str(tmp_var_num)
           quad = [operator, left_op, right_op, result]
           quad_lst.append(quad)
           counter += 1
+          tmp_var_num += 1
           operands_s.push(result)
           types_s.push(result_type)
           print(result)
@@ -475,9 +482,11 @@ def p_checkTermTypes(p):
           #result = left_op * right_op if operator is '*' else left_op / right_op
           global counter
           #tipo_actual = get_type(result)
-          result = 't_' + str(counter)
+          global tmp_var_num
+          result = 't_' + str(tmp_var_num)
           quad = [operator, left_op, right_op, result]
           quad_lst.append(quad)
+          tmp_var_num += 1
           counter += 1
           operands_s.push(result)
           print("resultado parcial:", result)
@@ -526,9 +535,11 @@ def p_generarCond(p):
     else:
       result = operands_s.pop()
       global counter
-      result = 't_' + str(counter)
+      global tmp_var_num
+      #result = 't_' + str(tmp_var_num)
       quad = ['GotoF', result, "", ""]
       quad_lst.append(quad)
+      tmp_var_num += 1
       counter += 1
       print('contador actual:', counter)
       jumps_s.push(counter - 1)
