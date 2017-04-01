@@ -25,18 +25,22 @@ precedence = (
     ('left', 'MULTIPLICACION', 'DIVISION'),
 )
 
-operators_s = Stack()
-operands_s  = Stack()
-types_s     = Stack()
-quad_lst    = []
-jumps_s     = Stack()
-counter     = 0
-error_list  = []
-st          = symbol_table()
-sc          = semantic_cube()
-relops      = ["&&", "||", ">", "<", ">=", "<=", "!=", "=="]
-args_count  = 0
-tmp_var_num = 0
+operators_s   = Stack()
+operands_s    = Stack()
+types_s       = Stack()
+quad_lst      = []
+jumps_s       = Stack()
+counter       = 0
+error_list    = []
+st            = symbol_table()
+sc            = semantic_cube()
+relops        = ["&&", "||", ">", "<", ">=", "<=", "!=", "=="]
+args_count    = 0
+tmp_var_num   = 0
+fun_var_count = 0
+k             = 0
+type_pointer  = None
+fun_calling   = None
 # Programa
 def p_program(p):
   '''program : PROGRAMA ID inicializar DOSPUNTOS declaracion function INICIO bloque FIN generarCuadruplos '''
@@ -98,11 +102,21 @@ def p_buscarFuncion(p):
   pass
   if len(p) >= 1:
     global st
-    st.search_function(p[-1])
+    st.search_function(p[-1]) #tendria que cambiar a -2
 
 # Instrucciones de las funciones
 def p_bloquefun(p):
-  '''bloquefun : LLAVEIZQUIERDO declaracion bloqueaux regreso LLAVEDERECHO'''
+  '''bloquefun : LLAVEIZQUIERDO declaracion insertVarCount insertQuadrupleCount bloqueaux regreso LLAVEDERECHO'''
+
+def p_insertQuadrupleCount(p):
+  '''insertQuadrupleCount : '''
+  st.add_quadruple_count(counter)
+
+def p_insertVarCount(p):
+  '''insertVarCount : '''
+  global fun_var_count
+  st.add_var_count(fun_var_count)
+  fun_var_count = 0
 
 # Tipo de regreso de las funciones
 def p_tiporegreso(p):
@@ -111,31 +125,42 @@ def p_tiporegreso(p):
 
 # Parametros de las funciones
 def p_functionpam(p):
-    '''functionpam : VAR tipo ID agregarParam functionpam2 addParamCount
+    '''functionpam : VAR tipo ID agregarParam functionpam2
                  | '''
 
+def p_icrementParamCounter(p):
+  '''icrementParamCounter : '''
+  global args_count
+  args_count += 1
+
 def p_addParamCount(p):
-	'''addParamCount : '''
-	global args_count
-	st.add_no_args(p[-4], args_count)
-	args_count = 0
+  '''addParamCount : '''
+  global args_count
+  print("Valor args_count:", args_count)
+  st.add_no_params(args_count)
+  args_count = 0
 
 def p_agregarParam(p):
-	'''agregarParam : '''
-	if len(p) > 0:
-		st.insert_variable(p[-2], p[-1])
+  '''agregarParam : '''
+  if len(p) > 0:
+    st.insert_variable(p[-2], p[-1])
 
 # Auxiliar Parametros de las funciones
 def p_functionpam2(p):
-   '''functionpam2 : COMA functionpam
-                    | '''
-   global args_count
-   args_count += 1
+  '''functionpam2 : COMA icrementParamCounter functionpam
+                    | icrementParamCounter '''
 
 # Funcion
 def p_function(p):
-    '''function : FUNCION tiporegreso ID idFunctionCheck PARENIZQUIERDO functionpam PARENDERECHO bloquefun resetScope function
+    '''function : FUNCION tiporegreso ID idFunctionCheck PARENIZQUIERDO functionpam addParamCount PARENDERECHO bloquefun finishFun resetScope function
             | '''
+
+def p_finishFun(p):
+  '''finishFun : '''
+  global counter
+  quad = ['ENDPROC', '', '', '']
+  quad_lst.append(quad)
+  counter += 1
 
 def p_resetScope(p):
   '''resetScope : '''
@@ -175,8 +200,13 @@ def p_tipo(p):
     p[0] = p[1]
 # Declaracion de variables
 def p_declaracion(p):
-    '''declaracion : VAR tipo cteid_declaracion revisarId PUNTOYCOMA declaracion
+    '''declaracion : VAR tipo cteid_declaracion revisarId PUNTOYCOMA countVar declaracion
                 | '''
+
+def p_countVar(p):
+  '''countVar : '''
+  global fun_var_count
+  fun_var_count += 1
 
 def p_revisarId(p):
   '''revisarId : '''
@@ -201,17 +231,84 @@ def p_bloqueaux(p):
 
 # Llamada a funcion
 def p_llamada(p):
-    '''llamada : ID buscarFuncion PARENIZQUIERDO llamadapar PARENDERECHO'''
+    '''llamada : ID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub'''
+
+def p_saveFunID(p):
+  '''saveFunID : '''
+  global fun_calling 
+  fun_calling = p[-2]
+
+def p_generateGoSub(p):
+  '''generateGoSub : '''
+  quad = ['GOSUB', p[-8], '', 'dir']
+  quad_lst.append(quad)
+  global type_pointer
+  global k
+  k = 0
+  type_pointer = None
+
+def p_verifyArgCount(p):
+  '''verifyArgCount : '''
+  global type_pointer
+  global k
+  type_pointer = None
+  print('k en comparacion:', k)
+  print('cantidad real:',st.get_no_params(fun_calling))
+  if k != st.get_no_params(fun_calling):
+    raise AttributeError('La función recibe una cantidad distinta de argumentos.')
+
+def p_generateERA(p):
+  '''generateERA : '''
+  if len(p) > 0:
+    quad = ['era', p[-4], '', '']
+    quad_lst.append(quad)
+    global k
+    global type_pointer
+    global counter
+    print('varlo k era', k)
+    if st.get_no_params(fun_calling) > 0:
+      type_pointer = st.get_param_type(p[-4], k)
+    print('type of var is:', type_pointer)
+    counter += 1
 
 # Parametros de la llamada
 def p_llamadapar(p):
-    '''llamadapar : exp llamadaparaux
+    '''llamadapar : exp validateArgs llamadaparaux
                  | '''
+
+def p_validateArgs(p):
+  '''validateArgs : '''
+  global counter
+  global k
+  global type_pointer
+  argument = operands_s.pop()
+  arg_type = types_s.pop()
+  print('arg->',arg_type)
+  print('type_p->',type_pointer)
+  print('operando:',argument)
+  print('valor K:', k)
+  if arg_type != type_pointer:
+    raise TypeError("Los tipos en la llamada y la función no coinciden.")
+  else:
+    quad = ['PARAMETER', argument, 'arg #' + str(k)]
+    quad_lst.append(quad)
+    counter += 1
 
 # Auxiliar de parametros de llamada
 def p_llamadaparaux(p):
-    '''llamadaparaux : COMA llamadapar
-                  | '''
+    '''llamadaparaux : COMA incrementK llamadapar
+                  | incrementK'''
+
+def p_incrementK(p):
+  '''incrementK : '''
+  global k
+  global fun_calling
+  print('HERE!! fc:', fun_calling)
+  global type_pointer
+  k += 1
+  print("k despues de incrementar:",k)
+  if k != st.get_no_params(fun_calling):
+    type_pointer = st.get_param_type(fun_calling, k)
 
 # Lado izquierdo de la asignacion para saber si es id normal o arreglo
 def p_asignacionizq(p):

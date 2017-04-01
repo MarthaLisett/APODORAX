@@ -6,6 +6,7 @@ de variables y funciones para el compilador APODORAX.
 José González Ayerdi - A01036121
 Martha Benavides - A01280115
 10/03/2017 """
+from collections import OrderedDict
 
 class symbol_table:
 	""" Constructor de la clase inicializa diccionario (que contiene las tablas)
@@ -14,15 +15,38 @@ class symbol_table:
 	id de las variables y sus valores son sus propiedades. """
 	def __init__(self, func_dic={}, scope='global'):
 		self.__func_dic           = func_dic
-		self.__func_dic['global'] = (None, {})
+		self.__func_dic['global'] = (None, OrderedDict())
 		self.__scope              = scope
-		self.__no_args            = {}
+		self.__no_params          = {}
+		self.__var_count          = {}
+		self.__quadruple_count    = {}
 
-	def add_no_args(self, fun_id, num_args):
-		self.__no_args[fun_id] = num_args
+	def get_param_type(self, fun_id, k):
+		print('el valor de k es:',k)
+		key = self.__func_dic[fun_id][1].keys()[k]
+		#for val in self.__func_dic[fun_id][1].keys():
+		#	print val
+		print('nombre variable:',key)
+		print("con tipo:",self.__func_dic[fun_id][1][key][1])
+		return self.__func_dic[fun_id][1][key][1]
 
-	def get_no_args(self, id):
-		return self.__no_args.get(fun_id)
+	def add_quadruple_count(self, counter):
+		self.__quadruple_count[self.__scope] = counter
+
+	def get_quadruple_count(self):
+		return self.__quadruple_count.get(self.__scope)
+
+	def add_var_count(self, var_count):
+		self.__var_count[self.__scope] = var_count
+
+	def get_var_count(self):
+		return self.__var_count.get(self.__scope)
+
+	def add_no_params(self, num_args):
+		self.__no_params[self.__scope] = num_args
+
+	def get_no_params(self, fun_id):
+		return self.__no_params.get(fun_id)
 
 	""" search_function busca el id de una función en la tabla de funciones,
 	si no la encuentra despliega un error """
@@ -42,6 +66,7 @@ class symbol_table:
 	def insert_variable(self, var_type, var_id):
 		if self.__func_dic.get(self.__scope) is not None:
 			if self.__func_dic.get(self.__scope)[1].get(var_id) is None:
+				print('DENTRO DE ST:',var_id)
 				self.__func_dic[self.__scope][1][var_id] = [var_id, var_type, self.__scope]
 			else:
 				raise KeyError("Variable repetida: " + "'" + var_id + "'")
@@ -52,7 +77,7 @@ class symbol_table:
 	si no existe la inserta y la inicializa con vacío como valor. """
 	def insert_function(self, fun_id, return_type):
 		if self.__func_dic.get(fun_id) is None:
-			self.__func_dic[fun_id] = (return_type, {})
+			self.__func_dic[fun_id] = (return_type, OrderedDict())
 			self.set_scope(fun_id)
 		else:
 			raise KeyError("Funcion '" + fun_id + "' repetida.")
