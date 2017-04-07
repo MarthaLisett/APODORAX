@@ -75,7 +75,7 @@ tokens = (
 )
 
 # expresiones regulares que definen los tokens
-t_CCADENA                      = r'\"(\\.|[^"])*\"'
+t_CCADENA                      = r'\".*\"'  #r'\"(\\.|[^"])*\"'
 t_CCARACTER                    = r'\'[a-z]\'|\'[A-Z]\''
 t_PUNTOYCOMA                   = r'\;'
 t_DOSPUNTOS                    = r'\:'
@@ -138,6 +138,12 @@ reserved = {
    'insertaLinea'      : 'INSERTALINEA',
 }
 
+# funcion con la regla para definir la identificacion de un ID TODO:regex para id comienza con mayusculas??
+def t_ID(t):
+    r'[a-zA-Z](_?[a-zA-Z0-9]+)*'
+    t.type = reserved.get(t.value,'ID')
+    return t
+
 def t_CFLOTANTE (t):
     r'([\+|-]?[0-9]+[.])[0-9]+'
     t.value = float(t.value)
@@ -148,11 +154,6 @@ def t_CENTERO(t):
     t.value = int(t.value)
     return t
 
-# funcion con la regla para definir la identificacion de un ID TODO:regex para id comienza con mayusculas??
-def t_ID(t):
-    r'[a-zA-Z](_?[a-zA-Z0-9]+)*'
-    t.type = reserved.get(t.value,'ID')
-    return t
 # funcion para saber el numero de linea que se esta analizando
 def t_newline(t):
     r'\n'
@@ -175,7 +176,7 @@ def t_COMMENT(t):
 lexer = lex.lex()
 
 
-'''
+data = " a = uno(1); "
 # string para probar el analizador lexico con tokens incorrectos
 # se corre el lexer con el string de prueba, descomentar para probar
 lexer.input(data)
@@ -185,4 +186,3 @@ while True:
     if not tok: 
         break
     print(tok)  # se imprime el tipo de token que se encontro
-'''

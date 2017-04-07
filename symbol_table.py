@@ -21,6 +21,9 @@ class symbol_table:
 		self.__var_count          = {}
 		self.__quadruple_count    = {}
 
+	def add_function_as_var(self, fun_id, return_type):
+		self.__func_dic["global"][1][fun_id] = [fun_id, return_type, "global"]
+
 	def get_param_type(self, fun_id, k):
 		print('el valor de k es:',k)
 		key = self.__func_dic[fun_id][1].keys()[k]
@@ -52,7 +55,7 @@ class symbol_table:
 	si no la encuentra despliega un error """
 	def search_function(self, fun_id):
 		if fun_id not in self.__func_dic:
-			raise KeyError("La funcion '" + fun_id + "' no esta desclarada.")
+			raise KeyError("La funcion '" + fun_id + "' no esta declarada.")
 
 	""" search_variable busca el id de una vairable primero dentro del scope actual,
 	si no la encuentra busca en el scope global, si no la encuentra despliega un error. """
@@ -95,7 +98,7 @@ class symbol_table:
 		else:
 			self.__func_dic['global'][1][var_id].append(val)
 
-	""" Sección de getters  """
+	""" Sección de getters """
 	def get_scope(self):
 		return self.__scope
 
@@ -107,6 +110,12 @@ class symbol_table:
 			return self.__func_dic.get(self.__scope)[1].get(var_id)
 		elif var_id  in self.__func_dic.get('global')[1]:
 			return self.__func_dic.get('global')[1].get(var_id)
+
+	def get_var_type(self, var_id):
+		if var_id  in self.__func_dic.get(self.__scope)[1]:
+			return self.__func_dic.get(self.__scope)[1].get(var_id)[1]
+		elif var_id  in self.__func_dic.get('global')[1]:
+			return self.__func_dic.get('global')[1].get(var_id)[1]
 
 	""" Sección para declarar propiedades de la clase. """
 	scope    = property(get_scope, set_scope)

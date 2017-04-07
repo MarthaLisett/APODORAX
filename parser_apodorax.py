@@ -152,8 +152,15 @@ def p_functionpam2(p):
 
 # Funcion
 def p_function(p):
-    '''function : FUNCION tiporegreso ID idFunctionCheck PARENIZQUIERDO functionpam addParamCount PARENDERECHO bloquefun finishFun resetScope function
+    '''function : FUNCION tiporegreso ID idFunctionCheck createGlobal PARENIZQUIERDO functionpam addParamCount PARENDERECHO bloquefun finishFun resetScope function
             | '''
+
+def p_createGlobal(p):
+  '''createGlobal : '''
+  if len(p) > 0:
+    if p[-3] != "vacio":
+      st.add_function_as_var(p[-2], p[-3]);
+
 
 def p_finishFun(p):
   '''finishFun : '''
@@ -165,6 +172,8 @@ def p_finishFun(p):
 def p_resetScope(p):
   '''resetScope : '''
   st.scope ='global'
+  global tmp_var_num
+  tmp_var_num = 0
 
 def p_idFunctionCheck(p):
   ''' idFunctionCheck : '''
@@ -217,8 +226,15 @@ def p_revisarId(p):
 
 # Return de las funciones
 def p_regreso(p):
-    '''regreso : REGRESAR exp PUNTOYCOMA
+    '''regreso : REGRESAR exp PUNTOYCOMA addReturn
               | '''
+
+def p_addReturn(p):
+  '''addReturn : '''
+  global counter
+  quad = ['RETURN', operands_s.pop(), "", ""]
+  quad_lst.append(quad)
+  counter += 1;
 
 # Bloque
 def p_bloque(p):
@@ -246,6 +262,37 @@ def p_generateGoSub(p):
   global k
   k = 0
   type_pointer = None
+  """
+  var_id = st.get_var(p[-8])
+  var_type = st.get_var_type()
+  operands_s.push(var_id)
+  types_s.push(var_type)
+  """
+  """
+  if not operands_s.isEmpty():
+    print("DENTRO DE GOSUB")
+    right_op = st.get_var(p[-8])
+    left_op  = operands_s.pop()
+    right_type = st.get_var_type()
+    left_type   = types_s.pop()
+    operator    = operators_s.pop()
+    result_type = sc.verify_type_match(left_type, right_type, operator)
+
+    if result_type != -1:
+      result = right_op
+      st.set_var_val(left_op, result)
+      print("resultado final:", st.get_var(left_op))
+      global counter
+      result = right_op
+      quad = [operator, result, "", left_op]
+      quad_lst.append(quad)
+      counter += 1
+      # TODO: if any operand were a temporal space, return it to AVAIL
+    else:
+      raise TypeError("Tipos incompatibles.")
+    """
+
+
 
 def p_verifyArgCount(p):
   '''verifyArgCount : '''

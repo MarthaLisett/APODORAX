@@ -8,9 +8,8 @@ funcion entero carro (var entero x)#, var flotante y)
 	var flotante resultadofinal;
     #var entero I;
 
-	regresar 3;
+	regresar (3*5);
 }
-
 
 funcion vacio camioneta()
 {
@@ -22,7 +21,7 @@ inicio
 {
 	camioneta();
 
-	carro((5+1));# , 3.2); # dice que tipos no coinciden	
+	carro((5+1) , 3.2); # dice que tipos no coinciden	
 }
 
 fin
