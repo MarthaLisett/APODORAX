@@ -12,7 +12,6 @@ funcion entero uno (var entero a)
 	desplegar(a);
 	desplegar(b);
 	desplegar(a + b);
-
 	regresar 3;
 }
 
@@ -22,7 +21,7 @@ funcion entero dos (var entero a, var entero b, var flotante g)
 	a = 0;
 	b = 0;
 	i = 5;
-	i = uno(2 * 3);
+	i = uno(2*3);
 	mientras(i > 0)
 	{
 		a = a + b * i + b;
@@ -42,7 +41,7 @@ inicio {
 	desplegar(a);
 	desplegar(b);
 	f = 3.14;
-	#a = uno(4);
+	a = uno(4);
 	dos(a + b * 2, b, f * 3);
 	desplegar(a);
 	desplegar(b);

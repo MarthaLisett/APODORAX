@@ -56,11 +56,6 @@ def p_inicializar(p):
   pass
   p[0]="Interpretado Correctamente."
 
-# Constante ID
-def p_cteid(p):
-    '''cteid : buscarId cteidaux'''
-    p[0] = p[-1]
-
 def p_guardarId(p):
   ''' guardarId : '''
   if len(p) >= 1:
@@ -94,7 +89,6 @@ def p_cteid_declaracion(p):
 # Auxiliar Constante ID
 def p_cteidaux(p):
     '''cteidaux : CORCHETEIZQ exp CORCHETEDER
-               | PARENIZQUIERDO exp PARENDERECHO
                | '''
 
 def p_buscarFuncion(p):
@@ -122,6 +116,7 @@ def p_insertVarCount(p):
 def p_tiporegreso(p):
     '''tiporegreso : tipo
                    | VACIO'''
+    p[0] = p[1]
 
 # Parametros de las funciones
 def p_functionpam(p):
@@ -159,6 +154,7 @@ def p_createGlobal(p):
   '''createGlobal : '''
   if len(p) > 0:
     if p[-3] != "vacio":
+      print("-----retornp antes------", p[-3])
       st.add_function_as_var(p[-2], p[-3]);
 
 
@@ -191,21 +187,22 @@ def p_cte(p):
            | VERDADERO
            | FALSO'''
     
-    p[0] = p[1]
-    print("CONTENIDO:",p[1])
-    if st.get_var(p[1]) is not None and get_type(p[1]) != "entero" and len(st.get_var(p[1])) >= 4:
-      operands_s.push(st.get_var(p[1])[3])
-      types_s.push(st.get_var(p[1])[1])
-      print("DENTRO IF")
-    else:
-      print("DENTRO DE ELSE")
-      operands_s.push(p[1])
-      types_s.push(get_type(p[1]))
+    if not st.function_exists(p[1]):
+      p[0] = p[1]
+      print("CONTENIDO:",p[1])
+      if st.get_var(p[1]) is not None and get_type(p[1]) != "entero" and len(st.get_var(p[1])) >= 4:
+        operands_s.push(st.get_var(p[1])[3])
+        types_s.push(st.get_var(p[1])[1])
+        print("DENTRO IF")
+      else:
+        print("DENTRO DE ELSE")
+        operands_s.push(p[1])
+        types_s.push(get_type(p[1]))
 
 
 def p_symbol(p):
-  '''symbol : llamada
-          | cteid '''
+  '''symbol : cteid
+          | llamada '''
 
 # Tipo de dato
 def p_tipo(p):
@@ -241,7 +238,10 @@ def p_regreso(p):
 def p_addReturn(p):
   '''addReturn : '''
   global counter
-  quad = ['RETURN', operands_s.pop(), "", ""]
+  global st
+  return_val = operands_s.pop()
+  quad = ['RETURN', return_val, "", ""]
+  st.set_var_val(st.get_scope(), return_val)
   quad_lst.append(quad)
   counter += 1;
 
@@ -276,12 +276,15 @@ def p_generateGoSub(p):
   global k
   k = 0
   type_pointer = None
-  """
+  
   var_id = st.get_var(p[-8])
-  var_type = st.get_var_type()
-  operands_s.push(var_id)
+  var_type = st.get_var_type(var_id[0])
+  print("generando sub------")
+  print('type:', var_type)
+  print('val:', var_id[3])
+  operands_s.push(var_id[3])
   types_s.push(var_type)
-  """
+  
   """
   if not operands_s.isEmpty():
     print("DENTRO DE GOSUB")
@@ -351,7 +354,7 @@ def p_validateArgs(p):
   if arg_type != type_pointer:
     raise TypeError("Los tipos en la llamada y la función no coinciden.")
   else:
-    quad = ['PARAMETER', argument, 'arg #' + str(k)]
+    quad = ['PARAMETER', argument, '', 'arg #' + str(k)]
     quad_lst.append(quad)
     counter += 1
 
@@ -663,6 +666,14 @@ def p_factor(p):
 # Llamada a funcion
 def p_llamada(p):
     '''llamada : buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub'''
+    print("LLEGE A LLAMADA----------")
+
+# Constante ID
+def p_cteid(p):
+    '''cteid : buscarId cteidaux'''
+    p[0] = p[-1]
+    print("ESTOY EN CTEID---")
+
 
 def p_crearFondoFalso(p):
   '''crearFondoFalso : '''
