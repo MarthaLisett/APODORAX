@@ -76,7 +76,7 @@ class symbol_table:
 		if self.__func_dic.get(self.__scope) is not None:
 			if self.__func_dic.get(self.__scope)[1].get(var_id) is None:
 				print('DENTRO DE ST:',var_id)
-				self.__func_dic[self.__scope][1][var_id] = [var_id, var_type, self.__scope]
+				self.__func_dic[self.__scope][1][var_id] = [var_id, var_type, self.__scope, None]
 			else:
 				raise KeyError("Variable repetida: " + "'" + var_id + "'")
 		else:
@@ -100,7 +100,7 @@ class symbol_table:
 
 	def set_var_val(self, var_id, val):
 		if self. __func_dic.get(self.__scope)[1].get(var_id) is not None:
-			self.__func_dic[self.__scope][1][var_id].append(val)
+			self.__func_dic[self.__scope][1][var_id][3] = (val)
 		else:
 			self.__func_dic['global'][1][var_id].append(val)
 

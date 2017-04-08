@@ -6,45 +6,24 @@ var flotante f;
 
 funcion entero uno (var entero a)
 {
-	a = 0;
-	b = 0;
-	a = a + b * a;
-	desplegar(a);
-	desplegar(b);
-	desplegar(a + b);
+
 	regresar 3;
 }
 
 funcion entero dos (var entero a, var entero b, var flotante g)
 {
 	var entero i;
-	a = 0;
-	b = 0;
-	i = 5;
-	i = uno(2*3);
-	mientras(i > 0)
-	{
-		a = a + b * i + b;
-		uno(i * 2);
-		desplegar(a);
-		i = i - 1;
-		#i = dos(1,2,3.7);
-	}
 
-	regresar  3;
+
+	regresar  2;
 }
 
 
 inicio {
-	a = 3;
-	b = a + 1;
-	desplegar(a);
-	desplegar(b);
-	f = 3.14;
+
 	a = uno(4);
-	dos(a + b * 2, b, f * 3);
-	desplegar(a);
-	desplegar(b);
-	desplegar(f * 2 + 1);
+	b = dos(3,4,5.5);
+	a = a * b;
+
 }
 fin
