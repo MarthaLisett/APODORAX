@@ -58,8 +58,8 @@ def p_inicializar(p):
 
 # Constante ID
 def p_cteid(p):
-    '''cteid : ID buscarId cteidaux'''
-    p[0] = p[1]
+    '''cteid : buscarId cteidaux'''
+    p[0] = p[-1]
 
 def p_guardarId(p):
   ''' guardarId : '''
@@ -183,20 +183,29 @@ def p_idFunctionCheck(p):
 
 # Valores constantes
 def p_cte(p):
-    '''cte : cteid
+    '''cte : ID symbol
            | CENTERO
            | CFLOTANTE
            | CCADENA
            | CCARACTER
            | VERDADERO
            | FALSO'''
+    
     p[0] = p[1]
+    print("CONTENIDO:",p[1])
     if st.get_var(p[1]) is not None and get_type(p[1]) != "entero" and len(st.get_var(p[1])) >= 4:
       operands_s.push(st.get_var(p[1])[3])
       types_s.push(st.get_var(p[1])[1])
+      print("DENTRO IF")
     else:
+      print("DENTRO DE ELSE")
       operands_s.push(p[1])
       types_s.push(get_type(p[1]))
+
+
+def p_symbol(p):
+  '''symbol : llamada
+          | cteid '''
 
 # Tipo de dato
 def p_tipo(p):
@@ -245,9 +254,14 @@ def p_bloqueaux(p):
   '''bloqueaux : estatuto bloqueaux
               | '''
 
-# Llamada a funcion
-def p_llamada(p):
-    '''llamada : ID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub'''
+# Expresion que permite la comparacion
+def p_expresion(p): 
+    '''expresion : negacion exp expresionaux
+                | color'''  
+
+# Exp suma y resta
+def p_exp(p):
+    '''exp : termino checkExpTypes exp2 '''
 
 def p_saveFunID(p):
   '''saveFunID : '''
@@ -368,7 +382,7 @@ def p_asignacionizqaux(p):
 
 # Asignacion de valores
 def p_asignacion(p):
-  '''asignacion : asignacionizq ASIGNACION insertarAsignacion asignacionaux setAssignment PUNTOYCOMA'''
+  '''asignacion : asignacionizq ASIGNACION insertarAsignacion exp setAssignment PUNTOYCOMA'''
 
 def p_insertarAsignacion(p):
   '''insertarAsignacion : '''
@@ -401,8 +415,7 @@ def p_setAssignment(p):
 
 # Auxiliar de asignacion
 def p_asignacionaux(p):
-  '''asignacionaux : exp
-                  | llamada'''
+  '''asignacionaux : exp '''
 
 # Estatutos a estar dentro de los bloques
 def p_estatuto(p):
@@ -416,7 +429,7 @@ def p_estatuto(p):
               | punto
               | linea
               | curva
-              | llamada PUNTOYCOMA
+              | ID llamada PUNTOYCOMA
               | asignacion
               | condicion
               | ciclo'''
@@ -435,11 +448,6 @@ def p_comparacion(p):
                   | IGUAL
                   | DIFERENTE '''
     p[0] = p[1]
-
-# Expresion que permite la comparacion
-def p_expresion(p): 
-    '''expresion : negacion exp expresionaux
-                | color'''  
 
 def p_logico(p):
   '''logico : expresion checarLogico logicoAux '''
@@ -561,10 +569,6 @@ def p_addRelop(p):
   if len(p) >= 0:
     operators_s.push(p[-1])
 
-# Exp suma y resta
-def p_exp(p):
-    '''exp : termino checkExpTypes exp2 '''
-
 def p_checkExpTypes(p):
   '''checkExpTypes : '''
   if len(p) >= 1:
@@ -654,7 +658,11 @@ def p_addFactor(p):
 # Factor numerico o mediante IDs
 def p_factor(p):
     '''factor : PARENIZQUIERDO crearFondoFalso logico PARENDERECHO quitarFondoFalso
-            | cte'''
+            | cte 
+            '''
+# Llamada a funcion
+def p_llamada(p):
+    '''llamada : buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub'''
 
 def p_crearFondoFalso(p):
   '''crearFondoFalso : '''
@@ -740,6 +748,7 @@ def p_crearCiclo(p):
   if len(p) > 0:
     exp_type = types_s.pop()
     if (exp_type != 'bool'):
+      print('tipo exp en condicion:', exp_type)
       raise TypeError('Tipos incompatibles en ciclo.')
     else:
       result = operands_s.pop()
@@ -766,7 +775,7 @@ def p_generarEscritura(p):
 
 # Aceptar/ingresar info del usuario
 def p_ingreso(p):
-    '''ingreso : ENTRADA PARENIZQUIERDO cteid PARENDERECHO generarEntrada PUNTOYCOMA'''
+    '''ingreso : ENTRADA PARENIZQUIERDO ID cteid PARENDERECHO generarEntrada PUNTOYCOMA'''
 
 def p_generarEntrada(p):
   '''generarEntrada : '''
