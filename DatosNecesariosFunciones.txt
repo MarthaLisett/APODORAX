@@ -1,0 +1,15 @@
+*Notas: 
+- La librería necesita que los colores sean pasados con comillas: r.setFill("green")
+- La librería necesita que el grosor sea pasado con comillas:  r.setWidth("8")
+- La librería necesita que el texto sea pasado como string.
+- La librería ocupa que el tamaño del texto sea pasado como entero: t.setSize(12)
+- El punto no acepta los métodos de grosor ni de color de outline, sólo color de relleno.
+
+insertaTexto(coord1, coord2, color, "texto", tamano)
+insertaRectangulo(coord1, coord2, coord3, coord4, colorRelleno, colorOutline, grosor)
+insertaTriangulo(coord1, coord2, coord3, coord4, coord5, coord6, colorRelleno, colorOutline, grosor)
+insertaCirculo(coord1, coord2, radio, colorRelleno, colorOutline, grosor)
+insertaOvalo(coord1, coord2, coord3, coord4, colorRelleno, colorOutline, grosor)
+insertaPunto(coord1, coord2, colorRelleno)
+insertaLinea(coord1, coord2, coord3, coord4, colorRelleno, grosor)
+insertaPunto(coord1, coord2, coord3, coord4, colorRelleno)
