@@ -60,8 +60,8 @@ def main():
     tri.draw(win)
 
     # Imagen (solo gif)
-    img = Image(Point(400,500), "spongebob.gif")
-    img.draw(win)
+    # img = Image(Point(400,500), "spongebob.gif")
+    # img.draw(win)
 
     #Curva (no debe haber una diferencia muy grande entre puntos)
     c1 = Point(10,100)
