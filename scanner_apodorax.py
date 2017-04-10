@@ -49,6 +49,8 @@ tokens = (
    'AMARILLO',
    'VERDE',
    'ROJO',
+   'ROSA',
+   'NARANJA',
    'INSERTATEXTO',
    'INSERTARECTANGULO',
    'INSERTACIRCULO',
@@ -127,6 +129,8 @@ reserved = {
    'amarillo'          : 'AMARILLO',
    'verde'             : 'VERDE',
    'rojo'              : 'ROJO',
+   'rosa'              : 'ROSA',
+   'naranja'           : 'NARANJA',
    'vacio'             : 'VACIO',
    'insertaTexto'      : 'INSERTATEXTO',
    'insertaRectangulo' : 'INSERTARECTANGULO',
@@ -176,11 +180,10 @@ def t_COMMENT(t):
 lexer = lex.lex()
 
 
-data = ""#" a = uno(1); "
+data = " a = uno(1); "
 # string para probar el analizador lexico con tokens incorrectos
 # se corre el lexer con el string de prueba, descomentar para probar
 lexer.input(data)
-
 # se generan los tokens y se verifica que sean validos
 while True:
     tok = lexer.token()
