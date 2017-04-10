@@ -23,15 +23,11 @@ class symbol_table:
 
 	def add_function_as_var(self, fun_id, return_type):
 		print("tipo de retorno de funcion:", return_type)
-		self.__func_dic['global'][1][fun_id] = [fun_id, return_type, 'global']
+		self.__func_dic['global'][1][fun_id] = [fun_id, return_type, 'global', None]
 
 	def get_param_type(self, fun_id, k):
 		print('el valor de k es:',k)
 		key = self.__func_dic[fun_id][1].keys()[k]
-		#for val in self.__func_dic[fun_id][1].keys():
-		#	print val
-		print('nombre variable:',key)
-		print("con tipo:",self.__func_dic[fun_id][1][key][1])
 		return self.__func_dic[fun_id][1][key][1]
 
 	def add_quadruple_count(self, counter):
@@ -100,9 +96,12 @@ class symbol_table:
 
 	def set_var_val(self, var_id, val):
 		if self. __func_dic.get(self.__scope)[1].get(var_id) is not None:
-			self.__func_dic[self.__scope][1][var_id][3] = (val)
+			self.__func_dic[self.__scope][1][var_id][3] = val
 		else:
-			self.__func_dic['global'][1][var_id].append(val)
+			print("aquí")
+			for item in self.__func_dic['global'][1].iteritems():
+				print item
+			self.__func_dic['global'][1][var_id][3] = val
 
 	""" Sección de getters """
 	def get_scope(self):

@@ -14,6 +14,7 @@ from semantic_cube import semantic_cube
 from queue         import Queue
 import ply.yacc as yacc
 import sys
+import collections
 # obtenemos la lista de tokens generadas por el analizador lexico
 from scanner_apodorax import tokens
 
@@ -36,7 +37,7 @@ st            = symbol_table()
 sc            = semantic_cube()
 relops        = ["&&", "||", ">", "<", ">=", "<=", "!=", "=="]
 args_count    = 0
-tmp_var_num   = 0
+tmp_var_num   = 1
 fun_var_count = 0
 k             = 0
 type_pointer  = None
@@ -49,8 +50,11 @@ def p_program(p):
 def p_generarCuadruplos(p):
   '''generarCuadruplos : '''
   archivo = open('cuadruplos.bigsheep', 'w')
-  for cuadruplo in quad_lst:
-    archivo.write("%s\n" % cuadruplo)
+  dic = { key : value  for key, value in enumerate(quad_lst)}
+  od = collections.OrderedDict(sorted(dic.items()))
+  with open('cuadruplos.bigsheep', 'w') as f:
+    for key, value in dic.items():
+        f.write('%s:%s\n' % (key, value))
 
 def p_inicializar(p):
   '''inicializar : '''
@@ -188,13 +192,10 @@ def p_cte(p):
     
     if not st.function_exists(p[1]):
       p[0] = p[1]
-      print("CONTENIDO:",p[1])
       if st.get_var(p[1]) is not None and get_type(p[1]) != "entero" and len(st.get_var(p[1])) >= 4:
-        operands_s.push(st.get_var(p[1])[3])
+        operands_s.push(st.get_var(p[1])[0])
         types_s.push(st.get_var(p[1])[1])
-        print("DENTRO IF")
       else:
-        print("DENTRO DE ELSE")
         operands_s.push(p[1])
         types_s.push(get_type(p[1]))
 
@@ -252,12 +253,14 @@ def p_verifyReturnType(p):
       written_type = types_s.peek() if p[-1] != "vacio" else "vacio"
       func_lst = st.get_var(st.get_scope()) 
       if written_type != func_lst[1]:
-        raise TypeError("La funcion '" + func_lst[0] + "' debe regresar " + func_lst[1] + ".")
+        if func_lst[1] == "vacio":
+          raise TypeError("La funcion '" + func_lst[0] + "' no puede regresar un valor.")
+        else:
+          raise TypeError("La funcion '" + func_lst[0] + "' debe regresar " + func_lst[1] + ".")
 
 def p_voidReturn(p):
   '''nullReturn : '''
   global st
-  print(st.get_scope())
   func_lst = st.get_var(st.get_scope()) 
   if func_lst[1] != "vacio":
     raise TypeError("La funcion '" + func_lst[0] + "' debe regresar " + func_lst[1] + ".")
@@ -302,9 +305,10 @@ def p_generateGoSub(p):
   quad_lst.append(quad)
   global type_pointer
   global k
+  global counter
   k = 0
   type_pointer = None
-  
+  counter += 1
   var_lst = st.get_var(current_id)
   var_type = st.get_var_type(var_lst[0])
   print("generando sub------")
@@ -318,8 +322,6 @@ def p_verifyArgCount(p):
   global type_pointer
   global k
   type_pointer = None
-  print('k en comparacion:', k)
-  print('cantidad real:',st.get_no_params(fun_calling))
   if k != st.get_no_params(fun_calling):
     raise AttributeError('La función recibe una cantidad distinta de argumentos.')
 
@@ -327,16 +329,15 @@ def p_generateERA(p):
   '''generateERA : '''
   if len(p) > 0:
     global current_id
-    quad = ['era', current_id, '', '']
+    quad = ['ERA', current_id, '', '']
     quad_lst.append(quad)
     global k
     global type_pointer
     global counter
-    print('varlo k era', k)
     if st.get_no_params(fun_calling) > 0:
       type_pointer = st.get_param_type(current_id, k)
-    print('type of var is:', type_pointer)
     counter += 1
+
 
 # Parametros de la llamada
 def p_llamadapar(p):
@@ -350,10 +351,6 @@ def p_validateArgs(p):
   global type_pointer
   argument = operands_s.pop()
   arg_type = types_s.pop()
-  print('arg->',arg_type)
-  print('type_p->',type_pointer)
-  print('operando:',argument)
-  print('valor K:', k)
   if arg_type != type_pointer:
     raise TypeError("Los tipos en la llamada y la función no coinciden.")
   else:
@@ -370,10 +367,8 @@ def p_incrementK(p):
   '''incrementK : '''
   global k
   global fun_calling
-  print('HERE!! fc:', fun_calling)
   global type_pointer
   k += 1
-  print("k despues de incrementar:",k)
   if k != st.get_no_params(fun_calling):
     type_pointer = st.get_param_type(fun_calling, k)
 
@@ -511,9 +506,6 @@ def p_checarLogico(p):
           result = 't_' + str(tmp_var_num)
           quad = [operator, left_op, right_op, result]
           quad_lst.append(quad)
-          print('counter en logico:', counter)
-          for c in quad_lst:
-            print(c)
           tmp_var_num += 1
           counter += 1
           operands_s.push(result)
@@ -593,10 +585,8 @@ def p_checkExpTypes(p):
     if operators_s.size() > 0:
       if operators_s.peek() == '+' or operators_s.peek() == '-':
         right_op    = operands_s.pop()
-        print('DERECHO:', right_op)
         right_type  = types_s.pop()
         left_op     = operands_s.pop()
-        print('IZQUIERDO:', right_op)
         left_type   = types_s.pop()
         operator    = operators_s.pop()
         result_type = sc.verify_type_match(left_type, right_type, operator)
@@ -612,7 +602,6 @@ def p_checkExpTypes(p):
           tmp_var_num += 1
           operands_s.push(result)
           types_s.push(result_type)
-          print(result)
           # TODO: if any operand were a temporal space, return it to AVAIL
         else:
           raise TypeError("Tipos incompatibles.")
@@ -655,7 +644,6 @@ def p_checkTermTypes(p):
           tmp_var_num += 1
           counter += 1
           operands_s.push(result)
-          print("resultado parcial:", result)
           types_s.push(result_type)
           # TODO: if any operand were a temporal space, return it to AVAIL
         else:
@@ -681,13 +669,11 @@ def p_factor(p):
 # Llamada a funcion
 def p_llamada(p):
     '''llamada : buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub'''
-    print("LLEGE A LLAMADA----------")
 
 # Constante ID
 def p_cteid(p):
     '''cteid : buscarId cteidaux'''
     p[0] = p[-1]
-    print("ESTOY EN CTEID---")
 
 
 def p_crearFondoFalso(p):
@@ -713,13 +699,9 @@ def p_generarCond(p):
     else:
       result = operands_s.pop()
       global counter
-      global tmp_var_num
-      #result = 't_' + str(tmp_var_num)
       quad = ['GotoF', result, "", ""]
       quad_lst.append(quad)
-      tmp_var_num += 1
       counter += 1
-      print('contador actual:', counter)
       jumps_s.push(counter - 1)
 
 # Auxiliar de condicion que maneja el sino
@@ -744,7 +726,9 @@ def p_rellenarCond(p):
   global counter
   # fill
   print("counter else:", counter)
-  quad_lst[jumps_s.pop()][3] = counter
+  end = jumps_s.pop()
+  quad_lst[end][3] = counter
+
 # Colores a usar en las figuras
 def p_color(p):
     '''color : NEGRO

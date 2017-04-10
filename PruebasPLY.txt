@@ -16,7 +16,8 @@ funcion entero carro (var entero x, var flotante y) {
     var entero flores;
     flores = 0;
     I = 0.0;
-    resultadofinal = I + 1;
+    resultado = 11;
+    resultadofinal = resultado + 1;
     flores = resultadofinal + 1;
 
 	hello = "hola mundo";
@@ -34,16 +35,14 @@ inicio {
 	#crayola = bar + 1;
 	#bar = bar + 1;
 	#carrito();
-	entrada (hola);
-	insertaCirculo(4,4.5,7,8,3.2, amarillo, falso);
+	#entrada (hola);
+	#insertaCirculo(4,4.5,7,8,3.2, amarillo, falso);
 
-	carro(5, 3.2);
+	#carro(5, 3.2);
 
 	si (((((4 + 10) * 4) > (12)) && verdadero) || falso) entonces {
 		desplegar (5);
-	}
-	sino entonces
-	{
+	} sino entonces {
 		si (((((4 + 10) * 4) > (12)) && verdadero) || falso) entonces {
 			desplegar (5);
 		}
