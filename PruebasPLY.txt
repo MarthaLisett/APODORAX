@@ -12,13 +12,12 @@ var flotante resultado;
 var flotante flores;
 
 funcion entero carro (var entero x, var flotante y) {
-	var flotante resultadofinal;
-    #var entero I;
+	var entero resultadofinal;
     var entero flores;
     flores = 0;
-    resultado = 0;
-    resultadofinal = resultado + 1;
-    flores = flores + 1;
+    I = 0.0;
+    resultadofinal = I + 1;
+    flores = resultadofinal + 1;
 
 	hello = "hola mundo";
 	regresar resultadofinal;

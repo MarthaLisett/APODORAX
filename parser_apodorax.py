@@ -41,6 +41,7 @@ fun_var_count = 0
 k             = 0
 type_pointer  = None
 fun_calling   = None
+current_id    = ""
 # Programa
 def p_program(p):
   '''program : PROGRAMA ID inicializar DOSPUNTOS declaracion function INICIO bloque FIN generarCuadruplos '''
@@ -64,22 +65,23 @@ def p_guardarId(p):
         while not operands_s.isEmpty():
           operands_s.pop()
           types_s.pop()
-        operands_s.push(p[-2])
-        if st.get_var(p[-2]) is not None:
-          types_s.push(st.get_var(p[-2])[1])
+        operands_s.push(p[-3])
+        if st.get_var(p[-3]) is not None:
+          types_s.push(st.get_var(p[-3])[1])
       else:
-        operands_s.push(st.get_var(p[-2])[0])
+        operands_s.push(st.get_var(p[-3])[0])
     else:
-      operands_s.push(st.get_var(p[-2])[0])
-      types_s.push(st.get_var(p[-2])[1])
+      operands_s.push(st.get_var(p[-3])[0])
+      types_s.push(st.get_var(p[-3])[1])
 
 
 def p_buscarId(p):
   '''buscarId : '''
-  pass
   if len(p) >= 1:
     global st
-    st.search_variable(p[-1])
+    global current_var_id
+    print("recibi:", current_var_id)
+    st.search_variable(current_var_id)
 
  # Constante ID declaracion
 def p_cteid_declaracion(p):
@@ -93,10 +95,10 @@ def p_cteidaux(p):
 
 def p_buscarFuncion(p):
   ''' buscarFuncion : '''
-  pass
   if len(p) >= 1:
     global st
-    st.search_function(p[-1]) #tendria que cambiar a -2
+    global current_id
+    st.search_function(current_id) #tendria que cambiar a -2
 
 # Instrucciones de las funciones
 def p_bloquefun(p):
@@ -176,7 +178,7 @@ def p_idFunctionCheck(p):
 
 # Valores constantes
 def p_cte(p):
-    '''cte : ID symbol
+    '''cte : ID getCurrentID symbol
            | CENTERO
            | CFLOTANTE
            | CCADENA
@@ -196,10 +198,18 @@ def p_cte(p):
         operands_s.push(p[1])
         types_s.push(get_type(p[1]))
 
-
 def p_symbol(p):
   '''symbol : cteid
-          | llamada '''
+          |  verifyNullAssignment llamada '''
+  p[0] = p[-2]
+
+def p_verifyNullAssignment(p):
+  '''verifyNullAssignment : '''
+  global st
+  current_return_type = st.get_var(p[-2])[1]
+  if operators_s.peek() == '=' and current_return_type == "vacio":
+    raise TypeError("No se puede obtener un valor de la funcion '" + p[-2] + "'.")
+
 
 # Tipo de dato
 def p_tipo(p):
@@ -229,22 +239,34 @@ def p_revisarId(p):
 
 # Return de las funciones
 def p_regreso(p):
-    '''regreso : REGRESAR exp PUNTOYCOMA addReturn
-              | voidReturn '''
+    '''regreso : REGRESAR returnExp
+              | nullReturn '''
+
+def p_returnExp(p):
+  '''returnExp : exp verifyReturnType PUNTOYCOMA addReturn 
+              | VACIO verifyReturnType PUNTOYCOMA addReturn '''
+
+def p_verifyReturnType(p):
+    '''verifyReturnType : '''
+    if len(p) > 0:
+      written_type = types_s.peek() if p[-1] != "vacio" else "vacio"
+      func_lst = st.get_var(st.get_scope()) 
+      if written_type != func_lst[1]:
+        raise TypeError("La funcion '" + func_lst[0] + "' debe regresar " + func_lst[1] + ".")
 
 def p_voidReturn(p):
-  '''voidReturn : '''
+  '''nullReturn : '''
   global st
   print(st.get_scope())
   func_lst = st.get_var(st.get_scope()) 
   if func_lst[1] != "vacio":
-    raise Error('La funcion debe regresar ' + func_lst[1])
+    raise TypeError("La funcion '" + func_lst[0] + "' debe regresar " + func_lst[1] + ".")
 
 def p_addReturn(p):
   '''addReturn : '''
   global counter
   global st
-  return_val = operands_s.pop()
+  return_val = operands_s.pop() if p[-3] != "vacio" else "NULL"
   quad = ['RETURN', return_val, "", ""]
   st.set_var_val(st.get_scope(), return_val)
   quad_lst.append(quad)
@@ -270,19 +292,20 @@ def p_exp(p):
 
 def p_saveFunID(p):
   '''saveFunID : '''
-  global fun_calling 
-  fun_calling = p[-2]
+  global fun_calling
+  global current_id 
+  fun_calling = current_id
 
 def p_generateGoSub(p):
   '''generateGoSub : '''
-  quad = ['GOSUB', p[-8], '', 'dir']
+  quad = ['GOSUB', current_id, '', 'dir']
   quad_lst.append(quad)
   global type_pointer
   global k
   k = 0
   type_pointer = None
   
-  var_lst = st.get_var(p[-8])
+  var_lst = st.get_var(current_id)
   var_type = st.get_var_type(var_lst[0])
   print("generando sub------")
   print('type:', var_type)
@@ -303,14 +326,15 @@ def p_verifyArgCount(p):
 def p_generateERA(p):
   '''generateERA : '''
   if len(p) > 0:
-    quad = ['era', p[-4], '', '']
+    global current_id
+    quad = ['era', current_id, '', '']
     quad_lst.append(quad)
     global k
     global type_pointer
     global counter
     print('varlo k era', k)
     if st.get_no_params(fun_calling) > 0:
-      type_pointer = st.get_param_type(p[-4], k)
+      type_pointer = st.get_param_type(current_id, k)
     print('type of var is:', type_pointer)
     counter += 1
 
@@ -355,8 +379,14 @@ def p_incrementK(p):
 
 # Lado izquierdo de la asignacion para saber si es id normal o arreglo
 def p_asignacionizq(p):
-  '''asignacionizq : ID buscarId guardarId asignacionizqaux'''
+  '''asignacionizq : ID saveVarID buscarId guardarId asignacionizqaux'''
   p[0] = p[1]
+
+def p_saveVarID(p):
+  '''saveVarID : '''
+  global current_var_id
+  current_var_id = p[-1]
+
 # Auxiliar asignacionizq
 def p_asignacionizqaux(p):
   '''asignacionizqaux : CORCHETEIZQ exp CORCHETEDER
@@ -365,6 +395,7 @@ def p_asignacionizqaux(p):
 # Asignacion de valores
 def p_asignacion(p):
   '''asignacion : asignacionizq ASIGNACION insertarAsignacion exp setAssignment PUNTOYCOMA'''
+
 
 def p_insertarAsignacion(p):
   '''insertarAsignacion : '''
@@ -411,10 +442,15 @@ def p_estatuto(p):
               | punto
               | linea
               | curva
-              | ID llamada PUNTOYCOMA
+              | ID getCurrentID llamada PUNTOYCOMA
               | asignacion
               | condicion
               | ciclo'''
+
+def p_getCurrentID(p):
+  '''getCurrentID : saveVarID'''
+  global current_id
+  current_id = p[-1]
 
 # Negar la expresion
 def p_negacion(p):
@@ -765,7 +801,7 @@ def p_generarEscritura(p):
 
 # Aceptar/ingresar info del usuario
 def p_ingreso(p):
-    '''ingreso : ENTRADA PARENIZQUIERDO ID cteid PARENDERECHO generarEntrada PUNTOYCOMA'''
+    '''ingreso : ENTRADA PARENIZQUIERDO ID saveVarID cteid PARENDERECHO generarEntrada PUNTOYCOMA'''
 
 def p_generarEntrada(p):
   '''generarEntrada : '''
