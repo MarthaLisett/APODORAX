@@ -736,7 +736,9 @@ def p_color(p):
             | AZUL
             | AMARILLO
             | VERDE
-            | ROJO'''
+            | ROJO
+            | ROSA
+            | NARANJA'''
 
 # Mientras (while)
 def p_ciclo(p):
