@@ -7,6 +7,8 @@ José González Ayerdi - A01036121
 Martha Benavides - A01280115
 10/03/2017 """
 from collections import OrderedDict
+from memory_manager import memory_manager
+mm = memory_manager()
 
 class symbol_table:
 	""" Constructor de la clase inicializa diccionario (que contiene las tablas)
@@ -22,11 +24,14 @@ class symbol_table:
 		self.__quadruple_count    = {}
 
 	def add_function_as_var(self, fun_id, return_type):
-		print("tipo de retorno de funcion:", return_type)
 		self.__func_dic['global'][1][fun_id] = [fun_id, return_type, 'global', None]
 
+	def print_var_table(self, fun_id):
+		table = self.__func_dic[fun_id]
+		for var_table in table:
+			print(var_table)
+
 	def get_param_type(self, fun_id, k):
-		print('el valor de k es:',k)
 		key = self.__func_dic[fun_id][1].keys()[k]
 		return self.__func_dic[fun_id][1][key][1]
 
@@ -57,8 +62,6 @@ class symbol_table:
 	def function_exists(self, fun_id):
 		return fun_id in self.__func_dic
 
-
-
 	""" search_variable busca el id de una vairable primero dentro del scope actual,
 	si no la encuentra busca en el scope global, si no la encuentra despliega un error. """
 	def search_variable(self, var_id):
@@ -71,8 +74,9 @@ class symbol_table:
 	def insert_variable(self, var_type, var_id):
 		if self.__func_dic.get(self.__scope) is not None:
 			if self.__func_dic.get(self.__scope)[1].get(var_id) is None:
-				print('DENTRO DE ST:',var_id)
-				self.__func_dic[self.__scope][1][var_id] = [var_id, var_type, self.__scope, None]
+				global mm
+				new_dir = mm.insert_variable(var_type, var_id, self.__scope, None)
+				self.__func_dic[self.__scope][1][var_id] = [var_id, var_type, self.__scope, None, new_dir]
 			else:
 				raise KeyError("Variable repetida: " + "'" + var_id + "'")
 		else:
@@ -98,7 +102,6 @@ class symbol_table:
 		if self. __func_dic.get(self.__scope)[1].get(var_id) is not None:
 			self.__func_dic[self.__scope][1][var_id][3] = val
 		else:
-			print("aquí")
 			for item in self.__func_dic['global'][1].iteritems():
 				print item
 			self.__func_dic['global'][1][var_id][3] = val

@@ -1,39 +1,16 @@
 programa Martha0295:
-
 var entero i;
-var entero j;
-
-funcion vacio uno (var entero a) {
-	var entero A;
-	var entero B;
-	var entero C;
-	var entero D;
-	A = 1;
-	B = 2;
-	C = 3;
-	D = 4;
-
-	uno(2);
-	si (A+B > D && A > D) entonces {
-		si (A < B) entonces {
-			A = 0;
-			B = B + D;
-		}
-			C = A + B;
-	} sino entonces {
-		A = B+C;
-	}
-	D = B + A*C;
-	regresar vacio;
-
-}
-
 
 inicio {
-
-
+	insertaTexto(2.0, 3.0, "rojo", "hola mundo", 12);
+	insertaTriangulo(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, "rojo", "amarillo", 12);
+	insertaRectangulo(1.0, 2.0, 3.0, 4.0, "rojo", "amarillo", 12);
+	insertaCirculo(1.0, 4.0, 8.0, "rojo", "amarillo", 12);
+	insertaOvalo(1.0, 4.0, 8.0, 9.0, "rojo", "amarillo", 12);
+	insertaPunto(1.0, 2.0, "azul");
+	insertaLinea(1.0, 2.0, 3.0, 4.0, "azul", 13);
+	insertaCurva(1.0, 2.0, 3.0, 4.0, "verde");
 }
-
 
 fin
 

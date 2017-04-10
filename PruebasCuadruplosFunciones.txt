@@ -7,7 +7,8 @@ var cadena f;
 funcion entero uno (var entero a)
 {
 	f = "hola mundo";
-	#a = uno(2);
+	i = dos(2);
+	a = uno(i);
 	regresar 3;
 }
 

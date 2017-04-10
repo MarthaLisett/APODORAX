@@ -77,7 +77,7 @@ tokens = (
 )
 
 # expresiones regulares que definen los tokens
-t_CCADENA                      = r'\".*\"'  #r'\"(\\.|[^"])*\"'
+t_CCADENA                      = r'\"(\\.|[^"])*\"'
 t_CCARACTER                    = r'\'[a-z]\'|\'[A-Z]\''
 t_PUNTOYCOMA                   = r'\;'
 t_DOSPUNTOS                    = r'\:'
@@ -180,7 +180,7 @@ def t_COMMENT(t):
 lexer = lex.lex()
 
 
-data = " a = uno(1); "
+data = ""#" a = uno(1); "
 # string para probar el analizador lexico con tokens incorrectos
 # se corre el lexer con el string de prueba, descomentar para probar
 lexer.input(data)

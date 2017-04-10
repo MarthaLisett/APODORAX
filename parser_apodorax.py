@@ -12,6 +12,12 @@ from symbol_table  import symbol_table
 from stack         import Stack
 from semantic_cube import semantic_cube
 from queue         import Queue
+from memory        import Memory
+from temporal      import Temporal
+from globs         import Globs
+from local         import Local
+from constant      import Constant
+from memory_manager import memory_manager
 import ply.yacc as yacc
 import sys
 import collections
@@ -26,6 +32,7 @@ precedence = (
     ('left', 'MULTIPLICACION', 'DIVISION'),
 )
 
+mm            = memory_manager()
 operators_s   = Stack()
 operands_s    = Stack()
 types_s       = Stack()
@@ -43,6 +50,7 @@ k             = 0
 type_pointer  = None
 fun_calling   = None
 current_id    = ""
+
 # Programa
 def p_program(p):
   '''program : PROGRAMA ID inicializar DOSPUNTOS declaracion function INICIO bloque FIN generarCuadruplos '''
@@ -58,7 +66,105 @@ def p_generarCuadruplos(p):
 
 def p_inicializar(p):
   '''inicializar : '''
-  pass
+  global st
+  st.insert_function("insertaTexto", "vacio")
+  st.set_scope("insertaTexto")
+  st.insert_variable("flotante", "x")
+  st.insert_variable("flotante", "y")
+  st.insert_variable("cadena", "color")
+  st.insert_variable("cadena", "texto")
+  st.insert_variable("entero", "tamanio")
+  st.add_no_params(5)
+  st.add_var_count(5)
+  st.add_function_as_var("insertaTexto", "vacio")
+
+  st.insert_function("insertaTriangulo", "vacio")
+  st.set_scope("insertaTriangulo")
+  st.insert_variable("flotante", "x1")
+  st.insert_variable("flotante", "x2")
+  st.insert_variable("flotante", "y1")
+  st.insert_variable("flotante", "y2")
+  st.insert_variable("flotante", "z1")
+  st.insert_variable("flotante", "z2")
+  st.insert_variable("cadena", "relleno")
+  st.insert_variable("cadena", "linea")
+  st.insert_variable("entero", "grosor")
+  st.add_no_params(9)
+  st.add_var_count(9)
+  st.add_function_as_var("insertaTriangulo", "vacio")
+
+  st.insert_function("insertaRectangulo", "vacio")
+  st.set_scope("insertaRectangulo")
+  st.insert_variable("flotante", "x")
+  st.insert_variable("flotante", "y")
+  st.insert_variable("flotante", "z")
+  st.insert_variable("flotante", "w")
+  st.insert_variable("cadena", "relleno")
+  st.insert_variable("cadena", "linea")
+  st.insert_variable("entero", "grosor")
+  st.add_no_params(7)
+  st.add_var_count(7)
+  st.add_function_as_var("insertaRectangulo", "vacio")
+
+  st.insert_function("insertaCirculo", "vacio")
+  st.set_scope("insertaCirculo")
+  st.insert_variable("flotante", "x")
+  st.insert_variable("flotante", "y")
+  st.insert_variable("flotante", "radio")
+  st.insert_variable("cadena", "relleno")
+  st.insert_variable("cadena", "linea")
+  st.insert_variable("entero", "grosor")
+  st.add_no_params(6)
+  st.add_var_count(6)
+  st.add_function_as_var("insertaCirculo", "vacio")
+
+  st.insert_function("insertaOvalo", "vacio")
+  st.set_scope("insertaOvalo")
+  st.insert_variable("flotante", "x1")
+  st.insert_variable("flotante", "y1")
+  st.insert_variable("flotante", "x2")
+  st.insert_variable("flotante", "y2")
+  st.insert_variable("cadena", "relleno")
+  st.insert_variable("cadena", "linea")
+  st.insert_variable("entero", "grosor")
+  st.add_no_params(7)
+  st.add_var_count(7)
+  st.add_function_as_var("insertaOvalo", "vacio")
+
+  st.insert_function("insertaPunto", "vacio")
+  st.set_scope("insertaPunto")
+  st.insert_variable("flotante", "x")
+  st.insert_variable("flotante", "y")
+  st.insert_variable("cadena", "relleno")
+  st.add_no_params(3)
+  st.add_var_count(3)
+  st.add_function_as_var("insertaPunto", "vacio")
+  
+  st.insert_function("insertaLinea", "vacio")
+  st.set_scope("insertaLinea")
+  st.insert_variable("flotante", "x1")
+  st.insert_variable("flotante", "y1")
+  st.insert_variable("flotante", "x2")
+  st.insert_variable("flotante", "y2")
+  st.insert_variable("cadena", "relleno")
+  st.insert_variable("entero", "grosor")
+  st.add_no_params(6)
+  st.add_var_count(6)
+  st.add_function_as_var("insertaLinea", "vacio")
+
+  st.insert_function("insertaCurva", "vacio")
+  st.set_scope("insertaCurva")
+  st.insert_variable("flotante", "x1")
+  st.insert_variable("flotante", "y1")
+  st.insert_variable("flotante", "x2")
+  st.insert_variable("flotante", "y2")
+  st.insert_variable("cadena", "relleno")
+  st.add_no_params(5)
+  st.add_var_count(5)
+  st.add_function_as_var("insertaCurva", "vacio")
+
+  st.set_scope("global")
+
   p[0]="Interpretado Correctamente."
 
 def p_guardarId(p):
@@ -84,7 +190,6 @@ def p_buscarId(p):
   if len(p) >= 1:
     global st
     global current_var_id
-    print("recibi:", current_var_id)
     st.search_variable(current_var_id)
 
  # Constante ID declaracion
@@ -129,8 +234,8 @@ def p_functionpam(p):
     '''functionpam : VAR tipo ID agregarParam functionpam2
                  | '''
 
-def p_icrementParamCounter(p):
-  '''icrementParamCounter : '''
+def p_incrementParamCounter(p):
+  '''incrementParamCounter : '''
   global args_count
   args_count += 1
 
@@ -148,8 +253,8 @@ def p_agregarParam(p):
 
 # Auxiliar Parametros de las funciones
 def p_functionpam2(p):
-  '''functionpam2 : COMA icrementParamCounter functionpam
-                    | icrementParamCounter '''
+  '''functionpam2 : COMA incrementParamCounter functionpam
+                    | incrementParamCounter '''
 
 # Funcion
 def p_function(p):
@@ -190,6 +295,8 @@ def p_cte(p):
            | VERDADERO
            | FALSO'''
     
+    print("Constante actual:", p[1])
+
     if not st.function_exists(p[1]):
       p[0] = p[1]
       if st.get_var(p[1]) is not None and get_type(p[1]) != "entero" and len(st.get_var(p[1])) >= 4:
@@ -301,16 +408,19 @@ def p_saveFunID(p):
 
 def p_generateGoSub(p):
   '''generateGoSub : '''
-  quad = ['GOSUB', current_id, '', 'dir']
-  quad_lst.append(quad)
+  global current_id
   global type_pointer
   global k
   global counter
+  quad = ['GOSUB', current_id, '', 'dir']
+  quad_lst.append(quad)
   k = 0
   type_pointer = None
   counter += 1
+
   var_lst = st.get_var(current_id)
   var_type = st.get_var_type(var_lst[0])
+
   print("generando sub------")
   print('type:', var_type)
   print('val:', var_lst[0])
@@ -351,6 +461,10 @@ def p_validateArgs(p):
   global type_pointer
   argument = operands_s.pop()
   arg_type = types_s.pop()
+
+  print("mandando: " + str(argument) + " con tipo:" +  str(arg_type))
+  print("esperando:", type_pointer)
+
   if arg_type != type_pointer:
     raise TypeError("Los tipos en la llamada y la función no coinciden.")
   else:
@@ -421,9 +535,6 @@ def p_setAssignment(p):
         else:
           raise TypeError("Tipos incompatibles.")
 
-# Auxiliar de asignacion
-def p_asignacionaux(p):
-  '''asignacionaux : exp '''
 
 # Estatutos a estar dentro de los bloques
 def p_estatuto(p):
@@ -510,7 +621,6 @@ def p_checarLogico(p):
           counter += 1
           operands_s.push(result)
           types_s.push(result_type)
-          print("resultado bool:", result)
           # TODO: if any operand were a temporal space, return it to AVAIL
         else:
           raise TypeError("Tipos incompatibles.")
@@ -807,35 +917,35 @@ def p_args2(p):
 
 # Funcion para incluir texto
 def p_texto(p):
-    '''texto : INSERTATEXTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA'''
+    '''texto : INSERTATEXTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA'''
 
 # Funcion para incluir un rectangulo
 def p_rectangulo(p):
-    '''rectangulo : INSERTARECTANGULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA'''
+    '''rectangulo : INSERTARECTANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA'''
 
 # Funcion para incluir un triangulo
 def p_triangulo(p):
-    '''triangulo :  INSERTATRIANGULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA'''
+    '''triangulo :  INSERTATRIANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA'''
 
 # Funcion para incluir un circulo
 def p_circulo(p):
-    '''circulo : INSERTACIRCULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA'''
+    '''circulo : INSERTACIRCULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA'''
 
 # Funcion para incluir un ovalo
 def p_ovalo(p):
-    '''ovalo : INSERTAOVALO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA'''
+    '''ovalo : INSERTAOVALO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA'''
 
 # Funcion para incluir un punto
 def p_punto(p):
-    '''punto : INSERTAPUNTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA'''
+    '''punto : INSERTAPUNTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA'''
 
 # Funcion para incluir una linea
 def p_linea(p):
-    '''linea : INSERTALINEA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA'''
+    '''linea : INSERTALINEA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA'''
 
 # Funcion para incluir una curva
 def p_curva(p):
-    '''curva : INSERTACURVA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA'''
+    '''curva : INSERTACURVA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA'''
 
 def p_error(p):
   print("Error de sintaxis: '%s' en línea: %s."  % (p.value, p.lineno))
