@@ -153,10 +153,7 @@ def p_function(p):
 def p_createGlobal(p):
   '''createGlobal : '''
   if len(p) > 0:
-    if p[-3] != "vacio":
-      print("-----retornp antes------", p[-3])
-      st.add_function_as_var(p[-2], p[-3]);
-
+    st.add_function_as_var(p[-2], p[-3])
 
 def p_finishFun(p):
   '''finishFun : '''
@@ -233,7 +230,15 @@ def p_revisarId(p):
 # Return de las funciones
 def p_regreso(p):
     '''regreso : REGRESAR exp PUNTOYCOMA addReturn
-              | '''
+              | voidReturn '''
+
+def p_voidReturn(p):
+  '''voidReturn : '''
+  global st
+  print(st.get_scope())
+  func_lst = st.get_var(st.get_scope()) 
+  if func_lst[1] != "vacio":
+    raise Error('La funcion debe regresar ' + func_lst[1])
 
 def p_addReturn(p):
   '''addReturn : '''
@@ -277,40 +282,14 @@ def p_generateGoSub(p):
   k = 0
   type_pointer = None
   
-  var_id = st.get_var(p[-8])
-  var_type = st.get_var_type(var_id[0])
+  var_lst = st.get_var(p[-8])
+  var_type = st.get_var_type(var_lst[0])
   print("generando sub------")
   print('type:', var_type)
-  print('val:', var_id[3])
-  operands_s.push(var_id[3])
+  print('val:', var_lst[0])
+  operands_s.push(var_lst[0])
   types_s.push(var_type)
   
-  """
-  if not operands_s.isEmpty():
-    print("DENTRO DE GOSUB")
-    right_op = st.get_var(p[-8])
-    left_op  = operands_s.pop()
-    right_type = st.get_var_type()
-    left_type   = types_s.pop()
-    operator    = operators_s.pop()
-    result_type = sc.verify_type_match(left_type, right_type, operator)
-
-    if result_type != -1:
-      result = right_op
-      st.set_var_val(left_op, result)
-      print("resultado final:", st.get_var(left_op))
-      global counter
-      result = right_op
-      quad = [operator, result, "", left_op]
-      quad_lst.append(quad)
-      counter += 1
-      # TODO: if any operand were a temporal space, return it to AVAIL
-    else:
-      raise TypeError("Tipos incompatibles.")
-    """
-
-
-
 def p_verifyArgCount(p):
   '''verifyArgCount : '''
   global type_pointer

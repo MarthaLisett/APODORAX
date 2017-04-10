@@ -1,27 +1,26 @@
 programa Martha0295:
 var entero a;
 var entero b;
-var flotante f;
+var cadena f;
 
 
-funcion entero uno (var entero a)
+funcion vacio uno (var entero a)
 {
-
-	regresar 3;
+	f = "hola mundo";
+	#a = uno(2);
+	#regresar 3;
 }
 
 funcion entero dos (var entero a, var entero b, var flotante g)
 {
 	var entero i;
-
-
 	regresar  2;
 }
 
 
 inicio {
 
-	a = uno(4);
+	#a = uno(4);
 	b = dos(3,4,5.5);
 	a = a * b;
 
