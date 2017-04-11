@@ -1,13 +1,17 @@
 from memory import Memory
 
 class Globs(Memory):
-	pass
 
+	def __init__(self, integers={}, floats={}, booleans={}, strings={}, characters={}):
+		self.integers   = integers
+		self.floats     = floats
+		self.booleans   = booleans
+		self.strings    = strings
+		self.characters = characters
 
-	def __init__(self):
 		self.l_limit = 0
 		self.u_limit = 4999
-		self.dir_counter = 0
+		self.dir_counter = 0 # checar que hacer con esto
 
 		self.int_l_limit = 0
 		self.int_u_limit = 999
@@ -29,27 +33,14 @@ class Globs(Memory):
 		self.char_u_limit = 4999
 		self.char_counter = 0
 
-	def insert_integer(self, val):
-		if self.int_counter <= self.u_limit and self.int_counter >= self.l_limit:
-			if self.int_counter <= self.int_u_limit and self.int_counter >= self.int_l_limit:
-				self.integers[int_counter] = val
-				self.int_counter += 1
-				return self.int_counter - 1
-			else:
-				# ERROR: ya no hay espacio
-		else:
-			pass
-			# ERROR: ya no hay espacio
-
-
-"""
+	"""
 	globales:       0     - 4,999
 		enteros:    0     - 999
 		flotantes:  1,000 - 1,999
 		booleanos:  2,000 - 2,999
 		strings:    3,000 - 3,999
 		caracteres: 4,000 - 4,999
-"""
+	"""
 
 
 

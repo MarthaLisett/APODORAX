@@ -24,7 +24,7 @@ Rule 18    addParamCount -> <empty>
 Rule 19    agregarParam -> <empty>
 Rule 20    functionpam2 -> COMA incrementParamCounter functionpam
 Rule 21    functionpam2 -> incrementParamCounter
-Rule 22    function -> FUNCION tiporegreso ID idFunctionCheck createGlobal PARENIZQUIERDO functionpam addParamCount PARENDERECHO bloquefun finishFun resetScope function
+Rule 22    function -> FUNCION resetScope tiporegreso ID idFunctionCheck createGlobal PARENIZQUIERDO functionpam addParamCount PARENDERECHO bloquefun finishFun function
 Rule 23    function -> <empty>
 Rule 24    createGlobal -> <empty>
 Rule 25    finishFun -> <empty>
@@ -405,7 +405,7 @@ state 6
 state 7
 
     (1) program -> PROGRAMA ID inicializar DOSPUNTOS declaracion . function INICIO bloque FIN generarCuadruplos
-    (22) function -> . FUNCION tiporegreso ID idFunctionCheck createGlobal PARENIZQUIERDO functionpam addParamCount PARENDERECHO bloquefun finishFun resetScope function
+    (22) function -> . FUNCION resetScope tiporegreso ID idFunctionCheck createGlobal PARENIZQUIERDO functionpam addParamCount PARENDERECHO bloquefun finishFun function
     (23) function -> .
 
     FUNCION         shift and go to state 15
@@ -466,24 +466,17 @@ state 14
 
 state 15
 
-    (22) function -> FUNCION . tiporegreso ID idFunctionCheck createGlobal PARENIZQUIERDO functionpam addParamCount PARENDERECHO bloquefun finishFun resetScope function
-    (13) tiporegreso -> . tipo
-    (14) tiporegreso -> . VACIO
-    (38) tipo -> . ENTERO
-    (39) tipo -> . FLOTANTE
-    (40) tipo -> . CADENA
-    (41) tipo -> . CARACTER
-    (42) tipo -> . BOOL
+    (22) function -> FUNCION . resetScope tiporegreso ID idFunctionCheck createGlobal PARENIZQUIERDO functionpam addParamCount PARENDERECHO bloquefun finishFun function
+    (26) resetScope -> .
 
-    VACIO           shift and go to state 21
-    ENTERO          shift and go to state 13
-    FLOTANTE        shift and go to state 12
-    CADENA          shift and go to state 10
-    CARACTER        shift and go to state 9
-    BOOL            shift and go to state 11
+    VACIO           reduce using rule 26 (resetScope -> .)
+    ENTERO          reduce using rule 26 (resetScope -> .)
+    FLOTANTE        reduce using rule 26 (resetScope -> .)
+    CADENA          reduce using rule 26 (resetScope -> .)
+    CARACTER        reduce using rule 26 (resetScope -> .)
+    BOOL            reduce using rule 26 (resetScope -> .)
 
-    tipo                           shift and go to state 19
-    tiporegreso                    shift and go to state 20
+    resetScope                     shift and go to state 19
 
 state 16
 
@@ -492,7 +485,7 @@ state 16
 
     PUNTOYCOMA      reduce using rule 46 (revisarId -> .)
 
-    revisarId                      shift and go to state 22
+    revisarId                      shift and go to state 20
 
 state 17
 
@@ -500,49 +493,49 @@ state 17
     (7) cteidaux -> . CORCHETEIZQ exp CORCHETEDER
     (8) cteidaux -> .
 
-    CORCHETEIZQ     shift and go to state 23
+    CORCHETEIZQ     shift and go to state 21
     PUNTOYCOMA      reduce using rule 8 (cteidaux -> .)
 
-    cteidaux                       shift and go to state 24
+    cteidaux                       shift and go to state 22
 
 state 18
 
     (1) program -> PROGRAMA ID inicializar DOSPUNTOS declaracion function INICIO . bloque FIN generarCuadruplos
     (54) bloque -> . LLAVEIZQUIERDO bloqueaux LLAVEDERECHO
 
-    LLAVEIZQUIERDO  shift and go to state 25
+    LLAVEIZQUIERDO  shift and go to state 23
 
-    bloque                         shift and go to state 26
+    bloque                         shift and go to state 24
 
 state 19
 
-    (13) tiporegreso -> tipo .
+    (22) function -> FUNCION resetScope . tiporegreso ID idFunctionCheck createGlobal PARENIZQUIERDO functionpam addParamCount PARENDERECHO bloquefun finishFun function
+    (13) tiporegreso -> . tipo
+    (14) tiporegreso -> . VACIO
+    (38) tipo -> . ENTERO
+    (39) tipo -> . FLOTANTE
+    (40) tipo -> . CADENA
+    (41) tipo -> . CARACTER
+    (42) tipo -> . BOOL
 
-    ID              reduce using rule 13 (tiporegreso -> tipo .)
+    VACIO           shift and go to state 27
+    ENTERO          shift and go to state 13
+    FLOTANTE        shift and go to state 12
+    CADENA          shift and go to state 10
+    CARACTER        shift and go to state 9
+    BOOL            shift and go to state 11
 
+    tipo                           shift and go to state 25
+    tiporegreso                    shift and go to state 26
 
 state 20
-
-    (22) function -> FUNCION tiporegreso . ID idFunctionCheck createGlobal PARENIZQUIERDO functionpam addParamCount PARENDERECHO bloquefun finishFun resetScope function
-
-    ID              shift and go to state 27
-
-
-state 21
-
-    (14) tiporegreso -> VACIO .
-
-    ID              reduce using rule 14 (tiporegreso -> VACIO .)
-
-
-state 22
 
     (43) declaracion -> VAR tipo cteid_declaracion revisarId . PUNTOYCOMA countVar declaracion
 
     PUNTOYCOMA      shift and go to state 28
 
 
-state 23
+state 21
 
     (7) cteidaux -> CORCHETEIZQ . exp CORCHETEDER
     (59) exp -> . termino checkExpTypes exp2
@@ -571,14 +564,14 @@ state 23
     exp                            shift and go to state 40
     factor                         shift and go to state 31
 
-state 24
+state 22
 
     (6) cteid_declaracion -> ID cteidaux .
 
     PUNTOYCOMA      reduce using rule 6 (cteid_declaracion -> ID cteidaux .)
 
 
-state 25
+state 23
 
     (54) bloque -> LLAVEIZQUIERDO . bloqueaux LLAVEDERECHO
     (55) bloqueaux -> . estatuto bloqueaux
@@ -644,21 +637,33 @@ state 25
     linea                          shift and go to state 68
     escritura                      shift and go to state 69
 
-state 26
+state 24
 
     (1) program -> PROGRAMA ID inicializar DOSPUNTOS declaracion function INICIO bloque . FIN generarCuadruplos
 
     FIN             shift and go to state 70
 
 
+state 25
+
+    (13) tiporegreso -> tipo .
+
+    ID              reduce using rule 13 (tiporegreso -> tipo .)
+
+
+state 26
+
+    (22) function -> FUNCION resetScope tiporegreso . ID idFunctionCheck createGlobal PARENIZQUIERDO functionpam addParamCount PARENDERECHO bloquefun finishFun function
+
+    ID              shift and go to state 71
+
+
 state 27
 
-    (22) function -> FUNCION tiporegreso ID . idFunctionCheck createGlobal PARENIZQUIERDO functionpam addParamCount PARENDERECHO bloquefun finishFun resetScope function
-    (27) idFunctionCheck -> .
+    (14) tiporegreso -> VACIO .
 
-    PARENIZQUIERDO  reduce using rule 27 (idFunctionCheck -> .)
+    ID              reduce using rule 14 (tiporegreso -> VACIO .)
 
-    idFunctionCheck                shift and go to state 71
 
 state 28
 
@@ -765,11 +770,10 @@ state 32
     DIVISION        reduce using rule 30 (cte -> CFLOTANTE .)
     SUMA            reduce using rule 30 (cte -> CFLOTANTE .)
     RESTA           reduce using rule 30 (cte -> CFLOTANTE .)
+    COMA            reduce using rule 30 (cte -> CFLOTANTE .)
+    PARENDERECHO    reduce using rule 30 (cte -> CFLOTANTE .)
     CONJUNCION      reduce using rule 30 (cte -> CFLOTANTE .)
     DISYUNCION      reduce using rule 30 (cte -> CFLOTANTE .)
-    PARENDERECHO    reduce using rule 30 (cte -> CFLOTANTE .)
-    COMA            reduce using rule 30 (cte -> CFLOTANTE .)
-    PUNTOYCOMA      reduce using rule 30 (cte -> CFLOTANTE .)
     CORCHETEDER     reduce using rule 30 (cte -> CFLOTANTE .)
     MENORQUE        reduce using rule 30 (cte -> CFLOTANTE .)
     MAYORQUE        reduce using rule 30 (cte -> CFLOTANTE .)
@@ -777,6 +781,7 @@ state 32
     MENORIGUAL      reduce using rule 30 (cte -> CFLOTANTE .)
     IGUAL           reduce using rule 30 (cte -> CFLOTANTE .)
     DIFERENTE       reduce using rule 30 (cte -> CFLOTANTE .)
+    PUNTOYCOMA      reduce using rule 30 (cte -> CFLOTANTE .)
 
 
 state 33
@@ -787,11 +792,10 @@ state 33
     DIVISION        reduce using rule 29 (cte -> CENTERO .)
     SUMA            reduce using rule 29 (cte -> CENTERO .)
     RESTA           reduce using rule 29 (cte -> CENTERO .)
+    COMA            reduce using rule 29 (cte -> CENTERO .)
+    PARENDERECHO    reduce using rule 29 (cte -> CENTERO .)
     CONJUNCION      reduce using rule 29 (cte -> CENTERO .)
     DISYUNCION      reduce using rule 29 (cte -> CENTERO .)
-    PARENDERECHO    reduce using rule 29 (cte -> CENTERO .)
-    COMA            reduce using rule 29 (cte -> CENTERO .)
-    PUNTOYCOMA      reduce using rule 29 (cte -> CENTERO .)
     CORCHETEDER     reduce using rule 29 (cte -> CENTERO .)
     MENORQUE        reduce using rule 29 (cte -> CENTERO .)
     MAYORQUE        reduce using rule 29 (cte -> CENTERO .)
@@ -799,6 +803,7 @@ state 33
     MENORIGUAL      reduce using rule 29 (cte -> CENTERO .)
     IGUAL           reduce using rule 29 (cte -> CENTERO .)
     DIFERENTE       reduce using rule 29 (cte -> CENTERO .)
+    PUNTOYCOMA      reduce using rule 29 (cte -> CENTERO .)
 
 
 state 34
@@ -809,11 +814,10 @@ state 34
     DIVISION        reduce using rule 32 (cte -> CCARACTER .)
     SUMA            reduce using rule 32 (cte -> CCARACTER .)
     RESTA           reduce using rule 32 (cte -> CCARACTER .)
+    COMA            reduce using rule 32 (cte -> CCARACTER .)
+    PARENDERECHO    reduce using rule 32 (cte -> CCARACTER .)
     CONJUNCION      reduce using rule 32 (cte -> CCARACTER .)
     DISYUNCION      reduce using rule 32 (cte -> CCARACTER .)
-    PARENDERECHO    reduce using rule 32 (cte -> CCARACTER .)
-    COMA            reduce using rule 32 (cte -> CCARACTER .)
-    PUNTOYCOMA      reduce using rule 32 (cte -> CCARACTER .)
     CORCHETEDER     reduce using rule 32 (cte -> CCARACTER .)
     MENORQUE        reduce using rule 32 (cte -> CCARACTER .)
     MAYORQUE        reduce using rule 32 (cte -> CCARACTER .)
@@ -821,6 +825,7 @@ state 34
     MENORIGUAL      reduce using rule 32 (cte -> CCARACTER .)
     IGUAL           reduce using rule 32 (cte -> CCARACTER .)
     DIFERENTE       reduce using rule 32 (cte -> CCARACTER .)
+    PUNTOYCOMA      reduce using rule 32 (cte -> CCARACTER .)
 
 
 state 35
@@ -859,11 +864,10 @@ state 36
     DIVISION        reduce using rule 33 (cte -> VERDADERO .)
     SUMA            reduce using rule 33 (cte -> VERDADERO .)
     RESTA           reduce using rule 33 (cte -> VERDADERO .)
+    COMA            reduce using rule 33 (cte -> VERDADERO .)
+    PARENDERECHO    reduce using rule 33 (cte -> VERDADERO .)
     CONJUNCION      reduce using rule 33 (cte -> VERDADERO .)
     DISYUNCION      reduce using rule 33 (cte -> VERDADERO .)
-    PARENDERECHO    reduce using rule 33 (cte -> VERDADERO .)
-    COMA            reduce using rule 33 (cte -> VERDADERO .)
-    PUNTOYCOMA      reduce using rule 33 (cte -> VERDADERO .)
     CORCHETEDER     reduce using rule 33 (cte -> VERDADERO .)
     MENORQUE        reduce using rule 33 (cte -> VERDADERO .)
     MAYORQUE        reduce using rule 33 (cte -> VERDADERO .)
@@ -871,6 +875,7 @@ state 36
     MENORIGUAL      reduce using rule 33 (cte -> VERDADERO .)
     IGUAL           reduce using rule 33 (cte -> VERDADERO .)
     DIFERENTE       reduce using rule 33 (cte -> VERDADERO .)
+    PUNTOYCOMA      reduce using rule 33 (cte -> VERDADERO .)
 
 
 state 37
@@ -881,11 +886,10 @@ state 37
     DIVISION        reduce using rule 31 (cte -> CCADENA .)
     SUMA            reduce using rule 31 (cte -> CCADENA .)
     RESTA           reduce using rule 31 (cte -> CCADENA .)
+    COMA            reduce using rule 31 (cte -> CCADENA .)
+    PARENDERECHO    reduce using rule 31 (cte -> CCADENA .)
     CONJUNCION      reduce using rule 31 (cte -> CCADENA .)
     DISYUNCION      reduce using rule 31 (cte -> CCADENA .)
-    PARENDERECHO    reduce using rule 31 (cte -> CCADENA .)
-    COMA            reduce using rule 31 (cte -> CCADENA .)
-    PUNTOYCOMA      reduce using rule 31 (cte -> CCADENA .)
     CORCHETEDER     reduce using rule 31 (cte -> CCADENA .)
     MENORQUE        reduce using rule 31 (cte -> CCADENA .)
     MAYORQUE        reduce using rule 31 (cte -> CCADENA .)
@@ -893,6 +897,7 @@ state 37
     MENORIGUAL      reduce using rule 31 (cte -> CCADENA .)
     IGUAL           reduce using rule 31 (cte -> CCADENA .)
     DIFERENTE       reduce using rule 31 (cte -> CCADENA .)
+    PUNTOYCOMA      reduce using rule 31 (cte -> CCADENA .)
 
 
 state 38
@@ -903,11 +908,10 @@ state 38
     DIVISION        reduce using rule 34 (cte -> FALSO .)
     SUMA            reduce using rule 34 (cte -> FALSO .)
     RESTA           reduce using rule 34 (cte -> FALSO .)
+    COMA            reduce using rule 34 (cte -> FALSO .)
+    PARENDERECHO    reduce using rule 34 (cte -> FALSO .)
     CONJUNCION      reduce using rule 34 (cte -> FALSO .)
     DISYUNCION      reduce using rule 34 (cte -> FALSO .)
-    PARENDERECHO    reduce using rule 34 (cte -> FALSO .)
-    COMA            reduce using rule 34 (cte -> FALSO .)
-    PUNTOYCOMA      reduce using rule 34 (cte -> FALSO .)
     CORCHETEDER     reduce using rule 34 (cte -> FALSO .)
     MENORQUE        reduce using rule 34 (cte -> FALSO .)
     MAYORQUE        reduce using rule 34 (cte -> FALSO .)
@@ -915,6 +919,7 @@ state 38
     MENORIGUAL      reduce using rule 34 (cte -> FALSO .)
     IGUAL           reduce using rule 34 (cte -> FALSO .)
     DIFERENTE       reduce using rule 34 (cte -> FALSO .)
+    PUNTOYCOMA      reduce using rule 34 (cte -> FALSO .)
 
 
 state 39
@@ -925,8 +930,6 @@ state 39
     DIVISION        reduce using rule 122 (factor -> cte .)
     SUMA            reduce using rule 122 (factor -> cte .)
     RESTA           reduce using rule 122 (factor -> cte .)
-    COMA            reduce using rule 122 (factor -> cte .)
-    PARENDERECHO    reduce using rule 122 (factor -> cte .)
     CORCHETEDER     reduce using rule 122 (factor -> cte .)
     MENORQUE        reduce using rule 122 (factor -> cte .)
     MAYORQUE        reduce using rule 122 (factor -> cte .)
@@ -936,7 +939,9 @@ state 39
     DIFERENTE       reduce using rule 122 (factor -> cte .)
     CONJUNCION      reduce using rule 122 (factor -> cte .)
     DISYUNCION      reduce using rule 122 (factor -> cte .)
+    PARENDERECHO    reduce using rule 122 (factor -> cte .)
     PUNTOYCOMA      reduce using rule 122 (factor -> cte .)
+    COMA            reduce using rule 122 (factor -> cte .)
 
 
 state 40
@@ -1443,12 +1448,12 @@ state 70
 
 state 71
 
-    (22) function -> FUNCION tiporegreso ID idFunctionCheck . createGlobal PARENIZQUIERDO functionpam addParamCount PARENDERECHO bloquefun finishFun resetScope function
-    (24) createGlobal -> .
+    (22) function -> FUNCION resetScope tiporegreso ID . idFunctionCheck createGlobal PARENIZQUIERDO functionpam addParamCount PARENDERECHO bloquefun finishFun function
+    (27) idFunctionCheck -> .
 
-    PARENIZQUIERDO  reduce using rule 24 (createGlobal -> .)
+    PARENIZQUIERDO  reduce using rule 27 (idFunctionCheck -> .)
 
-    createGlobal                   shift and go to state 97
+    idFunctionCheck                shift and go to state 97
 
 state 72
 
@@ -1675,7 +1680,6 @@ state 81
 
     (54) bloque -> LLAVEIZQUIERDO bloqueaux LLAVEDERECHO .
 
-    FIN             reduce using rule 54 (bloque -> LLAVEIZQUIERDO bloqueaux LLAVEDERECHO .)
     ID              reduce using rule 54 (bloque -> LLAVEIZQUIERDO bloqueaux LLAVEDERECHO .)
     ENTRADA         reduce using rule 54 (bloque -> LLAVEIZQUIERDO bloqueaux LLAVEDERECHO .)
     DESPLEGAR       reduce using rule 54 (bloque -> LLAVEIZQUIERDO bloqueaux LLAVEDERECHO .)
@@ -1691,6 +1695,7 @@ state 81
     MIENTRAS        reduce using rule 54 (bloque -> LLAVEIZQUIERDO bloqueaux LLAVEDERECHO .)
     LLAVEDERECHO    reduce using rule 54 (bloque -> LLAVEIZQUIERDO bloqueaux LLAVEDERECHO .)
     REGRESAR        reduce using rule 54 (bloque -> LLAVEIZQUIERDO bloqueaux LLAVEDERECHO .)
+    FIN             reduce using rule 54 (bloque -> LLAVEIZQUIERDO bloqueaux LLAVEDERECHO .)
     SINO            reduce using rule 54 (bloque -> LLAVEIZQUIERDO bloqueaux LLAVEDERECHO .)
 
 
@@ -1772,8 +1777,8 @@ state 87
 
     (55) bloqueaux -> estatuto bloqueaux .
 
-    REGRESAR        reduce using rule 55 (bloqueaux -> estatuto bloqueaux .)
     LLAVEDERECHO    reduce using rule 55 (bloqueaux -> estatuto bloqueaux .)
+    REGRESAR        reduce using rule 55 (bloqueaux -> estatuto bloqueaux .)
 
 
 state 88
@@ -1889,10 +1894,12 @@ state 96
 
 state 97
 
-    (22) function -> FUNCION tiporegreso ID idFunctionCheck createGlobal . PARENIZQUIERDO functionpam addParamCount PARENDERECHO bloquefun finishFun resetScope function
+    (22) function -> FUNCION resetScope tiporegreso ID idFunctionCheck . createGlobal PARENIZQUIERDO functionpam addParamCount PARENDERECHO bloquefun finishFun function
+    (24) createGlobal -> .
 
-    PARENIZQUIERDO  shift and go to state 138
+    PARENIZQUIERDO  reduce using rule 24 (createGlobal -> .)
 
+    createGlobal                   shift and go to state 138
 
 state 98
 
@@ -1921,9 +1928,9 @@ state 99
 
     (59) exp -> termino checkExpTypes exp2 .
 
+    CORCHETEDER     reduce using rule 59 (exp -> termino checkExpTypes exp2 .)
     COMA            reduce using rule 59 (exp -> termino checkExpTypes exp2 .)
     PARENDERECHO    reduce using rule 59 (exp -> termino checkExpTypes exp2 .)
-    CORCHETEDER     reduce using rule 59 (exp -> termino checkExpTypes exp2 .)
     PUNTOYCOMA      reduce using rule 59 (exp -> termino checkExpTypes exp2 .)
     MENORQUE        reduce using rule 59 (exp -> termino checkExpTypes exp2 .)
     MAYORQUE        reduce using rule 59 (exp -> termino checkExpTypes exp2 .)
@@ -2178,7 +2185,7 @@ state 119
     (7) cteidaux -> . CORCHETEIZQ exp CORCHETEDER
     (8) cteidaux -> .
 
-    CORCHETEIZQ     shift and go to state 23
+    CORCHETEIZQ     shift and go to state 21
     MULTIPLICACION  reduce using rule 8 (cteidaux -> .)
     DIVISION        reduce using rule 8 (cteidaux -> .)
     SUMA            reduce using rule 8 (cteidaux -> .)
@@ -2206,11 +2213,10 @@ state 120
     DIVISION        reduce using rule 28 (cte -> ID getCurrentID symbol .)
     SUMA            reduce using rule 28 (cte -> ID getCurrentID symbol .)
     RESTA           reduce using rule 28 (cte -> ID getCurrentID symbol .)
+    COMA            reduce using rule 28 (cte -> ID getCurrentID symbol .)
+    PARENDERECHO    reduce using rule 28 (cte -> ID getCurrentID symbol .)
     CONJUNCION      reduce using rule 28 (cte -> ID getCurrentID symbol .)
     DISYUNCION      reduce using rule 28 (cte -> ID getCurrentID symbol .)
-    PARENDERECHO    reduce using rule 28 (cte -> ID getCurrentID symbol .)
-    COMA            reduce using rule 28 (cte -> ID getCurrentID symbol .)
-    PUNTOYCOMA      reduce using rule 28 (cte -> ID getCurrentID symbol .)
     CORCHETEDER     reduce using rule 28 (cte -> ID getCurrentID symbol .)
     MENORQUE        reduce using rule 28 (cte -> ID getCurrentID symbol .)
     MAYORQUE        reduce using rule 28 (cte -> ID getCurrentID symbol .)
@@ -2218,6 +2224,7 @@ state 120
     MENORIGUAL      reduce using rule 28 (cte -> ID getCurrentID symbol .)
     IGUAL           reduce using rule 28 (cte -> ID getCurrentID symbol .)
     DIFERENTE       reduce using rule 28 (cte -> ID getCurrentID symbol .)
+    PUNTOYCOMA      reduce using rule 28 (cte -> ID getCurrentID symbol .)
 
 
 state 121
@@ -2435,14 +2442,10 @@ state 137
 
 state 138
 
-    (22) function -> FUNCION tiporegreso ID idFunctionCheck createGlobal PARENIZQUIERDO . functionpam addParamCount PARENDERECHO bloquefun finishFun resetScope function
-    (15) functionpam -> . VAR tipo ID agregarParam functionpam2
-    (16) functionpam -> .
+    (22) function -> FUNCION resetScope tiporegreso ID idFunctionCheck createGlobal . PARENIZQUIERDO functionpam addParamCount PARENDERECHO bloquefun finishFun function
 
-    VAR             shift and go to state 165
-    PARENDERECHO    reduce using rule 16 (functionpam -> .)
+    PARENIZQUIERDO  shift and go to state 164
 
-    functionpam                    shift and go to state 164
 
 state 139
 
@@ -2470,7 +2473,7 @@ state 139
 
     cte                            shift and go to state 39
     termino                        shift and go to state 29
-    exp                            shift and go to state 166
+    exp                            shift and go to state 165
     factor                         shift and go to state 31
 
 state 140
@@ -2499,7 +2502,7 @@ state 140
 
     cte                            shift and go to state 39
     termino                        shift and go to state 29
-    exp                            shift and go to state 167
+    exp                            shift and go to state 166
     factor                         shift and go to state 31
 
 state 141
@@ -2509,11 +2512,11 @@ state 141
     (103) logicoAux -> . DISYUNCION agregarLogico logico
     (104) logicoAux -> .
 
-    CONJUNCION      shift and go to state 170
-    DISYUNCION      shift and go to state 168
+    CONJUNCION      shift and go to state 169
+    DISYUNCION      shift and go to state 167
     PARENDERECHO    reduce using rule 104 (logicoAux -> .)
 
-    logicoAux                      shift and go to state 169
+    logicoAux                      shift and go to state 168
 
 state 142
 
@@ -2530,15 +2533,15 @@ state 142
     CONJUNCION      reduce using rule 108 (expresionaux -> .)
     DISYUNCION      reduce using rule 108 (expresionaux -> .)
     PARENDERECHO    reduce using rule 108 (expresionaux -> .)
-    MENORQUE        shift and go to state 173
-    MAYORQUE        shift and go to state 176
-    MAYORIGUAL      shift and go to state 177
-    MENORIGUAL      shift and go to state 172
-    IGUAL           shift and go to state 174
-    DIFERENTE       shift and go to state 175
+    MENORQUE        shift and go to state 172
+    MAYORQUE        shift and go to state 175
+    MAYORIGUAL      shift and go to state 176
+    MENORIGUAL      shift and go to state 171
+    IGUAL           shift and go to state 173
+    DIFERENTE       shift and go to state 174
 
-    expresionaux                   shift and go to state 171
-    comparacion                    shift and go to state 178
+    expresionaux                   shift and go to state 170
+    comparacion                    shift and go to state 177
 
 state 143
 
@@ -2562,7 +2565,7 @@ state 143
     PUNTOYCOMA      reduce using rule 126 (quitarFondoFalso -> .)
     COMA            reduce using rule 126 (quitarFondoFalso -> .)
 
-    quitarFondoFalso               shift and go to state 179
+    quitarFondoFalso               shift and go to state 178
 
 state 144
 
@@ -2588,7 +2591,7 @@ state 144
     FALSO           shift and go to state 38
 
     cte                            shift and go to state 39
-    termino                        shift and go to state 180
+    termino                        shift and go to state 179
     factor                         shift and go to state 31
 
 state 145
@@ -2615,7 +2618,7 @@ state 145
     FALSO           shift and go to state 38
 
     cte                            shift and go to state 39
-    termino                        shift and go to state 181
+    termino                        shift and go to state 180
     factor                         shift and go to state 31
 
 state 146
@@ -2644,7 +2647,6 @@ state 147
 
     (124) cteid -> buscarId cteidaux .
 
-    PARENDERECHO    reduce using rule 124 (cteid -> buscarId cteidaux .)
     MULTIPLICACION  reduce using rule 124 (cteid -> buscarId cteidaux .)
     DIVISION        reduce using rule 124 (cteid -> buscarId cteidaux .)
     SUMA            reduce using rule 124 (cteid -> buscarId cteidaux .)
@@ -2658,6 +2660,7 @@ state 147
     DIFERENTE       reduce using rule 124 (cteid -> buscarId cteidaux .)
     CONJUNCION      reduce using rule 124 (cteid -> buscarId cteidaux .)
     DISYUNCION      reduce using rule 124 (cteid -> buscarId cteidaux .)
+    PARENDERECHO    reduce using rule 124 (cteid -> buscarId cteidaux .)
     PUNTOYCOMA      reduce using rule 124 (cteid -> buscarId cteidaux .)
     COMA            reduce using rule 124 (cteid -> buscarId cteidaux .)
 
@@ -2666,7 +2669,7 @@ state 148
 
     (157) punto -> INSERTAPUNTO getCurrentID buscarFuncion saveFunID . PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA
 
-    PARENIZQUIERDO  shift and go to state 182
+    PARENIZQUIERDO  shift and go to state 181
 
 
 state 149
@@ -2676,7 +2679,7 @@ state 149
 
     PUNTOYCOMA      reduce using rule 76 (setAssignment -> .)
 
-    setAssignment                  shift and go to state 183
+    setAssignment                  shift and go to state 182
 
 state 150
 
@@ -2685,41 +2688,41 @@ state 150
 
     PUNTOYCOMA      reduce using rule 146 (generarEscritura -> .)
 
-    generarEscritura               shift and go to state 184
+    generarEscritura               shift and go to state 183
 
 state 151
 
     (159) curva -> INSERTACURVA getCurrentID buscarFuncion saveFunID . PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA
 
-    PARENIZQUIERDO  shift and go to state 185
+    PARENIZQUIERDO  shift and go to state 184
 
 
 state 152
 
     (158) linea -> INSERTALINEA getCurrentID buscarFuncion saveFunID . PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA
 
-    PARENIZQUIERDO  shift and go to state 186
+    PARENIZQUIERDO  shift and go to state 185
 
 
 state 153
 
     (152) texto -> INSERTATEXTO getCurrentID buscarFuncion saveFunID . PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA
 
-    PARENIZQUIERDO  shift and go to state 187
+    PARENIZQUIERDO  shift and go to state 186
 
 
 state 154
 
     (153) rectangulo -> INSERTARECTANGULO getCurrentID buscarFuncion saveFunID . PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA
 
-    PARENIZQUIERDO  shift and go to state 188
+    PARENIZQUIERDO  shift and go to state 187
 
 
 state 155
 
     (155) circulo -> INSERTACIRCULO getCurrentID buscarFuncion saveFunID . PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA
 
-    PARENIZQUIERDO  shift and go to state 189
+    PARENIZQUIERDO  shift and go to state 188
 
 
 state 156
@@ -2731,21 +2734,21 @@ state 156
     CORCHETEIZQ     reduce using rule 5 (buscarId -> .)
     PARENDERECHO    reduce using rule 5 (buscarId -> .)
 
-    cteid                          shift and go to state 190
+    cteid                          shift and go to state 189
     buscarId                       shift and go to state 119
 
 state 157
 
     (154) triangulo -> INSERTATRIANGULO getCurrentID buscarFuncion saveFunID . PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA
 
-    PARENIZQUIERDO  shift and go to state 191
+    PARENIZQUIERDO  shift and go to state 190
 
 
 state 158
 
     (123) llamada -> buscarFuncion saveFunID . PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub
 
-    PARENIZQUIERDO  shift and go to state 192
+    PARENIZQUIERDO  shift and go to state 191
 
 
 state 159
@@ -2775,16 +2778,16 @@ state 160
     (72) asignacionizqaux -> . CORCHETEIZQ exp CORCHETEDER
     (73) asignacionizqaux -> .
 
-    CORCHETEIZQ     shift and go to state 193
+    CORCHETEIZQ     shift and go to state 192
     ASIGNACION      reduce using rule 73 (asignacionizqaux -> .)
 
-    asignacionizqaux               shift and go to state 194
+    asignacionizqaux               shift and go to state 193
 
 state 161
 
     (141) ciclo -> MIENTRAS insertarSalto PARENIZQUIERDO logico . PARENDERECHO crearCiclo bloque crearRegreso
 
-    PARENDERECHO    shift and go to state 195
+    PARENDERECHO    shift and go to state 194
 
 
 state 162
@@ -2794,42 +2797,27 @@ state 162
 
     ENTONCES        reduce using rule 128 (generarCond -> .)
 
-    generarCond                    shift and go to state 196
+    generarCond                    shift and go to state 195
 
 state 163
 
     (156) ovalo -> INSERTAOVALO getCurrentID buscarFuncion saveFunID . PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA
 
-    PARENIZQUIERDO  shift and go to state 197
+    PARENIZQUIERDO  shift and go to state 196
 
 
 state 164
 
-    (22) function -> FUNCION tiporegreso ID idFunctionCheck createGlobal PARENIZQUIERDO functionpam . addParamCount PARENDERECHO bloquefun finishFun resetScope function
-    (18) addParamCount -> .
+    (22) function -> FUNCION resetScope tiporegreso ID idFunctionCheck createGlobal PARENIZQUIERDO . functionpam addParamCount PARENDERECHO bloquefun finishFun function
+    (15) functionpam -> . VAR tipo ID agregarParam functionpam2
+    (16) functionpam -> .
 
-    PARENDERECHO    reduce using rule 18 (addParamCount -> .)
+    VAR             shift and go to state 198
+    PARENDERECHO    reduce using rule 16 (functionpam -> .)
 
-    addParamCount                  shift and go to state 198
+    functionpam                    shift and go to state 197
 
 state 165
-
-    (15) functionpam -> VAR . tipo ID agregarParam functionpam2
-    (38) tipo -> . ENTERO
-    (39) tipo -> . FLOTANTE
-    (40) tipo -> . CADENA
-    (41) tipo -> . CARACTER
-    (42) tipo -> . BOOL
-
-    ENTERO          shift and go to state 13
-    FLOTANTE        shift and go to state 12
-    CADENA          shift and go to state 10
-    CARACTER        shift and go to state 9
-    BOOL            shift and go to state 11
-
-    tipo                           shift and go to state 199
-
-state 166
 
     (113) exp2 -> RESTA addExp exp .
 
@@ -2847,7 +2835,7 @@ state 166
     COMA            reduce using rule 113 (exp2 -> RESTA addExp exp .)
 
 
-state 167
+state 166
 
     (112) exp2 -> SUMA addExp exp .
 
@@ -2865,7 +2853,7 @@ state 167
     COMA            reduce using rule 112 (exp2 -> SUMA addExp exp .)
 
 
-state 168
+state 167
 
     (103) logicoAux -> DISYUNCION . agregarLogico logico
     (105) agregarLogico -> .
@@ -2888,16 +2876,16 @@ state 168
     VERDADERO       reduce using rule 105 (agregarLogico -> .)
     FALSO           reduce using rule 105 (agregarLogico -> .)
 
-    agregarLogico                  shift and go to state 200
+    agregarLogico                  shift and go to state 199
 
-state 169
+state 168
 
     (100) logico -> expresion checarLogico logicoAux .
 
     PARENDERECHO    reduce using rule 100 (logico -> expresion checarLogico logicoAux .)
 
 
-state 170
+state 169
 
     (102) logicoAux -> CONJUNCION . agregarLogico logico
     (105) agregarLogico -> .
@@ -2920,9 +2908,9 @@ state 170
     VERDADERO       reduce using rule 105 (agregarLogico -> .)
     FALSO           reduce using rule 105 (agregarLogico -> .)
 
-    agregarLogico                  shift and go to state 201
+    agregarLogico                  shift and go to state 200
 
-state 171
+state 170
 
     (57) expresion -> negacion exp expresionaux .
 
@@ -2931,7 +2919,7 @@ state 171
     PARENDERECHO    reduce using rule 57 (expresion -> negacion exp expresionaux .)
 
 
-state 172
+state 171
 
     (97) comparacion -> MENORIGUAL .
 
@@ -2945,7 +2933,7 @@ state 172
     FALSO           reduce using rule 97 (comparacion -> MENORIGUAL .)
 
 
-state 173
+state 172
 
     (94) comparacion -> MENORQUE .
 
@@ -2959,7 +2947,7 @@ state 173
     FALSO           reduce using rule 94 (comparacion -> MENORQUE .)
 
 
-state 174
+state 173
 
     (98) comparacion -> IGUAL .
 
@@ -2973,7 +2961,7 @@ state 174
     FALSO           reduce using rule 98 (comparacion -> IGUAL .)
 
 
-state 175
+state 174
 
     (99) comparacion -> DIFERENTE .
 
@@ -2987,7 +2975,7 @@ state 175
     FALSO           reduce using rule 99 (comparacion -> DIFERENTE .)
 
 
-state 176
+state 175
 
     (95) comparacion -> MAYORQUE .
 
@@ -3001,7 +2989,7 @@ state 176
     FALSO           reduce using rule 95 (comparacion -> MAYORQUE .)
 
 
-state 177
+state 176
 
     (96) comparacion -> MAYORIGUAL .
 
@@ -3015,7 +3003,7 @@ state 177
     FALSO           reduce using rule 96 (comparacion -> MAYORIGUAL .)
 
 
-state 178
+state 177
 
     (107) expresionaux -> comparacion . addRelop exp checkRelopTypes
     (109) addRelop -> .
@@ -3029,9 +3017,9 @@ state 178
     VERDADERO       reduce using rule 109 (addRelop -> .)
     FALSO           reduce using rule 109 (addRelop -> .)
 
-    addRelop                       shift and go to state 202
+    addRelop                       shift and go to state 201
 
-state 179
+state 178
 
     (121) factor -> PARENIZQUIERDO crearFondoFalso logico PARENDERECHO quitarFondoFalso .
 
@@ -3039,8 +3027,6 @@ state 179
     DIVISION        reduce using rule 121 (factor -> PARENIZQUIERDO crearFondoFalso logico PARENDERECHO quitarFondoFalso .)
     SUMA            reduce using rule 121 (factor -> PARENIZQUIERDO crearFondoFalso logico PARENDERECHO quitarFondoFalso .)
     RESTA           reduce using rule 121 (factor -> PARENIZQUIERDO crearFondoFalso logico PARENDERECHO quitarFondoFalso .)
-    COMA            reduce using rule 121 (factor -> PARENIZQUIERDO crearFondoFalso logico PARENDERECHO quitarFondoFalso .)
-    PARENDERECHO    reduce using rule 121 (factor -> PARENIZQUIERDO crearFondoFalso logico PARENDERECHO quitarFondoFalso .)
     CORCHETEDER     reduce using rule 121 (factor -> PARENIZQUIERDO crearFondoFalso logico PARENDERECHO quitarFondoFalso .)
     MENORQUE        reduce using rule 121 (factor -> PARENIZQUIERDO crearFondoFalso logico PARENDERECHO quitarFondoFalso .)
     MAYORQUE        reduce using rule 121 (factor -> PARENIZQUIERDO crearFondoFalso logico PARENDERECHO quitarFondoFalso .)
@@ -3050,10 +3036,12 @@ state 179
     DIFERENTE       reduce using rule 121 (factor -> PARENIZQUIERDO crearFondoFalso logico PARENDERECHO quitarFondoFalso .)
     CONJUNCION      reduce using rule 121 (factor -> PARENIZQUIERDO crearFondoFalso logico PARENDERECHO quitarFondoFalso .)
     DISYUNCION      reduce using rule 121 (factor -> PARENIZQUIERDO crearFondoFalso logico PARENDERECHO quitarFondoFalso .)
+    PARENDERECHO    reduce using rule 121 (factor -> PARENIZQUIERDO crearFondoFalso logico PARENDERECHO quitarFondoFalso .)
     PUNTOYCOMA      reduce using rule 121 (factor -> PARENIZQUIERDO crearFondoFalso logico PARENDERECHO quitarFondoFalso .)
+    COMA            reduce using rule 121 (factor -> PARENIZQUIERDO crearFondoFalso logico PARENDERECHO quitarFondoFalso .)
 
 
-state 180
+state 179
 
     (118) termino2 -> DIVISION addFactor termino .
 
@@ -3073,7 +3061,7 @@ state 180
     COMA            reduce using rule 118 (termino2 -> DIVISION addFactor termino .)
 
 
-state 181
+state 180
 
     (117) termino2 -> MULTIPLICACION addFactor termino .
 
@@ -3093,7 +3081,7 @@ state 181
     COMA            reduce using rule 117 (termino2 -> MULTIPLICACION addFactor termino .)
 
 
-state 182
+state 181
 
     (157) punto -> INSERTAPUNTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO . generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA
     (63) generateERA -> .
@@ -3108,25 +3096,42 @@ state 182
     FALSO           reduce using rule 63 (generateERA -> .)
     PARENDERECHO    reduce using rule 63 (generateERA -> .)
 
-    generateERA                    shift and go to state 203
+    generateERA                    shift and go to state 202
+
+state 182
+
+    (74) asignacion -> asignacionizq ASIGNACION insertarAsignacion exp setAssignment . PUNTOYCOMA
+
+    PUNTOYCOMA      shift and go to state 203
+
 
 state 183
 
-    (74) asignacion -> asignacionizq ASIGNACION insertarAsignacion exp setAssignment . PUNTOYCOMA
+    (145) escritura -> DESPLEGAR PARENIZQUIERDO expresion PARENDERECHO generarEscritura . PUNTOYCOMA
 
     PUNTOYCOMA      shift and go to state 204
 
 
 state 184
 
-    (145) escritura -> DESPLEGAR PARENIZQUIERDO expresion PARENDERECHO generarEscritura . PUNTOYCOMA
+    (159) curva -> INSERTACURVA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO . generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA
+    (63) generateERA -> .
 
-    PUNTOYCOMA      shift and go to state 205
+    PARENIZQUIERDO  reduce using rule 63 (generateERA -> .)
+    ID              reduce using rule 63 (generateERA -> .)
+    CENTERO         reduce using rule 63 (generateERA -> .)
+    CFLOTANTE       reduce using rule 63 (generateERA -> .)
+    CCADENA         reduce using rule 63 (generateERA -> .)
+    CCARACTER       reduce using rule 63 (generateERA -> .)
+    VERDADERO       reduce using rule 63 (generateERA -> .)
+    FALSO           reduce using rule 63 (generateERA -> .)
+    PARENDERECHO    reduce using rule 63 (generateERA -> .)
 
+    generateERA                    shift and go to state 205
 
 state 185
 
-    (159) curva -> INSERTACURVA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO . generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA
+    (158) linea -> INSERTALINEA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO . generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA
     (63) generateERA -> .
 
     PARENIZQUIERDO  reduce using rule 63 (generateERA -> .)
@@ -3143,7 +3148,7 @@ state 185
 
 state 186
 
-    (158) linea -> INSERTALINEA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO . generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA
+    (152) texto -> INSERTATEXTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO . generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA
     (63) generateERA -> .
 
     PARENIZQUIERDO  reduce using rule 63 (generateERA -> .)
@@ -3160,7 +3165,7 @@ state 186
 
 state 187
 
-    (152) texto -> INSERTATEXTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO . generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA
+    (153) rectangulo -> INSERTARECTANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO . generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA
     (63) generateERA -> .
 
     PARENIZQUIERDO  reduce using rule 63 (generateERA -> .)
@@ -3177,7 +3182,7 @@ state 187
 
 state 188
 
-    (153) rectangulo -> INSERTARECTANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO . generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA
+    (155) circulo -> INSERTACIRCULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO . generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA
     (63) generateERA -> .
 
     PARENIZQUIERDO  reduce using rule 63 (generateERA -> .)
@@ -3194,7 +3199,14 @@ state 188
 
 state 189
 
-    (155) circulo -> INSERTACIRCULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO . generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA
+    (147) ingreso -> ENTRADA PARENIZQUIERDO ID saveVarID cteid . PARENDERECHO generarEntrada PUNTOYCOMA
+
+    PARENDERECHO    shift and go to state 210
+
+
+state 190
+
+    (154) triangulo -> INSERTATRIANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO . generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA
     (63) generateERA -> .
 
     PARENIZQUIERDO  reduce using rule 63 (generateERA -> .)
@@ -3207,18 +3219,11 @@ state 189
     FALSO           reduce using rule 63 (generateERA -> .)
     PARENDERECHO    reduce using rule 63 (generateERA -> .)
 
-    generateERA                    shift and go to state 210
-
-state 190
-
-    (147) ingreso -> ENTRADA PARENIZQUIERDO ID saveVarID cteid . PARENDERECHO generarEntrada PUNTOYCOMA
-
-    PARENDERECHO    shift and go to state 211
-
+    generateERA                    shift and go to state 211
 
 state 191
 
-    (154) triangulo -> INSERTATRIANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO . generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA
+    (123) llamada -> buscarFuncion saveFunID PARENIZQUIERDO . generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub
     (63) generateERA -> .
 
     PARENIZQUIERDO  reduce using rule 63 (generateERA -> .)
@@ -3234,23 +3239,6 @@ state 191
     generateERA                    shift and go to state 212
 
 state 192
-
-    (123) llamada -> buscarFuncion saveFunID PARENIZQUIERDO . generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub
-    (63) generateERA -> .
-
-    PARENIZQUIERDO  reduce using rule 63 (generateERA -> .)
-    ID              reduce using rule 63 (generateERA -> .)
-    CENTERO         reduce using rule 63 (generateERA -> .)
-    CFLOTANTE       reduce using rule 63 (generateERA -> .)
-    CCADENA         reduce using rule 63 (generateERA -> .)
-    CCARACTER       reduce using rule 63 (generateERA -> .)
-    VERDADERO       reduce using rule 63 (generateERA -> .)
-    FALSO           reduce using rule 63 (generateERA -> .)
-    PARENDERECHO    reduce using rule 63 (generateERA -> .)
-
-    generateERA                    shift and go to state 213
-
-state 193
 
     (72) asignacionizqaux -> CORCHETEIZQ . exp CORCHETEDER
     (59) exp -> . termino checkExpTypes exp2
@@ -3276,33 +3264,33 @@ state 193
 
     cte                            shift and go to state 39
     termino                        shift and go to state 29
-    exp                            shift and go to state 214
+    exp                            shift and go to state 213
     factor                         shift and go to state 31
 
-state 194
+state 193
 
     (70) asignacionizq -> ID saveVarID buscarId guardarId asignacionizqaux .
 
     ASIGNACION      reduce using rule 70 (asignacionizq -> ID saveVarID buscarId guardarId asignacionizqaux .)
 
 
-state 195
+state 194
 
     (141) ciclo -> MIENTRAS insertarSalto PARENIZQUIERDO logico PARENDERECHO . crearCiclo bloque crearRegreso
     (143) crearCiclo -> .
 
     LLAVEIZQUIERDO  reduce using rule 143 (crearCiclo -> .)
 
-    crearCiclo                     shift and go to state 215
+    crearCiclo                     shift and go to state 214
 
-state 196
+state 195
 
     (127) condicion -> SI PARENIZQUIERDO logico PARENDERECHO generarCond . ENTONCES bloque condicionaux
 
-    ENTONCES        shift and go to state 216
+    ENTONCES        shift and go to state 215
 
 
-state 197
+state 196
 
     (156) ovalo -> INSERTAOVALO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO . generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA
     (63) generateERA -> .
@@ -3317,25 +3305,77 @@ state 197
     FALSO           reduce using rule 63 (generateERA -> .)
     PARENDERECHO    reduce using rule 63 (generateERA -> .)
 
-    generateERA                    shift and go to state 217
+    generateERA                    shift and go to state 216
+
+state 197
+
+    (22) function -> FUNCION resetScope tiporegreso ID idFunctionCheck createGlobal PARENIZQUIERDO functionpam . addParamCount PARENDERECHO bloquefun finishFun function
+    (18) addParamCount -> .
+
+    PARENDERECHO    reduce using rule 18 (addParamCount -> .)
+
+    addParamCount                  shift and go to state 217
 
 state 198
 
-    (22) function -> FUNCION tiporegreso ID idFunctionCheck createGlobal PARENIZQUIERDO functionpam addParamCount . PARENDERECHO bloquefun finishFun resetScope function
+    (15) functionpam -> VAR . tipo ID agregarParam functionpam2
+    (38) tipo -> . ENTERO
+    (39) tipo -> . FLOTANTE
+    (40) tipo -> . CADENA
+    (41) tipo -> . CARACTER
+    (42) tipo -> . BOOL
 
-    PARENDERECHO    shift and go to state 218
+    ENTERO          shift and go to state 13
+    FLOTANTE        shift and go to state 12
+    CADENA          shift and go to state 10
+    CARACTER        shift and go to state 9
+    BOOL            shift and go to state 11
 
+    tipo                           shift and go to state 218
 
 state 199
 
-    (15) functionpam -> VAR tipo . ID agregarParam functionpam2
+    (103) logicoAux -> DISYUNCION agregarLogico . logico
+    (100) logico -> . expresion checarLogico logicoAux
+    (57) expresion -> . negacion exp expresionaux
+    (58) expresion -> . color
+    (92) negacion -> . NO
+    (93) negacion -> .
+    (133) color -> . NEGRO
+    (134) color -> . GRIS
+    (135) color -> . AZUL
+    (136) color -> . AMARILLO
+    (137) color -> . VERDE
+    (138) color -> . ROJO
+    (139) color -> . ROSA
+    (140) color -> . NARANJA
 
-    ID              shift and go to state 219
+    NO              shift and go to state 104
+    PARENIZQUIERDO  reduce using rule 93 (negacion -> .)
+    ID              reduce using rule 93 (negacion -> .)
+    CENTERO         reduce using rule 93 (negacion -> .)
+    CFLOTANTE       reduce using rule 93 (negacion -> .)
+    CCADENA         reduce using rule 93 (negacion -> .)
+    CCARACTER       reduce using rule 93 (negacion -> .)
+    VERDADERO       reduce using rule 93 (negacion -> .)
+    FALSO           reduce using rule 93 (negacion -> .)
+    NEGRO           shift and go to state 107
+    GRIS            shift and go to state 103
+    AZUL            shift and go to state 109
+    AMARILLO        shift and go to state 108
+    VERDE           shift and go to state 110
+    ROJO            shift and go to state 106
+    ROSA            shift and go to state 113
+    NARANJA         shift and go to state 111
 
+    expresion                      shift and go to state 102
+    negacion                       shift and go to state 112
+    color                          shift and go to state 105
+    logico                         shift and go to state 219
 
 state 200
 
-    (103) logicoAux -> DISYUNCION agregarLogico . logico
+    (102) logicoAux -> CONJUNCION agregarLogico . logico
     (100) logico -> . expresion checarLogico logicoAux
     (57) expresion -> . negacion exp expresionaux
     (58) expresion -> . color
@@ -3375,46 +3415,6 @@ state 200
 
 state 201
 
-    (102) logicoAux -> CONJUNCION agregarLogico . logico
-    (100) logico -> . expresion checarLogico logicoAux
-    (57) expresion -> . negacion exp expresionaux
-    (58) expresion -> . color
-    (92) negacion -> . NO
-    (93) negacion -> .
-    (133) color -> . NEGRO
-    (134) color -> . GRIS
-    (135) color -> . AZUL
-    (136) color -> . AMARILLO
-    (137) color -> . VERDE
-    (138) color -> . ROJO
-    (139) color -> . ROSA
-    (140) color -> . NARANJA
-
-    NO              shift and go to state 104
-    PARENIZQUIERDO  reduce using rule 93 (negacion -> .)
-    ID              reduce using rule 93 (negacion -> .)
-    CENTERO         reduce using rule 93 (negacion -> .)
-    CFLOTANTE       reduce using rule 93 (negacion -> .)
-    CCADENA         reduce using rule 93 (negacion -> .)
-    CCARACTER       reduce using rule 93 (negacion -> .)
-    VERDADERO       reduce using rule 93 (negacion -> .)
-    FALSO           reduce using rule 93 (negacion -> .)
-    NEGRO           shift and go to state 107
-    GRIS            shift and go to state 103
-    AZUL            shift and go to state 109
-    AMARILLO        shift and go to state 108
-    VERDE           shift and go to state 110
-    ROJO            shift and go to state 106
-    ROSA            shift and go to state 113
-    NARANJA         shift and go to state 111
-
-    expresion                      shift and go to state 102
-    negacion                       shift and go to state 112
-    color                          shift and go to state 105
-    logico                         shift and go to state 221
-
-state 202
-
     (107) expresionaux -> comparacion addRelop . exp checkRelopTypes
     (59) exp -> . termino checkExpTypes exp2
     (115) termino -> . factor checkTermTypes termino2
@@ -3439,10 +3439,10 @@ state 202
 
     cte                            shift and go to state 39
     termino                        shift and go to state 29
-    exp                            shift and go to state 222
+    exp                            shift and go to state 221
     factor                         shift and go to state 31
 
-state 203
+state 202
 
     (157) punto -> INSERTAPUNTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA . llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA
     (64) llamadapar -> . exp validateArgs llamadaparaux
@@ -3470,12 +3470,12 @@ state 203
     FALSO           shift and go to state 38
 
     cte                            shift and go to state 39
-    exp                            shift and go to state 223
+    exp                            shift and go to state 222
     factor                         shift and go to state 31
-    llamadapar                     shift and go to state 224
+    llamadapar                     shift and go to state 223
     termino                        shift and go to state 29
 
-state 204
+state 203
 
     (74) asignacion -> asignacionizq ASIGNACION insertarAsignacion exp setAssignment PUNTOYCOMA .
 
@@ -3496,7 +3496,7 @@ state 204
     REGRESAR        reduce using rule 74 (asignacion -> asignacionizq ASIGNACION insertarAsignacion exp setAssignment PUNTOYCOMA .)
 
 
-state 205
+state 204
 
     (145) escritura -> DESPLEGAR PARENIZQUIERDO expresion PARENDERECHO generarEscritura PUNTOYCOMA .
 
@@ -3513,11 +3513,11 @@ state 205
     INSERTACURVA    reduce using rule 145 (escritura -> DESPLEGAR PARENIZQUIERDO expresion PARENDERECHO generarEscritura PUNTOYCOMA .)
     SI              reduce using rule 145 (escritura -> DESPLEGAR PARENIZQUIERDO expresion PARENDERECHO generarEscritura PUNTOYCOMA .)
     MIENTRAS        reduce using rule 145 (escritura -> DESPLEGAR PARENIZQUIERDO expresion PARENDERECHO generarEscritura PUNTOYCOMA .)
-    REGRESAR        reduce using rule 145 (escritura -> DESPLEGAR PARENIZQUIERDO expresion PARENDERECHO generarEscritura PUNTOYCOMA .)
     LLAVEDERECHO    reduce using rule 145 (escritura -> DESPLEGAR PARENIZQUIERDO expresion PARENDERECHO generarEscritura PUNTOYCOMA .)
+    REGRESAR        reduce using rule 145 (escritura -> DESPLEGAR PARENIZQUIERDO expresion PARENDERECHO generarEscritura PUNTOYCOMA .)
 
 
-state 206
+state 205
 
     (159) curva -> INSERTACURVA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA . llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA
     (64) llamadapar -> . exp validateArgs llamadaparaux
@@ -3545,12 +3545,12 @@ state 206
     FALSO           shift and go to state 38
 
     cte                            shift and go to state 39
-    exp                            shift and go to state 223
+    exp                            shift and go to state 222
     factor                         shift and go to state 31
-    llamadapar                     shift and go to state 225
+    llamadapar                     shift and go to state 224
     termino                        shift and go to state 29
 
-state 207
+state 206
 
     (158) linea -> INSERTALINEA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA . llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA
     (64) llamadapar -> . exp validateArgs llamadaparaux
@@ -3578,12 +3578,12 @@ state 207
     FALSO           shift and go to state 38
 
     cte                            shift and go to state 39
-    exp                            shift and go to state 223
+    exp                            shift and go to state 222
     factor                         shift and go to state 31
-    llamadapar                     shift and go to state 226
+    llamadapar                     shift and go to state 225
     termino                        shift and go to state 29
 
-state 208
+state 207
 
     (152) texto -> INSERTATEXTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA . llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA
     (64) llamadapar -> . exp validateArgs llamadaparaux
@@ -3611,12 +3611,12 @@ state 208
     FALSO           shift and go to state 38
 
     cte                            shift and go to state 39
-    exp                            shift and go to state 223
+    exp                            shift and go to state 222
     factor                         shift and go to state 31
-    llamadapar                     shift and go to state 227
+    llamadapar                     shift and go to state 226
     termino                        shift and go to state 29
 
-state 209
+state 208
 
     (153) rectangulo -> INSERTARECTANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA . llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA
     (64) llamadapar -> . exp validateArgs llamadaparaux
@@ -3644,12 +3644,12 @@ state 209
     FALSO           shift and go to state 38
 
     cte                            shift and go to state 39
-    exp                            shift and go to state 223
+    exp                            shift and go to state 222
     factor                         shift and go to state 31
-    llamadapar                     shift and go to state 228
+    llamadapar                     shift and go to state 227
     termino                        shift and go to state 29
 
-state 210
+state 209
 
     (155) circulo -> INSERTACIRCULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA . llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA
     (64) llamadapar -> . exp validateArgs llamadaparaux
@@ -3677,21 +3677,21 @@ state 210
     FALSO           shift and go to state 38
 
     cte                            shift and go to state 39
-    exp                            shift and go to state 223
+    exp                            shift and go to state 222
     factor                         shift and go to state 31
-    llamadapar                     shift and go to state 229
+    llamadapar                     shift and go to state 228
     termino                        shift and go to state 29
 
-state 211
+state 210
 
     (147) ingreso -> ENTRADA PARENIZQUIERDO ID saveVarID cteid PARENDERECHO . generarEntrada PUNTOYCOMA
     (148) generarEntrada -> .
 
     PUNTOYCOMA      reduce using rule 148 (generarEntrada -> .)
 
-    generarEntrada                 shift and go to state 230
+    generarEntrada                 shift and go to state 229
 
-state 212
+state 211
 
     (154) triangulo -> INSERTATRIANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA . llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA
     (64) llamadapar -> . exp validateArgs llamadaparaux
@@ -3719,12 +3719,12 @@ state 212
     FALSO           shift and go to state 38
 
     cte                            shift and go to state 39
-    exp                            shift and go to state 223
+    exp                            shift and go to state 222
     factor                         shift and go to state 31
-    llamadapar                     shift and go to state 231
+    llamadapar                     shift and go to state 230
     termino                        shift and go to state 29
 
-state 213
+state 212
 
     (123) llamada -> buscarFuncion saveFunID PARENIZQUIERDO generateERA . llamadapar PARENDERECHO verifyArgCount generateGoSub
     (64) llamadapar -> . exp validateArgs llamadaparaux
@@ -3752,37 +3752,37 @@ state 213
     FALSO           shift and go to state 38
 
     cte                            shift and go to state 39
-    exp                            shift and go to state 223
+    exp                            shift and go to state 222
     factor                         shift and go to state 31
-    llamadapar                     shift and go to state 232
+    llamadapar                     shift and go to state 231
     termino                        shift and go to state 29
 
-state 214
+state 213
 
     (72) asignacionizqaux -> CORCHETEIZQ exp . CORCHETEDER
 
-    CORCHETEDER     shift and go to state 233
+    CORCHETEDER     shift and go to state 232
 
 
-state 215
+state 214
 
     (141) ciclo -> MIENTRAS insertarSalto PARENIZQUIERDO logico PARENDERECHO crearCiclo . bloque crearRegreso
     (54) bloque -> . LLAVEIZQUIERDO bloqueaux LLAVEDERECHO
 
-    LLAVEIZQUIERDO  shift and go to state 25
+    LLAVEIZQUIERDO  shift and go to state 23
 
-    bloque                         shift and go to state 234
+    bloque                         shift and go to state 233
 
-state 216
+state 215
 
     (127) condicion -> SI PARENIZQUIERDO logico PARENDERECHO generarCond ENTONCES . bloque condicionaux
     (54) bloque -> . LLAVEIZQUIERDO bloqueaux LLAVEDERECHO
 
-    LLAVEIZQUIERDO  shift and go to state 25
+    LLAVEIZQUIERDO  shift and go to state 23
 
-    bloque                         shift and go to state 235
+    bloque                         shift and go to state 234
 
-state 217
+state 216
 
     (156) ovalo -> INSERTAOVALO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA . llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA
     (64) llamadapar -> . exp validateArgs llamadaparaux
@@ -3810,45 +3810,40 @@ state 217
     FALSO           shift and go to state 38
 
     cte                            shift and go to state 39
-    exp                            shift and go to state 223
+    exp                            shift and go to state 222
     factor                         shift and go to state 31
-    llamadapar                     shift and go to state 236
+    llamadapar                     shift and go to state 235
     termino                        shift and go to state 29
+
+state 217
+
+    (22) function -> FUNCION resetScope tiporegreso ID idFunctionCheck createGlobal PARENIZQUIERDO functionpam addParamCount . PARENDERECHO bloquefun finishFun function
+
+    PARENDERECHO    shift and go to state 236
+
 
 state 218
 
-    (22) function -> FUNCION tiporegreso ID idFunctionCheck createGlobal PARENIZQUIERDO functionpam addParamCount PARENDERECHO . bloquefun finishFun resetScope function
-    (10) bloquefun -> . LLAVEIZQUIERDO declaracion insertVarCount insertQuadrupleCount bloqueaux regreso LLAVEDERECHO
+    (15) functionpam -> VAR tipo . ID agregarParam functionpam2
 
-    LLAVEIZQUIERDO  shift and go to state 238
+    ID              shift and go to state 237
 
-    bloquefun                      shift and go to state 237
 
 state 219
-
-    (15) functionpam -> VAR tipo ID . agregarParam functionpam2
-    (19) agregarParam -> .
-
-    COMA            reduce using rule 19 (agregarParam -> .)
-    PARENDERECHO    reduce using rule 19 (agregarParam -> .)
-
-    agregarParam                   shift and go to state 239
-
-state 220
 
     (103) logicoAux -> DISYUNCION agregarLogico logico .
 
     PARENDERECHO    reduce using rule 103 (logicoAux -> DISYUNCION agregarLogico logico .)
 
 
-state 221
+state 220
 
     (102) logicoAux -> CONJUNCION agregarLogico logico .
 
     PARENDERECHO    reduce using rule 102 (logicoAux -> CONJUNCION agregarLogico logico .)
 
 
-state 222
+state 221
 
     (107) expresionaux -> comparacion addRelop exp . checkRelopTypes
     (106) checkRelopTypes -> .
@@ -3857,9 +3852,9 @@ state 222
     DISYUNCION      reduce using rule 106 (checkRelopTypes -> .)
     PARENDERECHO    reduce using rule 106 (checkRelopTypes -> .)
 
-    checkRelopTypes                shift and go to state 240
+    checkRelopTypes                shift and go to state 238
 
-state 223
+state 222
 
     (64) llamadapar -> exp . validateArgs llamadaparaux
     (66) validateArgs -> .
@@ -3867,79 +3862,79 @@ state 223
     COMA            reduce using rule 66 (validateArgs -> .)
     PARENDERECHO    reduce using rule 66 (validateArgs -> .)
 
-    validateArgs                   shift and go to state 241
+    validateArgs                   shift and go to state 239
 
-state 224
+state 223
 
     (157) punto -> INSERTAPUNTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar . PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA
 
-    PARENDERECHO    shift and go to state 242
+    PARENDERECHO    shift and go to state 240
+
+
+state 224
+
+    (159) curva -> INSERTACURVA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar . PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA
+
+    PARENDERECHO    shift and go to state 241
 
 
 state 225
 
-    (159) curva -> INSERTACURVA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar . PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA
+    (158) linea -> INSERTALINEA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar . PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA
 
-    PARENDERECHO    shift and go to state 243
+    PARENDERECHO    shift and go to state 242
 
 
 state 226
 
-    (158) linea -> INSERTALINEA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar . PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA
+    (152) texto -> INSERTATEXTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar . PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA
 
-    PARENDERECHO    shift and go to state 244
+    PARENDERECHO    shift and go to state 243
 
 
 state 227
 
-    (152) texto -> INSERTATEXTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar . PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA
+    (153) rectangulo -> INSERTARECTANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar . PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA
 
-    PARENDERECHO    shift and go to state 245
+    PARENDERECHO    shift and go to state 244
 
 
 state 228
 
-    (153) rectangulo -> INSERTARECTANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar . PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA
+    (155) circulo -> INSERTACIRCULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar . PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA
 
-    PARENDERECHO    shift and go to state 246
+    PARENDERECHO    shift and go to state 245
 
 
 state 229
 
-    (155) circulo -> INSERTACIRCULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar . PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA
+    (147) ingreso -> ENTRADA PARENIZQUIERDO ID saveVarID cteid PARENDERECHO generarEntrada . PUNTOYCOMA
 
-    PARENDERECHO    shift and go to state 247
+    PUNTOYCOMA      shift and go to state 246
 
 
 state 230
 
-    (147) ingreso -> ENTRADA PARENIZQUIERDO ID saveVarID cteid PARENDERECHO generarEntrada . PUNTOYCOMA
+    (154) triangulo -> INSERTATRIANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar . PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA
 
-    PUNTOYCOMA      shift and go to state 248
+    PARENDERECHO    shift and go to state 247
 
 
 state 231
 
-    (154) triangulo -> INSERTATRIANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar . PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA
+    (123) llamada -> buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar . PARENDERECHO verifyArgCount generateGoSub
 
-    PARENDERECHO    shift and go to state 249
+    PARENDERECHO    shift and go to state 248
 
 
 state 232
-
-    (123) llamada -> buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar . PARENDERECHO verifyArgCount generateGoSub
-
-    PARENDERECHO    shift and go to state 250
-
-
-state 233
 
     (72) asignacionizqaux -> CORCHETEIZQ exp CORCHETEDER .
 
     ASIGNACION      reduce using rule 72 (asignacionizqaux -> CORCHETEIZQ exp CORCHETEDER .)
 
 
-state 234
+state 233
 
     (141) ciclo -> MIENTRAS insertarSalto PARENIZQUIERDO logico PARENDERECHO crearCiclo bloque . crearRegreso
     (142) crearRegreso -> .
@@ -3960,16 +3955,16 @@ state 234
     LLAVEDERECHO    reduce using rule 142 (crearRegreso -> .)
     REGRESAR        reduce using rule 142 (crearRegreso -> .)
 
-    crearRegreso                   shift and go to state 251
+    crearRegreso                   shift and go to state 249
 
-state 235
+state 234
 
     (127) condicion -> SI PARENIZQUIERDO logico PARENDERECHO generarCond ENTONCES bloque . condicionaux
     (129) condicionaux -> . SINO ENTONCES generarElse bloque rellenarCond
     (130) condicionaux -> . rellenarCond
     (132) rellenarCond -> .
 
-    SINO            shift and go to state 252
+    SINO            shift and go to state 250
     ID              reduce using rule 132 (rellenarCond -> .)
     ENTRADA         reduce using rule 132 (rellenarCond -> .)
     DESPLEGAR       reduce using rule 132 (rellenarCond -> .)
@@ -3986,27 +3981,255 @@ state 235
     LLAVEDERECHO    reduce using rule 132 (rellenarCond -> .)
     REGRESAR        reduce using rule 132 (rellenarCond -> .)
 
-    rellenarCond                   shift and go to state 253
-    condicionaux                   shift and go to state 254
+    rellenarCond                   shift and go to state 251
+    condicionaux                   shift and go to state 252
 
-state 236
+state 235
 
     (156) ovalo -> INSERTAOVALO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar . PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA
 
-    PARENDERECHO    shift and go to state 255
+    PARENDERECHO    shift and go to state 253
 
+
+state 236
+
+    (22) function -> FUNCION resetScope tiporegreso ID idFunctionCheck createGlobal PARENIZQUIERDO functionpam addParamCount PARENDERECHO . bloquefun finishFun function
+    (10) bloquefun -> . LLAVEIZQUIERDO declaracion insertVarCount insertQuadrupleCount bloqueaux regreso LLAVEDERECHO
+
+    LLAVEIZQUIERDO  shift and go to state 255
+
+    bloquefun                      shift and go to state 254
 
 state 237
 
-    (22) function -> FUNCION tiporegreso ID idFunctionCheck createGlobal PARENIZQUIERDO functionpam addParamCount PARENDERECHO bloquefun . finishFun resetScope function
+    (15) functionpam -> VAR tipo ID . agregarParam functionpam2
+    (19) agregarParam -> .
+
+    COMA            reduce using rule 19 (agregarParam -> .)
+    PARENDERECHO    reduce using rule 19 (agregarParam -> .)
+
+    agregarParam                   shift and go to state 256
+
+state 238
+
+    (107) expresionaux -> comparacion addRelop exp checkRelopTypes .
+
+    CONJUNCION      reduce using rule 107 (expresionaux -> comparacion addRelop exp checkRelopTypes .)
+    DISYUNCION      reduce using rule 107 (expresionaux -> comparacion addRelop exp checkRelopTypes .)
+    PARENDERECHO    reduce using rule 107 (expresionaux -> comparacion addRelop exp checkRelopTypes .)
+
+
+state 239
+
+    (64) llamadapar -> exp validateArgs . llamadaparaux
+    (67) llamadaparaux -> . COMA incrementK llamadapar
+    (68) llamadaparaux -> . incrementK
+    (69) incrementK -> .
+
+    COMA            shift and go to state 257
+    PARENDERECHO    reduce using rule 69 (incrementK -> .)
+
+    incrementK                     shift and go to state 258
+    llamadaparaux                  shift and go to state 259
+
+state 240
+
+    (157) punto -> INSERTAPUNTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO . verifyArgCount generateGoSub PUNTOYCOMA
+    (62) verifyArgCount -> .
+
+    PUNTOYCOMA      reduce using rule 62 (verifyArgCount -> .)
+
+    verifyArgCount                 shift and go to state 260
+
+state 241
+
+    (159) curva -> INSERTACURVA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO . verifyArgCount generateGoSub PUNTOYCOMA
+    (62) verifyArgCount -> .
+
+    PUNTOYCOMA      reduce using rule 62 (verifyArgCount -> .)
+
+    verifyArgCount                 shift and go to state 261
+
+state 242
+
+    (158) linea -> INSERTALINEA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO . verifyArgCount generateGoSub PUNTOYCOMA
+    (62) verifyArgCount -> .
+
+    PUNTOYCOMA      reduce using rule 62 (verifyArgCount -> .)
+
+    verifyArgCount                 shift and go to state 262
+
+state 243
+
+    (152) texto -> INSERTATEXTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO . verifyArgCount generateGoSub PUNTOYCOMA
+    (62) verifyArgCount -> .
+
+    PUNTOYCOMA      reduce using rule 62 (verifyArgCount -> .)
+
+    verifyArgCount                 shift and go to state 263
+
+state 244
+
+    (153) rectangulo -> INSERTARECTANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO . verifyArgCount generateGoSub PUNTOYCOMA
+    (62) verifyArgCount -> .
+
+    PUNTOYCOMA      reduce using rule 62 (verifyArgCount -> .)
+
+    verifyArgCount                 shift and go to state 264
+
+state 245
+
+    (155) circulo -> INSERTACIRCULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO . verifyArgCount generateGoSub PUNTOYCOMA
+    (62) verifyArgCount -> .
+
+    PUNTOYCOMA      reduce using rule 62 (verifyArgCount -> .)
+
+    verifyArgCount                 shift and go to state 265
+
+state 246
+
+    (147) ingreso -> ENTRADA PARENIZQUIERDO ID saveVarID cteid PARENDERECHO generarEntrada PUNTOYCOMA .
+
+    ID              reduce using rule 147 (ingreso -> ENTRADA PARENIZQUIERDO ID saveVarID cteid PARENDERECHO generarEntrada PUNTOYCOMA .)
+    ENTRADA         reduce using rule 147 (ingreso -> ENTRADA PARENIZQUIERDO ID saveVarID cteid PARENDERECHO generarEntrada PUNTOYCOMA .)
+    DESPLEGAR       reduce using rule 147 (ingreso -> ENTRADA PARENIZQUIERDO ID saveVarID cteid PARENDERECHO generarEntrada PUNTOYCOMA .)
+    INSERTATEXTO    reduce using rule 147 (ingreso -> ENTRADA PARENIZQUIERDO ID saveVarID cteid PARENDERECHO generarEntrada PUNTOYCOMA .)
+    INSERTARECTANGULO reduce using rule 147 (ingreso -> ENTRADA PARENIZQUIERDO ID saveVarID cteid PARENDERECHO generarEntrada PUNTOYCOMA .)
+    INSERTACIRCULO  reduce using rule 147 (ingreso -> ENTRADA PARENIZQUIERDO ID saveVarID cteid PARENDERECHO generarEntrada PUNTOYCOMA .)
+    INSERTAOVALO    reduce using rule 147 (ingreso -> ENTRADA PARENIZQUIERDO ID saveVarID cteid PARENDERECHO generarEntrada PUNTOYCOMA .)
+    INSERTATRIANGULO reduce using rule 147 (ingreso -> ENTRADA PARENIZQUIERDO ID saveVarID cteid PARENDERECHO generarEntrada PUNTOYCOMA .)
+    INSERTAPUNTO    reduce using rule 147 (ingreso -> ENTRADA PARENIZQUIERDO ID saveVarID cteid PARENDERECHO generarEntrada PUNTOYCOMA .)
+    INSERTALINEA    reduce using rule 147 (ingreso -> ENTRADA PARENIZQUIERDO ID saveVarID cteid PARENDERECHO generarEntrada PUNTOYCOMA .)
+    INSERTACURVA    reduce using rule 147 (ingreso -> ENTRADA PARENIZQUIERDO ID saveVarID cteid PARENDERECHO generarEntrada PUNTOYCOMA .)
+    SI              reduce using rule 147 (ingreso -> ENTRADA PARENIZQUIERDO ID saveVarID cteid PARENDERECHO generarEntrada PUNTOYCOMA .)
+    MIENTRAS        reduce using rule 147 (ingreso -> ENTRADA PARENIZQUIERDO ID saveVarID cteid PARENDERECHO generarEntrada PUNTOYCOMA .)
+    REGRESAR        reduce using rule 147 (ingreso -> ENTRADA PARENIZQUIERDO ID saveVarID cteid PARENDERECHO generarEntrada PUNTOYCOMA .)
+    LLAVEDERECHO    reduce using rule 147 (ingreso -> ENTRADA PARENIZQUIERDO ID saveVarID cteid PARENDERECHO generarEntrada PUNTOYCOMA .)
+
+
+state 247
+
+    (154) triangulo -> INSERTATRIANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO . verifyArgCount generateGoSub PUNTOYCOMA
+    (62) verifyArgCount -> .
+
+    PUNTOYCOMA      reduce using rule 62 (verifyArgCount -> .)
+
+    verifyArgCount                 shift and go to state 266
+
+state 248
+
+    (123) llamada -> buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO . verifyArgCount generateGoSub
+    (62) verifyArgCount -> .
+
+    PUNTOYCOMA      reduce using rule 62 (verifyArgCount -> .)
+    MULTIPLICACION  reduce using rule 62 (verifyArgCount -> .)
+    DIVISION        reduce using rule 62 (verifyArgCount -> .)
+    SUMA            reduce using rule 62 (verifyArgCount -> .)
+    RESTA           reduce using rule 62 (verifyArgCount -> .)
+    CORCHETEDER     reduce using rule 62 (verifyArgCount -> .)
+    MENORQUE        reduce using rule 62 (verifyArgCount -> .)
+    MAYORQUE        reduce using rule 62 (verifyArgCount -> .)
+    MAYORIGUAL      reduce using rule 62 (verifyArgCount -> .)
+    MENORIGUAL      reduce using rule 62 (verifyArgCount -> .)
+    IGUAL           reduce using rule 62 (verifyArgCount -> .)
+    DIFERENTE       reduce using rule 62 (verifyArgCount -> .)
+    CONJUNCION      reduce using rule 62 (verifyArgCount -> .)
+    DISYUNCION      reduce using rule 62 (verifyArgCount -> .)
+    PARENDERECHO    reduce using rule 62 (verifyArgCount -> .)
+    COMA            reduce using rule 62 (verifyArgCount -> .)
+
+    verifyArgCount                 shift and go to state 267
+
+state 249
+
+    (141) ciclo -> MIENTRAS insertarSalto PARENIZQUIERDO logico PARENDERECHO crearCiclo bloque crearRegreso .
+
+    ID              reduce using rule 141 (ciclo -> MIENTRAS insertarSalto PARENIZQUIERDO logico PARENDERECHO crearCiclo bloque crearRegreso .)
+    ENTRADA         reduce using rule 141 (ciclo -> MIENTRAS insertarSalto PARENIZQUIERDO logico PARENDERECHO crearCiclo bloque crearRegreso .)
+    DESPLEGAR       reduce using rule 141 (ciclo -> MIENTRAS insertarSalto PARENIZQUIERDO logico PARENDERECHO crearCiclo bloque crearRegreso .)
+    INSERTATEXTO    reduce using rule 141 (ciclo -> MIENTRAS insertarSalto PARENIZQUIERDO logico PARENDERECHO crearCiclo bloque crearRegreso .)
+    INSERTARECTANGULO reduce using rule 141 (ciclo -> MIENTRAS insertarSalto PARENIZQUIERDO logico PARENDERECHO crearCiclo bloque crearRegreso .)
+    INSERTACIRCULO  reduce using rule 141 (ciclo -> MIENTRAS insertarSalto PARENIZQUIERDO logico PARENDERECHO crearCiclo bloque crearRegreso .)
+    INSERTAOVALO    reduce using rule 141 (ciclo -> MIENTRAS insertarSalto PARENIZQUIERDO logico PARENDERECHO crearCiclo bloque crearRegreso .)
+    INSERTATRIANGULO reduce using rule 141 (ciclo -> MIENTRAS insertarSalto PARENIZQUIERDO logico PARENDERECHO crearCiclo bloque crearRegreso .)
+    INSERTAPUNTO    reduce using rule 141 (ciclo -> MIENTRAS insertarSalto PARENIZQUIERDO logico PARENDERECHO crearCiclo bloque crearRegreso .)
+    INSERTALINEA    reduce using rule 141 (ciclo -> MIENTRAS insertarSalto PARENIZQUIERDO logico PARENDERECHO crearCiclo bloque crearRegreso .)
+    INSERTACURVA    reduce using rule 141 (ciclo -> MIENTRAS insertarSalto PARENIZQUIERDO logico PARENDERECHO crearCiclo bloque crearRegreso .)
+    SI              reduce using rule 141 (ciclo -> MIENTRAS insertarSalto PARENIZQUIERDO logico PARENDERECHO crearCiclo bloque crearRegreso .)
+    MIENTRAS        reduce using rule 141 (ciclo -> MIENTRAS insertarSalto PARENIZQUIERDO logico PARENDERECHO crearCiclo bloque crearRegreso .)
+    LLAVEDERECHO    reduce using rule 141 (ciclo -> MIENTRAS insertarSalto PARENIZQUIERDO logico PARENDERECHO crearCiclo bloque crearRegreso .)
+    REGRESAR        reduce using rule 141 (ciclo -> MIENTRAS insertarSalto PARENIZQUIERDO logico PARENDERECHO crearCiclo bloque crearRegreso .)
+
+
+state 250
+
+    (129) condicionaux -> SINO . ENTONCES generarElse bloque rellenarCond
+
+    ENTONCES        shift and go to state 268
+
+
+state 251
+
+    (130) condicionaux -> rellenarCond .
+
+    ID              reduce using rule 130 (condicionaux -> rellenarCond .)
+    ENTRADA         reduce using rule 130 (condicionaux -> rellenarCond .)
+    DESPLEGAR       reduce using rule 130 (condicionaux -> rellenarCond .)
+    INSERTATEXTO    reduce using rule 130 (condicionaux -> rellenarCond .)
+    INSERTARECTANGULO reduce using rule 130 (condicionaux -> rellenarCond .)
+    INSERTACIRCULO  reduce using rule 130 (condicionaux -> rellenarCond .)
+    INSERTAOVALO    reduce using rule 130 (condicionaux -> rellenarCond .)
+    INSERTATRIANGULO reduce using rule 130 (condicionaux -> rellenarCond .)
+    INSERTAPUNTO    reduce using rule 130 (condicionaux -> rellenarCond .)
+    INSERTALINEA    reduce using rule 130 (condicionaux -> rellenarCond .)
+    INSERTACURVA    reduce using rule 130 (condicionaux -> rellenarCond .)
+    SI              reduce using rule 130 (condicionaux -> rellenarCond .)
+    MIENTRAS        reduce using rule 130 (condicionaux -> rellenarCond .)
+    LLAVEDERECHO    reduce using rule 130 (condicionaux -> rellenarCond .)
+    REGRESAR        reduce using rule 130 (condicionaux -> rellenarCond .)
+
+
+state 252
+
+    (127) condicion -> SI PARENIZQUIERDO logico PARENDERECHO generarCond ENTONCES bloque condicionaux .
+
+    ID              reduce using rule 127 (condicion -> SI PARENIZQUIERDO logico PARENDERECHO generarCond ENTONCES bloque condicionaux .)
+    ENTRADA         reduce using rule 127 (condicion -> SI PARENIZQUIERDO logico PARENDERECHO generarCond ENTONCES bloque condicionaux .)
+    DESPLEGAR       reduce using rule 127 (condicion -> SI PARENIZQUIERDO logico PARENDERECHO generarCond ENTONCES bloque condicionaux .)
+    INSERTATEXTO    reduce using rule 127 (condicion -> SI PARENIZQUIERDO logico PARENDERECHO generarCond ENTONCES bloque condicionaux .)
+    INSERTARECTANGULO reduce using rule 127 (condicion -> SI PARENIZQUIERDO logico PARENDERECHO generarCond ENTONCES bloque condicionaux .)
+    INSERTACIRCULO  reduce using rule 127 (condicion -> SI PARENIZQUIERDO logico PARENDERECHO generarCond ENTONCES bloque condicionaux .)
+    INSERTAOVALO    reduce using rule 127 (condicion -> SI PARENIZQUIERDO logico PARENDERECHO generarCond ENTONCES bloque condicionaux .)
+    INSERTATRIANGULO reduce using rule 127 (condicion -> SI PARENIZQUIERDO logico PARENDERECHO generarCond ENTONCES bloque condicionaux .)
+    INSERTAPUNTO    reduce using rule 127 (condicion -> SI PARENIZQUIERDO logico PARENDERECHO generarCond ENTONCES bloque condicionaux .)
+    INSERTALINEA    reduce using rule 127 (condicion -> SI PARENIZQUIERDO logico PARENDERECHO generarCond ENTONCES bloque condicionaux .)
+    INSERTACURVA    reduce using rule 127 (condicion -> SI PARENIZQUIERDO logico PARENDERECHO generarCond ENTONCES bloque condicionaux .)
+    SI              reduce using rule 127 (condicion -> SI PARENIZQUIERDO logico PARENDERECHO generarCond ENTONCES bloque condicionaux .)
+    MIENTRAS        reduce using rule 127 (condicion -> SI PARENIZQUIERDO logico PARENDERECHO generarCond ENTONCES bloque condicionaux .)
+    LLAVEDERECHO    reduce using rule 127 (condicion -> SI PARENIZQUIERDO logico PARENDERECHO generarCond ENTONCES bloque condicionaux .)
+    REGRESAR        reduce using rule 127 (condicion -> SI PARENIZQUIERDO logico PARENDERECHO generarCond ENTONCES bloque condicionaux .)
+
+
+state 253
+
+    (156) ovalo -> INSERTAOVALO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO . verifyArgCount generateGoSub PUNTOYCOMA
+    (62) verifyArgCount -> .
+
+    PUNTOYCOMA      reduce using rule 62 (verifyArgCount -> .)
+
+    verifyArgCount                 shift and go to state 269
+
+state 254
+
+    (22) function -> FUNCION resetScope tiporegreso ID idFunctionCheck createGlobal PARENIZQUIERDO functionpam addParamCount PARENDERECHO bloquefun . finishFun function
     (25) finishFun -> .
 
     FUNCION         reduce using rule 25 (finishFun -> .)
     INICIO          reduce using rule 25 (finishFun -> .)
 
-    finishFun                      shift and go to state 256
+    finishFun                      shift and go to state 270
 
-state 238
+state 255
 
     (10) bloquefun -> LLAVEIZQUIERDO . declaracion insertVarCount insertQuadrupleCount bloqueaux regreso LLAVEDERECHO
     (43) declaracion -> . VAR tipo cteid_declaracion revisarId PUNTOYCOMA countVar declaracion
@@ -4029,288 +4252,22 @@ state 238
     REGRESAR        reduce using rule 44 (declaracion -> .)
     LLAVEDERECHO    reduce using rule 44 (declaracion -> .)
 
-    declaracion                    shift and go to state 257
+    declaracion                    shift and go to state 271
 
-state 239
+state 256
 
     (15) functionpam -> VAR tipo ID agregarParam . functionpam2
     (20) functionpam2 -> . COMA incrementParamCounter functionpam
     (21) functionpam2 -> . incrementParamCounter
     (17) incrementParamCounter -> .
 
-    COMA            shift and go to state 260
+    COMA            shift and go to state 274
     PARENDERECHO    reduce using rule 17 (incrementParamCounter -> .)
 
-    incrementParamCounter          shift and go to state 258
-    functionpam2                   shift and go to state 259
-
-state 240
-
-    (107) expresionaux -> comparacion addRelop exp checkRelopTypes .
-
-    CONJUNCION      reduce using rule 107 (expresionaux -> comparacion addRelop exp checkRelopTypes .)
-    DISYUNCION      reduce using rule 107 (expresionaux -> comparacion addRelop exp checkRelopTypes .)
-    PARENDERECHO    reduce using rule 107 (expresionaux -> comparacion addRelop exp checkRelopTypes .)
-
-
-state 241
-
-    (64) llamadapar -> exp validateArgs . llamadaparaux
-    (67) llamadaparaux -> . COMA incrementK llamadapar
-    (68) llamadaparaux -> . incrementK
-    (69) incrementK -> .
-
-    COMA            shift and go to state 261
-    PARENDERECHO    reduce using rule 69 (incrementK -> .)
-
-    incrementK                     shift and go to state 262
-    llamadaparaux                  shift and go to state 263
-
-state 242
-
-    (157) punto -> INSERTAPUNTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO . verifyArgCount generateGoSub PUNTOYCOMA
-    (62) verifyArgCount -> .
-
-    PUNTOYCOMA      reduce using rule 62 (verifyArgCount -> .)
-
-    verifyArgCount                 shift and go to state 264
-
-state 243
-
-    (159) curva -> INSERTACURVA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO . verifyArgCount generateGoSub PUNTOYCOMA
-    (62) verifyArgCount -> .
-
-    PUNTOYCOMA      reduce using rule 62 (verifyArgCount -> .)
-
-    verifyArgCount                 shift and go to state 265
-
-state 244
-
-    (158) linea -> INSERTALINEA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO . verifyArgCount generateGoSub PUNTOYCOMA
-    (62) verifyArgCount -> .
-
-    PUNTOYCOMA      reduce using rule 62 (verifyArgCount -> .)
-
-    verifyArgCount                 shift and go to state 266
-
-state 245
-
-    (152) texto -> INSERTATEXTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO . verifyArgCount generateGoSub PUNTOYCOMA
-    (62) verifyArgCount -> .
-
-    PUNTOYCOMA      reduce using rule 62 (verifyArgCount -> .)
-
-    verifyArgCount                 shift and go to state 267
-
-state 246
-
-    (153) rectangulo -> INSERTARECTANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO . verifyArgCount generateGoSub PUNTOYCOMA
-    (62) verifyArgCount -> .
-
-    PUNTOYCOMA      reduce using rule 62 (verifyArgCount -> .)
-
-    verifyArgCount                 shift and go to state 268
-
-state 247
-
-    (155) circulo -> INSERTACIRCULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO . verifyArgCount generateGoSub PUNTOYCOMA
-    (62) verifyArgCount -> .
-
-    PUNTOYCOMA      reduce using rule 62 (verifyArgCount -> .)
-
-    verifyArgCount                 shift and go to state 269
-
-state 248
-
-    (147) ingreso -> ENTRADA PARENIZQUIERDO ID saveVarID cteid PARENDERECHO generarEntrada PUNTOYCOMA .
-
-    ID              reduce using rule 147 (ingreso -> ENTRADA PARENIZQUIERDO ID saveVarID cteid PARENDERECHO generarEntrada PUNTOYCOMA .)
-    ENTRADA         reduce using rule 147 (ingreso -> ENTRADA PARENIZQUIERDO ID saveVarID cteid PARENDERECHO generarEntrada PUNTOYCOMA .)
-    DESPLEGAR       reduce using rule 147 (ingreso -> ENTRADA PARENIZQUIERDO ID saveVarID cteid PARENDERECHO generarEntrada PUNTOYCOMA .)
-    INSERTATEXTO    reduce using rule 147 (ingreso -> ENTRADA PARENIZQUIERDO ID saveVarID cteid PARENDERECHO generarEntrada PUNTOYCOMA .)
-    INSERTARECTANGULO reduce using rule 147 (ingreso -> ENTRADA PARENIZQUIERDO ID saveVarID cteid PARENDERECHO generarEntrada PUNTOYCOMA .)
-    INSERTACIRCULO  reduce using rule 147 (ingreso -> ENTRADA PARENIZQUIERDO ID saveVarID cteid PARENDERECHO generarEntrada PUNTOYCOMA .)
-    INSERTAOVALO    reduce using rule 147 (ingreso -> ENTRADA PARENIZQUIERDO ID saveVarID cteid PARENDERECHO generarEntrada PUNTOYCOMA .)
-    INSERTATRIANGULO reduce using rule 147 (ingreso -> ENTRADA PARENIZQUIERDO ID saveVarID cteid PARENDERECHO generarEntrada PUNTOYCOMA .)
-    INSERTAPUNTO    reduce using rule 147 (ingreso -> ENTRADA PARENIZQUIERDO ID saveVarID cteid PARENDERECHO generarEntrada PUNTOYCOMA .)
-    INSERTALINEA    reduce using rule 147 (ingreso -> ENTRADA PARENIZQUIERDO ID saveVarID cteid PARENDERECHO generarEntrada PUNTOYCOMA .)
-    INSERTACURVA    reduce using rule 147 (ingreso -> ENTRADA PARENIZQUIERDO ID saveVarID cteid PARENDERECHO generarEntrada PUNTOYCOMA .)
-    SI              reduce using rule 147 (ingreso -> ENTRADA PARENIZQUIERDO ID saveVarID cteid PARENDERECHO generarEntrada PUNTOYCOMA .)
-    MIENTRAS        reduce using rule 147 (ingreso -> ENTRADA PARENIZQUIERDO ID saveVarID cteid PARENDERECHO generarEntrada PUNTOYCOMA .)
-    LLAVEDERECHO    reduce using rule 147 (ingreso -> ENTRADA PARENIZQUIERDO ID saveVarID cteid PARENDERECHO generarEntrada PUNTOYCOMA .)
-    REGRESAR        reduce using rule 147 (ingreso -> ENTRADA PARENIZQUIERDO ID saveVarID cteid PARENDERECHO generarEntrada PUNTOYCOMA .)
-
-
-state 249
-
-    (154) triangulo -> INSERTATRIANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO . verifyArgCount generateGoSub PUNTOYCOMA
-    (62) verifyArgCount -> .
-
-    PUNTOYCOMA      reduce using rule 62 (verifyArgCount -> .)
-
-    verifyArgCount                 shift and go to state 270
-
-state 250
-
-    (123) llamada -> buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO . verifyArgCount generateGoSub
-    (62) verifyArgCount -> .
-
-    PUNTOYCOMA      reduce using rule 62 (verifyArgCount -> .)
-    MULTIPLICACION  reduce using rule 62 (verifyArgCount -> .)
-    DIVISION        reduce using rule 62 (verifyArgCount -> .)
-    SUMA            reduce using rule 62 (verifyArgCount -> .)
-    RESTA           reduce using rule 62 (verifyArgCount -> .)
-    CORCHETEDER     reduce using rule 62 (verifyArgCount -> .)
-    MENORQUE        reduce using rule 62 (verifyArgCount -> .)
-    MAYORQUE        reduce using rule 62 (verifyArgCount -> .)
-    MAYORIGUAL      reduce using rule 62 (verifyArgCount -> .)
-    MENORIGUAL      reduce using rule 62 (verifyArgCount -> .)
-    IGUAL           reduce using rule 62 (verifyArgCount -> .)
-    DIFERENTE       reduce using rule 62 (verifyArgCount -> .)
-    CONJUNCION      reduce using rule 62 (verifyArgCount -> .)
-    DISYUNCION      reduce using rule 62 (verifyArgCount -> .)
-    PARENDERECHO    reduce using rule 62 (verifyArgCount -> .)
-    COMA            reduce using rule 62 (verifyArgCount -> .)
-
-    verifyArgCount                 shift and go to state 271
-
-state 251
-
-    (141) ciclo -> MIENTRAS insertarSalto PARENIZQUIERDO logico PARENDERECHO crearCiclo bloque crearRegreso .
-
-    ID              reduce using rule 141 (ciclo -> MIENTRAS insertarSalto PARENIZQUIERDO logico PARENDERECHO crearCiclo bloque crearRegreso .)
-    ENTRADA         reduce using rule 141 (ciclo -> MIENTRAS insertarSalto PARENIZQUIERDO logico PARENDERECHO crearCiclo bloque crearRegreso .)
-    DESPLEGAR       reduce using rule 141 (ciclo -> MIENTRAS insertarSalto PARENIZQUIERDO logico PARENDERECHO crearCiclo bloque crearRegreso .)
-    INSERTATEXTO    reduce using rule 141 (ciclo -> MIENTRAS insertarSalto PARENIZQUIERDO logico PARENDERECHO crearCiclo bloque crearRegreso .)
-    INSERTARECTANGULO reduce using rule 141 (ciclo -> MIENTRAS insertarSalto PARENIZQUIERDO logico PARENDERECHO crearCiclo bloque crearRegreso .)
-    INSERTACIRCULO  reduce using rule 141 (ciclo -> MIENTRAS insertarSalto PARENIZQUIERDO logico PARENDERECHO crearCiclo bloque crearRegreso .)
-    INSERTAOVALO    reduce using rule 141 (ciclo -> MIENTRAS insertarSalto PARENIZQUIERDO logico PARENDERECHO crearCiclo bloque crearRegreso .)
-    INSERTATRIANGULO reduce using rule 141 (ciclo -> MIENTRAS insertarSalto PARENIZQUIERDO logico PARENDERECHO crearCiclo bloque crearRegreso .)
-    INSERTAPUNTO    reduce using rule 141 (ciclo -> MIENTRAS insertarSalto PARENIZQUIERDO logico PARENDERECHO crearCiclo bloque crearRegreso .)
-    INSERTALINEA    reduce using rule 141 (ciclo -> MIENTRAS insertarSalto PARENIZQUIERDO logico PARENDERECHO crearCiclo bloque crearRegreso .)
-    INSERTACURVA    reduce using rule 141 (ciclo -> MIENTRAS insertarSalto PARENIZQUIERDO logico PARENDERECHO crearCiclo bloque crearRegreso .)
-    SI              reduce using rule 141 (ciclo -> MIENTRAS insertarSalto PARENIZQUIERDO logico PARENDERECHO crearCiclo bloque crearRegreso .)
-    MIENTRAS        reduce using rule 141 (ciclo -> MIENTRAS insertarSalto PARENIZQUIERDO logico PARENDERECHO crearCiclo bloque crearRegreso .)
-    REGRESAR        reduce using rule 141 (ciclo -> MIENTRAS insertarSalto PARENIZQUIERDO logico PARENDERECHO crearCiclo bloque crearRegreso .)
-    LLAVEDERECHO    reduce using rule 141 (ciclo -> MIENTRAS insertarSalto PARENIZQUIERDO logico PARENDERECHO crearCiclo bloque crearRegreso .)
-
-
-state 252
-
-    (129) condicionaux -> SINO . ENTONCES generarElse bloque rellenarCond
-
-    ENTONCES        shift and go to state 272
-
-
-state 253
-
-    (130) condicionaux -> rellenarCond .
-
-    ID              reduce using rule 130 (condicionaux -> rellenarCond .)
-    ENTRADA         reduce using rule 130 (condicionaux -> rellenarCond .)
-    DESPLEGAR       reduce using rule 130 (condicionaux -> rellenarCond .)
-    INSERTATEXTO    reduce using rule 130 (condicionaux -> rellenarCond .)
-    INSERTARECTANGULO reduce using rule 130 (condicionaux -> rellenarCond .)
-    INSERTACIRCULO  reduce using rule 130 (condicionaux -> rellenarCond .)
-    INSERTAOVALO    reduce using rule 130 (condicionaux -> rellenarCond .)
-    INSERTATRIANGULO reduce using rule 130 (condicionaux -> rellenarCond .)
-    INSERTAPUNTO    reduce using rule 130 (condicionaux -> rellenarCond .)
-    INSERTALINEA    reduce using rule 130 (condicionaux -> rellenarCond .)
-    INSERTACURVA    reduce using rule 130 (condicionaux -> rellenarCond .)
-    SI              reduce using rule 130 (condicionaux -> rellenarCond .)
-    MIENTRAS        reduce using rule 130 (condicionaux -> rellenarCond .)
-    LLAVEDERECHO    reduce using rule 130 (condicionaux -> rellenarCond .)
-    REGRESAR        reduce using rule 130 (condicionaux -> rellenarCond .)
-
-
-state 254
-
-    (127) condicion -> SI PARENIZQUIERDO logico PARENDERECHO generarCond ENTONCES bloque condicionaux .
-
-    ID              reduce using rule 127 (condicion -> SI PARENIZQUIERDO logico PARENDERECHO generarCond ENTONCES bloque condicionaux .)
-    ENTRADA         reduce using rule 127 (condicion -> SI PARENIZQUIERDO logico PARENDERECHO generarCond ENTONCES bloque condicionaux .)
-    DESPLEGAR       reduce using rule 127 (condicion -> SI PARENIZQUIERDO logico PARENDERECHO generarCond ENTONCES bloque condicionaux .)
-    INSERTATEXTO    reduce using rule 127 (condicion -> SI PARENIZQUIERDO logico PARENDERECHO generarCond ENTONCES bloque condicionaux .)
-    INSERTARECTANGULO reduce using rule 127 (condicion -> SI PARENIZQUIERDO logico PARENDERECHO generarCond ENTONCES bloque condicionaux .)
-    INSERTACIRCULO  reduce using rule 127 (condicion -> SI PARENIZQUIERDO logico PARENDERECHO generarCond ENTONCES bloque condicionaux .)
-    INSERTAOVALO    reduce using rule 127 (condicion -> SI PARENIZQUIERDO logico PARENDERECHO generarCond ENTONCES bloque condicionaux .)
-    INSERTATRIANGULO reduce using rule 127 (condicion -> SI PARENIZQUIERDO logico PARENDERECHO generarCond ENTONCES bloque condicionaux .)
-    INSERTAPUNTO    reduce using rule 127 (condicion -> SI PARENIZQUIERDO logico PARENDERECHO generarCond ENTONCES bloque condicionaux .)
-    INSERTALINEA    reduce using rule 127 (condicion -> SI PARENIZQUIERDO logico PARENDERECHO generarCond ENTONCES bloque condicionaux .)
-    INSERTACURVA    reduce using rule 127 (condicion -> SI PARENIZQUIERDO logico PARENDERECHO generarCond ENTONCES bloque condicionaux .)
-    SI              reduce using rule 127 (condicion -> SI PARENIZQUIERDO logico PARENDERECHO generarCond ENTONCES bloque condicionaux .)
-    MIENTRAS        reduce using rule 127 (condicion -> SI PARENIZQUIERDO logico PARENDERECHO generarCond ENTONCES bloque condicionaux .)
-    REGRESAR        reduce using rule 127 (condicion -> SI PARENIZQUIERDO logico PARENDERECHO generarCond ENTONCES bloque condicionaux .)
-    LLAVEDERECHO    reduce using rule 127 (condicion -> SI PARENIZQUIERDO logico PARENDERECHO generarCond ENTONCES bloque condicionaux .)
-
-
-state 255
-
-    (156) ovalo -> INSERTAOVALO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO . verifyArgCount generateGoSub PUNTOYCOMA
-    (62) verifyArgCount -> .
-
-    PUNTOYCOMA      reduce using rule 62 (verifyArgCount -> .)
-
-    verifyArgCount                 shift and go to state 273
-
-state 256
-
-    (22) function -> FUNCION tiporegreso ID idFunctionCheck createGlobal PARENIZQUIERDO functionpam addParamCount PARENDERECHO bloquefun finishFun . resetScope function
-    (26) resetScope -> .
-
-    FUNCION         reduce using rule 26 (resetScope -> .)
-    INICIO          reduce using rule 26 (resetScope -> .)
-
-    resetScope                     shift and go to state 274
+    incrementParamCounter          shift and go to state 272
+    functionpam2                   shift and go to state 273
 
 state 257
-
-    (10) bloquefun -> LLAVEIZQUIERDO declaracion . insertVarCount insertQuadrupleCount bloqueaux regreso LLAVEDERECHO
-    (12) insertVarCount -> .
-
-    ID              reduce using rule 12 (insertVarCount -> .)
-    ENTRADA         reduce using rule 12 (insertVarCount -> .)
-    DESPLEGAR       reduce using rule 12 (insertVarCount -> .)
-    INSERTATEXTO    reduce using rule 12 (insertVarCount -> .)
-    INSERTARECTANGULO reduce using rule 12 (insertVarCount -> .)
-    INSERTACIRCULO  reduce using rule 12 (insertVarCount -> .)
-    INSERTAOVALO    reduce using rule 12 (insertVarCount -> .)
-    INSERTATRIANGULO reduce using rule 12 (insertVarCount -> .)
-    INSERTAPUNTO    reduce using rule 12 (insertVarCount -> .)
-    INSERTALINEA    reduce using rule 12 (insertVarCount -> .)
-    INSERTACURVA    reduce using rule 12 (insertVarCount -> .)
-    SI              reduce using rule 12 (insertVarCount -> .)
-    MIENTRAS        reduce using rule 12 (insertVarCount -> .)
-    REGRESAR        reduce using rule 12 (insertVarCount -> .)
-    LLAVEDERECHO    reduce using rule 12 (insertVarCount -> .)
-
-    insertVarCount                 shift and go to state 275
-
-state 258
-
-    (21) functionpam2 -> incrementParamCounter .
-
-    PARENDERECHO    reduce using rule 21 (functionpam2 -> incrementParamCounter .)
-
-
-state 259
-
-    (15) functionpam -> VAR tipo ID agregarParam functionpam2 .
-
-    PARENDERECHO    reduce using rule 15 (functionpam -> VAR tipo ID agregarParam functionpam2 .)
-
-
-state 260
-
-    (20) functionpam2 -> COMA . incrementParamCounter functionpam
-    (17) incrementParamCounter -> .
-
-    VAR             reduce using rule 17 (incrementParamCounter -> .)
-    PARENDERECHO    reduce using rule 17 (incrementParamCounter -> .)
-
-    incrementParamCounter          shift and go to state 276
-
-state 261
 
     (67) llamadaparaux -> COMA . incrementK llamadapar
     (69) incrementK -> .
@@ -4325,86 +4282,86 @@ state 261
     FALSO           reduce using rule 69 (incrementK -> .)
     PARENDERECHO    reduce using rule 69 (incrementK -> .)
 
-    incrementK                     shift and go to state 277
+    incrementK                     shift and go to state 275
 
-state 262
+state 258
 
     (68) llamadaparaux -> incrementK .
 
     PARENDERECHO    reduce using rule 68 (llamadaparaux -> incrementK .)
 
 
-state 263
+state 259
 
     (64) llamadapar -> exp validateArgs llamadaparaux .
 
     PARENDERECHO    reduce using rule 64 (llamadapar -> exp validateArgs llamadaparaux .)
 
 
-state 264
+state 260
 
     (157) punto -> INSERTAPUNTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount . generateGoSub PUNTOYCOMA
     (61) generateGoSub -> .
 
     PUNTOYCOMA      reduce using rule 61 (generateGoSub -> .)
 
-    generateGoSub                  shift and go to state 278
+    generateGoSub                  shift and go to state 276
 
-state 265
+state 261
 
     (159) curva -> INSERTACURVA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount . generateGoSub PUNTOYCOMA
     (61) generateGoSub -> .
 
     PUNTOYCOMA      reduce using rule 61 (generateGoSub -> .)
 
-    generateGoSub                  shift and go to state 279
+    generateGoSub                  shift and go to state 277
 
-state 266
+state 262
 
     (158) linea -> INSERTALINEA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount . generateGoSub PUNTOYCOMA
     (61) generateGoSub -> .
 
     PUNTOYCOMA      reduce using rule 61 (generateGoSub -> .)
 
-    generateGoSub                  shift and go to state 280
+    generateGoSub                  shift and go to state 278
 
-state 267
+state 263
 
     (152) texto -> INSERTATEXTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount . generateGoSub PUNTOYCOMA
     (61) generateGoSub -> .
 
     PUNTOYCOMA      reduce using rule 61 (generateGoSub -> .)
 
-    generateGoSub                  shift and go to state 281
+    generateGoSub                  shift and go to state 279
 
-state 268
+state 264
 
     (153) rectangulo -> INSERTARECTANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount . generateGoSub PUNTOYCOMA
     (61) generateGoSub -> .
 
     PUNTOYCOMA      reduce using rule 61 (generateGoSub -> .)
 
-    generateGoSub                  shift and go to state 282
+    generateGoSub                  shift and go to state 280
 
-state 269
+state 265
 
     (155) circulo -> INSERTACIRCULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount . generateGoSub PUNTOYCOMA
     (61) generateGoSub -> .
 
     PUNTOYCOMA      reduce using rule 61 (generateGoSub -> .)
 
-    generateGoSub                  shift and go to state 283
+    generateGoSub                  shift and go to state 281
 
-state 270
+state 266
 
     (154) triangulo -> INSERTATRIANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount . generateGoSub PUNTOYCOMA
     (61) generateGoSub -> .
 
     PUNTOYCOMA      reduce using rule 61 (generateGoSub -> .)
 
-    generateGoSub                  shift and go to state 284
+    generateGoSub                  shift and go to state 282
 
-state 271
+state 267
 
     (123) llamada -> buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount . generateGoSub
     (61) generateGoSub -> .
@@ -4426,72 +4383,85 @@ state 271
     PARENDERECHO    reduce using rule 61 (generateGoSub -> .)
     COMA            reduce using rule 61 (generateGoSub -> .)
 
-    generateGoSub                  shift and go to state 285
+    generateGoSub                  shift and go to state 283
 
-state 272
+state 268
 
     (129) condicionaux -> SINO ENTONCES . generarElse bloque rellenarCond
     (131) generarElse -> .
 
     LLAVEIZQUIERDO  reduce using rule 131 (generarElse -> .)
 
-    generarElse                    shift and go to state 286
+    generarElse                    shift and go to state 284
 
-state 273
+state 269
 
     (156) ovalo -> INSERTAOVALO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount . generateGoSub PUNTOYCOMA
     (61) generateGoSub -> .
 
     PUNTOYCOMA      reduce using rule 61 (generateGoSub -> .)
 
-    generateGoSub                  shift and go to state 287
+    generateGoSub                  shift and go to state 285
 
-state 274
+state 270
 
-    (22) function -> FUNCION tiporegreso ID idFunctionCheck createGlobal PARENIZQUIERDO functionpam addParamCount PARENDERECHO bloquefun finishFun resetScope . function
-    (22) function -> . FUNCION tiporegreso ID idFunctionCheck createGlobal PARENIZQUIERDO functionpam addParamCount PARENDERECHO bloquefun finishFun resetScope function
+    (22) function -> FUNCION resetScope tiporegreso ID idFunctionCheck createGlobal PARENIZQUIERDO functionpam addParamCount PARENDERECHO bloquefun finishFun . function
+    (22) function -> . FUNCION resetScope tiporegreso ID idFunctionCheck createGlobal PARENIZQUIERDO functionpam addParamCount PARENDERECHO bloquefun finishFun function
     (23) function -> .
 
     FUNCION         shift and go to state 15
     INICIO          reduce using rule 23 (function -> .)
 
-    function                       shift and go to state 288
+    function                       shift and go to state 286
+
+state 271
+
+    (10) bloquefun -> LLAVEIZQUIERDO declaracion . insertVarCount insertQuadrupleCount bloqueaux regreso LLAVEDERECHO
+    (12) insertVarCount -> .
+
+    ID              reduce using rule 12 (insertVarCount -> .)
+    ENTRADA         reduce using rule 12 (insertVarCount -> .)
+    DESPLEGAR       reduce using rule 12 (insertVarCount -> .)
+    INSERTATEXTO    reduce using rule 12 (insertVarCount -> .)
+    INSERTARECTANGULO reduce using rule 12 (insertVarCount -> .)
+    INSERTACIRCULO  reduce using rule 12 (insertVarCount -> .)
+    INSERTAOVALO    reduce using rule 12 (insertVarCount -> .)
+    INSERTATRIANGULO reduce using rule 12 (insertVarCount -> .)
+    INSERTAPUNTO    reduce using rule 12 (insertVarCount -> .)
+    INSERTALINEA    reduce using rule 12 (insertVarCount -> .)
+    INSERTACURVA    reduce using rule 12 (insertVarCount -> .)
+    SI              reduce using rule 12 (insertVarCount -> .)
+    MIENTRAS        reduce using rule 12 (insertVarCount -> .)
+    REGRESAR        reduce using rule 12 (insertVarCount -> .)
+    LLAVEDERECHO    reduce using rule 12 (insertVarCount -> .)
+
+    insertVarCount                 shift and go to state 287
+
+state 272
+
+    (21) functionpam2 -> incrementParamCounter .
+
+    PARENDERECHO    reduce using rule 21 (functionpam2 -> incrementParamCounter .)
+
+
+state 273
+
+    (15) functionpam -> VAR tipo ID agregarParam functionpam2 .
+
+    PARENDERECHO    reduce using rule 15 (functionpam -> VAR tipo ID agregarParam functionpam2 .)
+
+
+state 274
+
+    (20) functionpam2 -> COMA . incrementParamCounter functionpam
+    (17) incrementParamCounter -> .
+
+    VAR             reduce using rule 17 (incrementParamCounter -> .)
+    PARENDERECHO    reduce using rule 17 (incrementParamCounter -> .)
+
+    incrementParamCounter          shift and go to state 288
 
 state 275
-
-    (10) bloquefun -> LLAVEIZQUIERDO declaracion insertVarCount . insertQuadrupleCount bloqueaux regreso LLAVEDERECHO
-    (11) insertQuadrupleCount -> .
-
-    ID              reduce using rule 11 (insertQuadrupleCount -> .)
-    ENTRADA         reduce using rule 11 (insertQuadrupleCount -> .)
-    DESPLEGAR       reduce using rule 11 (insertQuadrupleCount -> .)
-    INSERTATEXTO    reduce using rule 11 (insertQuadrupleCount -> .)
-    INSERTARECTANGULO reduce using rule 11 (insertQuadrupleCount -> .)
-    INSERTACIRCULO  reduce using rule 11 (insertQuadrupleCount -> .)
-    INSERTAOVALO    reduce using rule 11 (insertQuadrupleCount -> .)
-    INSERTATRIANGULO reduce using rule 11 (insertQuadrupleCount -> .)
-    INSERTAPUNTO    reduce using rule 11 (insertQuadrupleCount -> .)
-    INSERTALINEA    reduce using rule 11 (insertQuadrupleCount -> .)
-    INSERTACURVA    reduce using rule 11 (insertQuadrupleCount -> .)
-    SI              reduce using rule 11 (insertQuadrupleCount -> .)
-    MIENTRAS        reduce using rule 11 (insertQuadrupleCount -> .)
-    REGRESAR        reduce using rule 11 (insertQuadrupleCount -> .)
-    LLAVEDERECHO    reduce using rule 11 (insertQuadrupleCount -> .)
-
-    insertQuadrupleCount           shift and go to state 289
-
-state 276
-
-    (20) functionpam2 -> COMA incrementParamCounter . functionpam
-    (15) functionpam -> . VAR tipo ID agregarParam functionpam2
-    (16) functionpam -> .
-
-    VAR             shift and go to state 165
-    PARENDERECHO    reduce using rule 16 (functionpam -> .)
-
-    functionpam                    shift and go to state 290
-
-state 277
 
     (67) llamadaparaux -> COMA incrementK . llamadapar
     (64) llamadapar -> . exp validateArgs llamadaparaux
@@ -4520,60 +4490,60 @@ state 277
 
     cte                            shift and go to state 39
     termino                        shift and go to state 29
-    exp                            shift and go to state 223
+    exp                            shift and go to state 222
     factor                         shift and go to state 31
-    llamadapar                     shift and go to state 291
+    llamadapar                     shift and go to state 289
+
+state 276
+
+    (157) punto -> INSERTAPUNTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub . PUNTOYCOMA
+
+    PUNTOYCOMA      shift and go to state 290
+
+
+state 277
+
+    (159) curva -> INSERTACURVA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub . PUNTOYCOMA
+
+    PUNTOYCOMA      shift and go to state 291
+
 
 state 278
 
-    (157) punto -> INSERTAPUNTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub . PUNTOYCOMA
+    (158) linea -> INSERTALINEA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub . PUNTOYCOMA
 
     PUNTOYCOMA      shift and go to state 292
 
 
 state 279
 
-    (159) curva -> INSERTACURVA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub . PUNTOYCOMA
+    (152) texto -> INSERTATEXTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub . PUNTOYCOMA
 
     PUNTOYCOMA      shift and go to state 293
 
 
 state 280
 
-    (158) linea -> INSERTALINEA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub . PUNTOYCOMA
+    (153) rectangulo -> INSERTARECTANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub . PUNTOYCOMA
 
     PUNTOYCOMA      shift and go to state 294
 
 
 state 281
 
-    (152) texto -> INSERTATEXTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub . PUNTOYCOMA
+    (155) circulo -> INSERTACIRCULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub . PUNTOYCOMA
 
     PUNTOYCOMA      shift and go to state 295
 
 
 state 282
 
-    (153) rectangulo -> INSERTARECTANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub . PUNTOYCOMA
+    (154) triangulo -> INSERTATRIANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub . PUNTOYCOMA
 
     PUNTOYCOMA      shift and go to state 296
 
 
 state 283
-
-    (155) circulo -> INSERTACIRCULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub . PUNTOYCOMA
-
-    PUNTOYCOMA      shift and go to state 297
-
-
-state 284
-
-    (154) triangulo -> INSERTATRIANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub . PUNTOYCOMA
-
-    PUNTOYCOMA      shift and go to state 298
-
-
-state 285
 
     (123) llamada -> buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub .
 
@@ -4595,30 +4565,262 @@ state 285
     COMA            reduce using rule 123 (llamada -> buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub .)
 
 
-state 286
+state 284
 
     (129) condicionaux -> SINO ENTONCES generarElse . bloque rellenarCond
     (54) bloque -> . LLAVEIZQUIERDO bloqueaux LLAVEDERECHO
 
-    LLAVEIZQUIERDO  shift and go to state 25
+    LLAVEIZQUIERDO  shift and go to state 23
 
-    bloque                         shift and go to state 299
+    bloque                         shift and go to state 297
 
-state 287
+state 285
 
     (156) ovalo -> INSERTAOVALO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub . PUNTOYCOMA
 
-    PUNTOYCOMA      shift and go to state 300
+    PUNTOYCOMA      shift and go to state 298
 
+
+state 286
+
+    (22) function -> FUNCION resetScope tiporegreso ID idFunctionCheck createGlobal PARENIZQUIERDO functionpam addParamCount PARENDERECHO bloquefun finishFun function .
+
+    INICIO          reduce using rule 22 (function -> FUNCION resetScope tiporegreso ID idFunctionCheck createGlobal PARENIZQUIERDO functionpam addParamCount PARENDERECHO bloquefun finishFun function .)
+
+
+state 287
+
+    (10) bloquefun -> LLAVEIZQUIERDO declaracion insertVarCount . insertQuadrupleCount bloqueaux regreso LLAVEDERECHO
+    (11) insertQuadrupleCount -> .
+
+    ID              reduce using rule 11 (insertQuadrupleCount -> .)
+    ENTRADA         reduce using rule 11 (insertQuadrupleCount -> .)
+    DESPLEGAR       reduce using rule 11 (insertQuadrupleCount -> .)
+    INSERTATEXTO    reduce using rule 11 (insertQuadrupleCount -> .)
+    INSERTARECTANGULO reduce using rule 11 (insertQuadrupleCount -> .)
+    INSERTACIRCULO  reduce using rule 11 (insertQuadrupleCount -> .)
+    INSERTAOVALO    reduce using rule 11 (insertQuadrupleCount -> .)
+    INSERTATRIANGULO reduce using rule 11 (insertQuadrupleCount -> .)
+    INSERTAPUNTO    reduce using rule 11 (insertQuadrupleCount -> .)
+    INSERTALINEA    reduce using rule 11 (insertQuadrupleCount -> .)
+    INSERTACURVA    reduce using rule 11 (insertQuadrupleCount -> .)
+    SI              reduce using rule 11 (insertQuadrupleCount -> .)
+    MIENTRAS        reduce using rule 11 (insertQuadrupleCount -> .)
+    REGRESAR        reduce using rule 11 (insertQuadrupleCount -> .)
+    LLAVEDERECHO    reduce using rule 11 (insertQuadrupleCount -> .)
+
+    insertQuadrupleCount           shift and go to state 299
 
 state 288
 
-    (22) function -> FUNCION tiporegreso ID idFunctionCheck createGlobal PARENIZQUIERDO functionpam addParamCount PARENDERECHO bloquefun finishFun resetScope function .
+    (20) functionpam2 -> COMA incrementParamCounter . functionpam
+    (15) functionpam -> . VAR tipo ID agregarParam functionpam2
+    (16) functionpam -> .
 
-    INICIO          reduce using rule 22 (function -> FUNCION tiporegreso ID idFunctionCheck createGlobal PARENIZQUIERDO functionpam addParamCount PARENDERECHO bloquefun finishFun resetScope function .)
+    VAR             shift and go to state 198
+    PARENDERECHO    reduce using rule 16 (functionpam -> .)
 
+    functionpam                    shift and go to state 300
 
 state 289
+
+    (67) llamadaparaux -> COMA incrementK llamadapar .
+
+    PARENDERECHO    reduce using rule 67 (llamadaparaux -> COMA incrementK llamadapar .)
+
+
+state 290
+
+    (157) punto -> INSERTAPUNTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .
+
+    ID              reduce using rule 157 (punto -> INSERTAPUNTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    ENTRADA         reduce using rule 157 (punto -> INSERTAPUNTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    DESPLEGAR       reduce using rule 157 (punto -> INSERTAPUNTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTATEXTO    reduce using rule 157 (punto -> INSERTAPUNTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTARECTANGULO reduce using rule 157 (punto -> INSERTAPUNTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTACIRCULO  reduce using rule 157 (punto -> INSERTAPUNTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTAOVALO    reduce using rule 157 (punto -> INSERTAPUNTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTATRIANGULO reduce using rule 157 (punto -> INSERTAPUNTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTAPUNTO    reduce using rule 157 (punto -> INSERTAPUNTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTALINEA    reduce using rule 157 (punto -> INSERTAPUNTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTACURVA    reduce using rule 157 (punto -> INSERTAPUNTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    SI              reduce using rule 157 (punto -> INSERTAPUNTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    MIENTRAS        reduce using rule 157 (punto -> INSERTAPUNTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    LLAVEDERECHO    reduce using rule 157 (punto -> INSERTAPUNTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    REGRESAR        reduce using rule 157 (punto -> INSERTAPUNTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+
+
+state 291
+
+    (159) curva -> INSERTACURVA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .
+
+    ID              reduce using rule 159 (curva -> INSERTACURVA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    ENTRADA         reduce using rule 159 (curva -> INSERTACURVA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    DESPLEGAR       reduce using rule 159 (curva -> INSERTACURVA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTATEXTO    reduce using rule 159 (curva -> INSERTACURVA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTARECTANGULO reduce using rule 159 (curva -> INSERTACURVA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTACIRCULO  reduce using rule 159 (curva -> INSERTACURVA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTAOVALO    reduce using rule 159 (curva -> INSERTACURVA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTATRIANGULO reduce using rule 159 (curva -> INSERTACURVA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTAPUNTO    reduce using rule 159 (curva -> INSERTACURVA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTALINEA    reduce using rule 159 (curva -> INSERTACURVA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTACURVA    reduce using rule 159 (curva -> INSERTACURVA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    SI              reduce using rule 159 (curva -> INSERTACURVA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    MIENTRAS        reduce using rule 159 (curva -> INSERTACURVA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    LLAVEDERECHO    reduce using rule 159 (curva -> INSERTACURVA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    REGRESAR        reduce using rule 159 (curva -> INSERTACURVA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+
+
+state 292
+
+    (158) linea -> INSERTALINEA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .
+
+    ID              reduce using rule 158 (linea -> INSERTALINEA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    ENTRADA         reduce using rule 158 (linea -> INSERTALINEA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    DESPLEGAR       reduce using rule 158 (linea -> INSERTALINEA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTATEXTO    reduce using rule 158 (linea -> INSERTALINEA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTARECTANGULO reduce using rule 158 (linea -> INSERTALINEA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTACIRCULO  reduce using rule 158 (linea -> INSERTALINEA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTAOVALO    reduce using rule 158 (linea -> INSERTALINEA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTATRIANGULO reduce using rule 158 (linea -> INSERTALINEA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTAPUNTO    reduce using rule 158 (linea -> INSERTALINEA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTALINEA    reduce using rule 158 (linea -> INSERTALINEA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTACURVA    reduce using rule 158 (linea -> INSERTALINEA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    SI              reduce using rule 158 (linea -> INSERTALINEA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    MIENTRAS        reduce using rule 158 (linea -> INSERTALINEA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    LLAVEDERECHO    reduce using rule 158 (linea -> INSERTALINEA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    REGRESAR        reduce using rule 158 (linea -> INSERTALINEA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+
+
+state 293
+
+    (152) texto -> INSERTATEXTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .
+
+    ID              reduce using rule 152 (texto -> INSERTATEXTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    ENTRADA         reduce using rule 152 (texto -> INSERTATEXTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    DESPLEGAR       reduce using rule 152 (texto -> INSERTATEXTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTATEXTO    reduce using rule 152 (texto -> INSERTATEXTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTARECTANGULO reduce using rule 152 (texto -> INSERTATEXTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTACIRCULO  reduce using rule 152 (texto -> INSERTATEXTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTAOVALO    reduce using rule 152 (texto -> INSERTATEXTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTATRIANGULO reduce using rule 152 (texto -> INSERTATEXTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTAPUNTO    reduce using rule 152 (texto -> INSERTATEXTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTALINEA    reduce using rule 152 (texto -> INSERTATEXTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTACURVA    reduce using rule 152 (texto -> INSERTATEXTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    SI              reduce using rule 152 (texto -> INSERTATEXTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    MIENTRAS        reduce using rule 152 (texto -> INSERTATEXTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    REGRESAR        reduce using rule 152 (texto -> INSERTATEXTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    LLAVEDERECHO    reduce using rule 152 (texto -> INSERTATEXTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+
+
+state 294
+
+    (153) rectangulo -> INSERTARECTANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .
+
+    ID              reduce using rule 153 (rectangulo -> INSERTARECTANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    ENTRADA         reduce using rule 153 (rectangulo -> INSERTARECTANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    DESPLEGAR       reduce using rule 153 (rectangulo -> INSERTARECTANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTATEXTO    reduce using rule 153 (rectangulo -> INSERTARECTANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTARECTANGULO reduce using rule 153 (rectangulo -> INSERTARECTANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTACIRCULO  reduce using rule 153 (rectangulo -> INSERTARECTANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTAOVALO    reduce using rule 153 (rectangulo -> INSERTARECTANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTATRIANGULO reduce using rule 153 (rectangulo -> INSERTARECTANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTAPUNTO    reduce using rule 153 (rectangulo -> INSERTARECTANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTALINEA    reduce using rule 153 (rectangulo -> INSERTARECTANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTACURVA    reduce using rule 153 (rectangulo -> INSERTARECTANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    SI              reduce using rule 153 (rectangulo -> INSERTARECTANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    MIENTRAS        reduce using rule 153 (rectangulo -> INSERTARECTANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    LLAVEDERECHO    reduce using rule 153 (rectangulo -> INSERTARECTANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    REGRESAR        reduce using rule 153 (rectangulo -> INSERTARECTANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+
+
+state 295
+
+    (155) circulo -> INSERTACIRCULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .
+
+    ID              reduce using rule 155 (circulo -> INSERTACIRCULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    ENTRADA         reduce using rule 155 (circulo -> INSERTACIRCULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    DESPLEGAR       reduce using rule 155 (circulo -> INSERTACIRCULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTATEXTO    reduce using rule 155 (circulo -> INSERTACIRCULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTARECTANGULO reduce using rule 155 (circulo -> INSERTACIRCULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTACIRCULO  reduce using rule 155 (circulo -> INSERTACIRCULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTAOVALO    reduce using rule 155 (circulo -> INSERTACIRCULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTATRIANGULO reduce using rule 155 (circulo -> INSERTACIRCULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTAPUNTO    reduce using rule 155 (circulo -> INSERTACIRCULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTALINEA    reduce using rule 155 (circulo -> INSERTACIRCULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTACURVA    reduce using rule 155 (circulo -> INSERTACIRCULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    SI              reduce using rule 155 (circulo -> INSERTACIRCULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    MIENTRAS        reduce using rule 155 (circulo -> INSERTACIRCULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    REGRESAR        reduce using rule 155 (circulo -> INSERTACIRCULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    LLAVEDERECHO    reduce using rule 155 (circulo -> INSERTACIRCULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+
+
+state 296
+
+    (154) triangulo -> INSERTATRIANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .
+
+    ID              reduce using rule 154 (triangulo -> INSERTATRIANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    ENTRADA         reduce using rule 154 (triangulo -> INSERTATRIANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    DESPLEGAR       reduce using rule 154 (triangulo -> INSERTATRIANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTATEXTO    reduce using rule 154 (triangulo -> INSERTATRIANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTARECTANGULO reduce using rule 154 (triangulo -> INSERTATRIANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTACIRCULO  reduce using rule 154 (triangulo -> INSERTATRIANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTAOVALO    reduce using rule 154 (triangulo -> INSERTATRIANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTATRIANGULO reduce using rule 154 (triangulo -> INSERTATRIANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTAPUNTO    reduce using rule 154 (triangulo -> INSERTATRIANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTALINEA    reduce using rule 154 (triangulo -> INSERTATRIANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTACURVA    reduce using rule 154 (triangulo -> INSERTATRIANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    SI              reduce using rule 154 (triangulo -> INSERTATRIANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    MIENTRAS        reduce using rule 154 (triangulo -> INSERTATRIANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    LLAVEDERECHO    reduce using rule 154 (triangulo -> INSERTATRIANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    REGRESAR        reduce using rule 154 (triangulo -> INSERTATRIANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+
+
+state 297
+
+    (129) condicionaux -> SINO ENTONCES generarElse bloque . rellenarCond
+    (132) rellenarCond -> .
+
+    ID              reduce using rule 132 (rellenarCond -> .)
+    ENTRADA         reduce using rule 132 (rellenarCond -> .)
+    DESPLEGAR       reduce using rule 132 (rellenarCond -> .)
+    INSERTATEXTO    reduce using rule 132 (rellenarCond -> .)
+    INSERTARECTANGULO reduce using rule 132 (rellenarCond -> .)
+    INSERTACIRCULO  reduce using rule 132 (rellenarCond -> .)
+    INSERTAOVALO    reduce using rule 132 (rellenarCond -> .)
+    INSERTATRIANGULO reduce using rule 132 (rellenarCond -> .)
+    INSERTAPUNTO    reduce using rule 132 (rellenarCond -> .)
+    INSERTALINEA    reduce using rule 132 (rellenarCond -> .)
+    INSERTACURVA    reduce using rule 132 (rellenarCond -> .)
+    SI              reduce using rule 132 (rellenarCond -> .)
+    MIENTRAS        reduce using rule 132 (rellenarCond -> .)
+    LLAVEDERECHO    reduce using rule 132 (rellenarCond -> .)
+    REGRESAR        reduce using rule 132 (rellenarCond -> .)
+
+    rellenarCond                   shift and go to state 301
+
+state 298
+
+    (156) ovalo -> INSERTAOVALO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .
+
+    ID              reduce using rule 156 (ovalo -> INSERTAOVALO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    ENTRADA         reduce using rule 156 (ovalo -> INSERTAOVALO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    DESPLEGAR       reduce using rule 156 (ovalo -> INSERTAOVALO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTATEXTO    reduce using rule 156 (ovalo -> INSERTAOVALO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTARECTANGULO reduce using rule 156 (ovalo -> INSERTAOVALO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTACIRCULO  reduce using rule 156 (ovalo -> INSERTAOVALO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTAOVALO    reduce using rule 156 (ovalo -> INSERTAOVALO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTATRIANGULO reduce using rule 156 (ovalo -> INSERTAOVALO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTAPUNTO    reduce using rule 156 (ovalo -> INSERTAOVALO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTALINEA    reduce using rule 156 (ovalo -> INSERTAOVALO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    INSERTACURVA    reduce using rule 156 (ovalo -> INSERTAOVALO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    SI              reduce using rule 156 (ovalo -> INSERTAOVALO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    MIENTRAS        reduce using rule 156 (ovalo -> INSERTAOVALO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    LLAVEDERECHO    reduce using rule 156 (ovalo -> INSERTAOVALO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+    REGRESAR        reduce using rule 156 (ovalo -> INSERTAOVALO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
+
+
+state 299
 
     (10) bloquefun -> LLAVEIZQUIERDO declaracion insertVarCount insertQuadrupleCount . bloqueaux regreso LLAVEDERECHO
     (55) bloqueaux -> . estatuto bloqueaux
@@ -4670,7 +4872,7 @@ state 289
 
     asignacionizq                  shift and go to state 42
     texto                          shift and go to state 43
-    bloqueaux                      shift and go to state 301
+    bloqueaux                      shift and go to state 302
     ingreso                        shift and go to state 47
     triangulo                      shift and go to state 48
     ciclo                          shift and go to state 49
@@ -4685,225 +4887,14 @@ state 289
     linea                          shift and go to state 68
     escritura                      shift and go to state 69
 
-state 290
+state 300
 
     (20) functionpam2 -> COMA incrementParamCounter functionpam .
 
     PARENDERECHO    reduce using rule 20 (functionpam2 -> COMA incrementParamCounter functionpam .)
 
 
-state 291
-
-    (67) llamadaparaux -> COMA incrementK llamadapar .
-
-    PARENDERECHO    reduce using rule 67 (llamadaparaux -> COMA incrementK llamadapar .)
-
-
-state 292
-
-    (157) punto -> INSERTAPUNTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .
-
-    ID              reduce using rule 157 (punto -> INSERTAPUNTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    ENTRADA         reduce using rule 157 (punto -> INSERTAPUNTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    DESPLEGAR       reduce using rule 157 (punto -> INSERTAPUNTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTATEXTO    reduce using rule 157 (punto -> INSERTAPUNTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTARECTANGULO reduce using rule 157 (punto -> INSERTAPUNTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTACIRCULO  reduce using rule 157 (punto -> INSERTAPUNTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTAOVALO    reduce using rule 157 (punto -> INSERTAPUNTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTATRIANGULO reduce using rule 157 (punto -> INSERTAPUNTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTAPUNTO    reduce using rule 157 (punto -> INSERTAPUNTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTALINEA    reduce using rule 157 (punto -> INSERTAPUNTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTACURVA    reduce using rule 157 (punto -> INSERTAPUNTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    SI              reduce using rule 157 (punto -> INSERTAPUNTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    MIENTRAS        reduce using rule 157 (punto -> INSERTAPUNTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    LLAVEDERECHO    reduce using rule 157 (punto -> INSERTAPUNTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    REGRESAR        reduce using rule 157 (punto -> INSERTAPUNTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-
-
-state 293
-
-    (159) curva -> INSERTACURVA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .
-
-    ID              reduce using rule 159 (curva -> INSERTACURVA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    ENTRADA         reduce using rule 159 (curva -> INSERTACURVA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    DESPLEGAR       reduce using rule 159 (curva -> INSERTACURVA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTATEXTO    reduce using rule 159 (curva -> INSERTACURVA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTARECTANGULO reduce using rule 159 (curva -> INSERTACURVA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTACIRCULO  reduce using rule 159 (curva -> INSERTACURVA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTAOVALO    reduce using rule 159 (curva -> INSERTACURVA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTATRIANGULO reduce using rule 159 (curva -> INSERTACURVA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTAPUNTO    reduce using rule 159 (curva -> INSERTACURVA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTALINEA    reduce using rule 159 (curva -> INSERTACURVA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTACURVA    reduce using rule 159 (curva -> INSERTACURVA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    SI              reduce using rule 159 (curva -> INSERTACURVA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    MIENTRAS        reduce using rule 159 (curva -> INSERTACURVA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    LLAVEDERECHO    reduce using rule 159 (curva -> INSERTACURVA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    REGRESAR        reduce using rule 159 (curva -> INSERTACURVA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-
-
-state 294
-
-    (158) linea -> INSERTALINEA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .
-
-    ID              reduce using rule 158 (linea -> INSERTALINEA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    ENTRADA         reduce using rule 158 (linea -> INSERTALINEA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    DESPLEGAR       reduce using rule 158 (linea -> INSERTALINEA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTATEXTO    reduce using rule 158 (linea -> INSERTALINEA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTARECTANGULO reduce using rule 158 (linea -> INSERTALINEA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTACIRCULO  reduce using rule 158 (linea -> INSERTALINEA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTAOVALO    reduce using rule 158 (linea -> INSERTALINEA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTATRIANGULO reduce using rule 158 (linea -> INSERTALINEA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTAPUNTO    reduce using rule 158 (linea -> INSERTALINEA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTALINEA    reduce using rule 158 (linea -> INSERTALINEA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTACURVA    reduce using rule 158 (linea -> INSERTALINEA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    SI              reduce using rule 158 (linea -> INSERTALINEA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    MIENTRAS        reduce using rule 158 (linea -> INSERTALINEA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    LLAVEDERECHO    reduce using rule 158 (linea -> INSERTALINEA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    REGRESAR        reduce using rule 158 (linea -> INSERTALINEA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-
-
-state 295
-
-    (152) texto -> INSERTATEXTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .
-
-    ID              reduce using rule 152 (texto -> INSERTATEXTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    ENTRADA         reduce using rule 152 (texto -> INSERTATEXTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    DESPLEGAR       reduce using rule 152 (texto -> INSERTATEXTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTATEXTO    reduce using rule 152 (texto -> INSERTATEXTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTARECTANGULO reduce using rule 152 (texto -> INSERTATEXTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTACIRCULO  reduce using rule 152 (texto -> INSERTATEXTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTAOVALO    reduce using rule 152 (texto -> INSERTATEXTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTATRIANGULO reduce using rule 152 (texto -> INSERTATEXTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTAPUNTO    reduce using rule 152 (texto -> INSERTATEXTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTALINEA    reduce using rule 152 (texto -> INSERTATEXTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTACURVA    reduce using rule 152 (texto -> INSERTATEXTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    SI              reduce using rule 152 (texto -> INSERTATEXTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    MIENTRAS        reduce using rule 152 (texto -> INSERTATEXTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    LLAVEDERECHO    reduce using rule 152 (texto -> INSERTATEXTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    REGRESAR        reduce using rule 152 (texto -> INSERTATEXTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-
-
-state 296
-
-    (153) rectangulo -> INSERTARECTANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .
-
-    ID              reduce using rule 153 (rectangulo -> INSERTARECTANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    ENTRADA         reduce using rule 153 (rectangulo -> INSERTARECTANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    DESPLEGAR       reduce using rule 153 (rectangulo -> INSERTARECTANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTATEXTO    reduce using rule 153 (rectangulo -> INSERTARECTANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTARECTANGULO reduce using rule 153 (rectangulo -> INSERTARECTANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTACIRCULO  reduce using rule 153 (rectangulo -> INSERTARECTANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTAOVALO    reduce using rule 153 (rectangulo -> INSERTARECTANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTATRIANGULO reduce using rule 153 (rectangulo -> INSERTARECTANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTAPUNTO    reduce using rule 153 (rectangulo -> INSERTARECTANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTALINEA    reduce using rule 153 (rectangulo -> INSERTARECTANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTACURVA    reduce using rule 153 (rectangulo -> INSERTARECTANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    SI              reduce using rule 153 (rectangulo -> INSERTARECTANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    MIENTRAS        reduce using rule 153 (rectangulo -> INSERTARECTANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    LLAVEDERECHO    reduce using rule 153 (rectangulo -> INSERTARECTANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    REGRESAR        reduce using rule 153 (rectangulo -> INSERTARECTANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-
-
-state 297
-
-    (155) circulo -> INSERTACIRCULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .
-
-    ID              reduce using rule 155 (circulo -> INSERTACIRCULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    ENTRADA         reduce using rule 155 (circulo -> INSERTACIRCULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    DESPLEGAR       reduce using rule 155 (circulo -> INSERTACIRCULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTATEXTO    reduce using rule 155 (circulo -> INSERTACIRCULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTARECTANGULO reduce using rule 155 (circulo -> INSERTACIRCULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTACIRCULO  reduce using rule 155 (circulo -> INSERTACIRCULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTAOVALO    reduce using rule 155 (circulo -> INSERTACIRCULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTATRIANGULO reduce using rule 155 (circulo -> INSERTACIRCULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTAPUNTO    reduce using rule 155 (circulo -> INSERTACIRCULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTALINEA    reduce using rule 155 (circulo -> INSERTACIRCULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTACURVA    reduce using rule 155 (circulo -> INSERTACIRCULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    SI              reduce using rule 155 (circulo -> INSERTACIRCULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    MIENTRAS        reduce using rule 155 (circulo -> INSERTACIRCULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    LLAVEDERECHO    reduce using rule 155 (circulo -> INSERTACIRCULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    REGRESAR        reduce using rule 155 (circulo -> INSERTACIRCULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-
-
-state 298
-
-    (154) triangulo -> INSERTATRIANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .
-
-    ID              reduce using rule 154 (triangulo -> INSERTATRIANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    ENTRADA         reduce using rule 154 (triangulo -> INSERTATRIANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    DESPLEGAR       reduce using rule 154 (triangulo -> INSERTATRIANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTATEXTO    reduce using rule 154 (triangulo -> INSERTATRIANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTARECTANGULO reduce using rule 154 (triangulo -> INSERTATRIANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTACIRCULO  reduce using rule 154 (triangulo -> INSERTATRIANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTAOVALO    reduce using rule 154 (triangulo -> INSERTATRIANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTATRIANGULO reduce using rule 154 (triangulo -> INSERTATRIANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTAPUNTO    reduce using rule 154 (triangulo -> INSERTATRIANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTALINEA    reduce using rule 154 (triangulo -> INSERTATRIANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTACURVA    reduce using rule 154 (triangulo -> INSERTATRIANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    SI              reduce using rule 154 (triangulo -> INSERTATRIANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    MIENTRAS        reduce using rule 154 (triangulo -> INSERTATRIANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    LLAVEDERECHO    reduce using rule 154 (triangulo -> INSERTATRIANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    REGRESAR        reduce using rule 154 (triangulo -> INSERTATRIANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-
-
-state 299
-
-    (129) condicionaux -> SINO ENTONCES generarElse bloque . rellenarCond
-    (132) rellenarCond -> .
-
-    ID              reduce using rule 132 (rellenarCond -> .)
-    ENTRADA         reduce using rule 132 (rellenarCond -> .)
-    DESPLEGAR       reduce using rule 132 (rellenarCond -> .)
-    INSERTATEXTO    reduce using rule 132 (rellenarCond -> .)
-    INSERTARECTANGULO reduce using rule 132 (rellenarCond -> .)
-    INSERTACIRCULO  reduce using rule 132 (rellenarCond -> .)
-    INSERTAOVALO    reduce using rule 132 (rellenarCond -> .)
-    INSERTATRIANGULO reduce using rule 132 (rellenarCond -> .)
-    INSERTAPUNTO    reduce using rule 132 (rellenarCond -> .)
-    INSERTALINEA    reduce using rule 132 (rellenarCond -> .)
-    INSERTACURVA    reduce using rule 132 (rellenarCond -> .)
-    SI              reduce using rule 132 (rellenarCond -> .)
-    MIENTRAS        reduce using rule 132 (rellenarCond -> .)
-    LLAVEDERECHO    reduce using rule 132 (rellenarCond -> .)
-    REGRESAR        reduce using rule 132 (rellenarCond -> .)
-
-    rellenarCond                   shift and go to state 302
-
-state 300
-
-    (156) ovalo -> INSERTAOVALO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .
-
-    ID              reduce using rule 156 (ovalo -> INSERTAOVALO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    ENTRADA         reduce using rule 156 (ovalo -> INSERTAOVALO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    DESPLEGAR       reduce using rule 156 (ovalo -> INSERTAOVALO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTATEXTO    reduce using rule 156 (ovalo -> INSERTAOVALO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTARECTANGULO reduce using rule 156 (ovalo -> INSERTAOVALO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTACIRCULO  reduce using rule 156 (ovalo -> INSERTAOVALO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTAOVALO    reduce using rule 156 (ovalo -> INSERTAOVALO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTATRIANGULO reduce using rule 156 (ovalo -> INSERTAOVALO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTAPUNTO    reduce using rule 156 (ovalo -> INSERTAOVALO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTALINEA    reduce using rule 156 (ovalo -> INSERTAOVALO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    INSERTACURVA    reduce using rule 156 (ovalo -> INSERTAOVALO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    SI              reduce using rule 156 (ovalo -> INSERTAOVALO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    MIENTRAS        reduce using rule 156 (ovalo -> INSERTAOVALO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    LLAVEDERECHO    reduce using rule 156 (ovalo -> INSERTAOVALO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-    REGRESAR        reduce using rule 156 (ovalo -> INSERTAOVALO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA .)
-
-
 state 301
-
-    (10) bloquefun -> LLAVEIZQUIERDO declaracion insertVarCount insertQuadrupleCount bloqueaux . regreso LLAVEDERECHO
-    (47) regreso -> . REGRESAR returnExp
-    (48) regreso -> . nullReturn
-    (52) nullReturn -> .
-
-    REGRESAR        shift and go to state 305
-    LLAVEDERECHO    reduce using rule 52 (nullReturn -> .)
-
-    regreso                        shift and go to state 303
-    nullReturn                     shift and go to state 304
-
-state 302
 
     (129) condicionaux -> SINO ENTONCES generarElse bloque rellenarCond .
 
@@ -4923,6 +4914,19 @@ state 302
     LLAVEDERECHO    reduce using rule 129 (condicionaux -> SINO ENTONCES generarElse bloque rellenarCond .)
     REGRESAR        reduce using rule 129 (condicionaux -> SINO ENTONCES generarElse bloque rellenarCond .)
 
+
+state 302
+
+    (10) bloquefun -> LLAVEIZQUIERDO declaracion insertVarCount insertQuadrupleCount bloqueaux . regreso LLAVEDERECHO
+    (47) regreso -> . REGRESAR returnExp
+    (48) regreso -> . nullReturn
+    (52) nullReturn -> .
+
+    REGRESAR        shift and go to state 305
+    LLAVEDERECHO    reduce using rule 52 (nullReturn -> .)
+
+    regreso                        shift and go to state 303
+    nullReturn                     shift and go to state 304
 
 state 303
 

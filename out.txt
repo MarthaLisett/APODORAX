@@ -1,0 +1,537 @@
+('voy a regresar:', 5000)
+('voy a regresar:', 5001)
+('voy a regresar:', 5002)
+('voy a regresar:', 5003)
+('voy a regresar:', 5004)
+('voy a regresar:', 5006)
+('voy a regresar:', 5007)
+('voy a regresar:', 5008)
+('voy a regresar:', 5009)
+('voy a regresar:', 5010)
+('voy a regresar:', 5011)
+('voy a regresar:', 5012)
+('voy a regresar:', 5013)
+('voy a regresar:', 5014)
+('voy a regresar:', 5016)
+('voy a regresar:', 5017)
+('voy a regresar:', 5018)
+('voy a regresar:', 5019)
+('voy a regresar:', 5020)
+('voy a regresar:', 5021)
+('voy a regresar:', 5022)
+('voy a regresar:', 5024)
+('voy a regresar:', 5025)
+('voy a regresar:', 5026)
+('voy a regresar:', 5027)
+('voy a regresar:', 5028)
+('voy a regresar:', 5029)
+('voy a regresar:', 5031)
+('voy a regresar:', 5032)
+('voy a regresar:', 5033)
+('voy a regresar:', 5034)
+('voy a regresar:', 5035)
+('voy a regresar:', 5036)
+('voy a regresar:', 5037)
+('voy a regresar:', 5039)
+('voy a regresar:', 5040)
+('voy a regresar:', 5041)
+('voy a regresar:', 5042)
+('voy a regresar:', 5043)
+('voy a regresar:', 5044)
+('voy a regresar:', 5045)
+('voy a regresar:', 5046)
+('voy a regresar:', 5047)
+('voy a regresar:', 5049)
+('voy a regresar:', 5050)
+('voy a regresar:', 5051)
+('voy a regresar:', 5052)
+('voy a regresar:', 5053)
+('voy a regresar:', 0)
+('voy a regresar:', 2)
+('voy a regresar:', 3)
+('voy a regresar:', 4)
+('Constante actual:', 10)
+('voy a regresar:', 5)
+('voy a regresar:', 7)
+('voy a regresar:', 9)
+('voy a regresar:', 10)
+('voy a regresar:', 11)
+('voy a regresar:', 5054)
+('voy a regresar:', 5056)
+('Valor args_count:', 2)
+('voy a regresar:', 5057)
+('voy a regresar:', 5059)
+('Constante actual:', 0)
+antes
+('l: ', 'entero')
+('r: ', 'entero')
+('op: ', '=')
+entero
+entero
+despues
+('l: ', 0)
+('r: ', 0)
+('op: ', 12)
+('resultado final:', ['flores', 'entero', 'carro', 0, 5060])
+('Constante actual:', 0.0)
+antes
+('l: ', 'entero')
+('r: ', 'flotante')
+('op: ', '=')
+entero
+flotante
+despues
+('l: ', 0)
+('r: ', 1)
+('op: ', 12)
+('resultado final:', ['I', 'entero', 'global', 0.0, 8])
+('Constante actual:', 11)
+antes
+('l: ', 'flotante')
+('r: ', 'entero')
+('op: ', '=')
+flotante
+entero
+despues
+('l: ', 1)
+('r: ', 0)
+('op: ', 12)
+('resultado final:', ['resultado', 'flotante', 'global', 11, None])
+('Constante actual:', 'resultado')
+('Constante actual:', 1)
+antes
+('l: ', 'flotante')
+('r: ', 'entero')
+('op: ', '+')
+flotante
+entero
+despues
+('l: ', 1)
+('r: ', 0)
+('op: ', 1)
+('SCOPE ACTUAL:', 'carro')
+CONTENIDO DE TABLA
+entero
+OrderedDict([('x', ['x', 'entero', 'carro', None, 5055]), ('y', ['y', 'flotante', 'carro', None, 6029]), ('resultadofinal', ['resultadofinal', 'entero', 'carro', None, 5058]), ('flores', ['flores', 'entero', 'carro', 0, 5060])])
+None
+('Estoy intentando agregar:', 't_0')
+('voy a regresar:', 5061)
+antes
+('l: ', 'entero')
+('r: ', 'flotante')
+('op: ', '=')
+entero
+flotante
+despues
+('l: ', 0)
+('r: ', 1)
+('op: ', 12)
+('resultado final:', ['resultadofinal', 'entero', 'carro', 't_0', 5058])
+('Constante actual:', 'resultadofinal')
+('Constante actual:', 1)
+antes
+('l: ', 'entero')
+('r: ', 'entero')
+('op: ', '+')
+entero
+entero
+despues
+('l: ', 0)
+('r: ', 0)
+('op: ', 1)
+('SCOPE ACTUAL:', 'carro')
+CONTENIDO DE TABLA
+entero
+OrderedDict([('x', ['x', 'entero', 'carro', None, 5055]), ('y', ['y', 'flotante', 'carro', None, 6029]), ('resultadofinal', ['resultadofinal', 'entero', 'carro', 't_0', 5058]), ('flores', ['flores', 'entero', 'carro', 0, 5060]), ('t_0', ['t_0', 'flotante', 'carro', None, 6030])])
+None
+('Estoy intentando agregar:', 't_1')
+('voy a regresar:', 5062)
+antes
+('l: ', 'entero')
+('r: ', 'entero')
+('op: ', '=')
+entero
+entero
+despues
+('l: ', 0)
+('r: ', 0)
+('op: ', 12)
+('resultado final:', ['flores', 'entero', 'carro', 't_1', 5060])
+('Constante actual:', '"hola mundo"')
+antes
+('l: ', 'cadena')
+('r: ', 'cadena')
+('op: ', '=')
+cadena
+cadena
+despues
+('l: ', 2)
+('r: ', 2)
+('op: ', 12)
+('resultado final:', ['hello', 'cadena', 'global', '"hola mundo"', None])
+('Constante actual:', 'resultadofinal')
+('voy a regresar:', 5064)
+('Valor args_count:', 1)
+('Constante actual:', 0)
+antes
+('l: ', 'entero')
+('r: ', 'entero')
+('op: ', '=')
+entero
+entero
+despues
+('l: ', 0)
+('r: ', 0)
+('op: ', 12)
+('resultado final:', ['I', 'entero', 'global', 0, 8])
+('Constante actual:', 'I')
+('Constante actual:', 1)
+antes
+('l: ', 'entero')
+('r: ', 'entero')
+('op: ', '*')
+entero
+entero
+despues
+('l: ', 0)
+('r: ', 0)
+('op: ', 2)
+('voy a regresar:', 5066)
+antes
+('l: ', 'entero')
+('r: ', 'entero')
+('op: ', '=')
+entero
+entero
+despues
+('l: ', 0)
+('r: ', 0)
+('op: ', 12)
+('resultado final:', ['I', 'entero', 'global', 't_0', 8])
+('Constante actual:', '"hola"')
+('Constante actual:', 4)
+('Constante actual:', 10)
+antes
+('l: ', 'entero')
+('r: ', 'entero')
+('op: ', '+')
+entero
+entero
+despues
+('l: ', 0)
+('r: ', 0)
+('op: ', 1)
+('SCOPE ACTUAL:', 'camioneta')
+CONTENIDO DE TABLA
+vacio
+OrderedDict([('y', ['y', 'entero', 'camioneta', None, 5065]), ('t_0', ['t_0', 'entero', 'camioneta', None, 5067])])
+None
+('Estoy intentando agregar:', 't_1')
+('voy a regresar:', 5068)
+('Constante actual:', 4)
+antes
+('l: ', 'entero')
+('r: ', 'entero')
+('op: ', '*')
+entero
+entero
+despues
+('l: ', 0)
+('r: ', 0)
+('op: ', 2)
+('voy a regresar:', 5070)
+('Constante actual:', 12)
+antes
+('l: ', 'entero')
+('r: ', 'entero')
+('op: ', '>')
+entero
+entero
+despues
+('l: ', 0)
+('r: ', 0)
+('op: ', 6)
+('resultado if:', 't_3')
+('Constante actual:', 'verdadero')
+antes
+('l: ', 'bool')
+('r: ', 'bool')
+('op: ', '&&')
+booleano
+booleano
+despues
+('l: ', 4)
+('r: ', 4)
+('op: ', 4)
+('lo:', 't_3')
+('ro:', 'verdadero')
+('op:', '&&')
+('Constante actual:', 'falso')
+antes
+('l: ', 'bool')
+('r: ', 'bool')
+('op: ', '||')
+booleano
+booleano
+despues
+('l: ', 4)
+('r: ', 4)
+('op: ', 5)
+('lo:', 't_4')
+('ro:', 'falso')
+('op:', '||')
+('Constante actual:', 5)
+('Constante actual:', 4)
+('Constante actual:', 10)
+antes
+('l: ', 'entero')
+('r: ', 'entero')
+('op: ', '+')
+entero
+entero
+despues
+('l: ', 0)
+('r: ', 0)
+('op: ', 1)
+('SCOPE ACTUAL:', 'camioneta')
+CONTENIDO DE TABLA
+vacio
+OrderedDict([('y', ['y', 'entero', 'camioneta', None, 5065]), ('t_0', ['t_0', 'entero', 'camioneta', None, 5067]), ('t_1', ['t_1', 'entero', 'camioneta', None, 5069]), ('t_2', ['t_2', 'entero', 'camioneta', None, 5071]), ('t_3', ['t_3', 'bool', 'camioneta', None, None]), ('t_4', ['t_4', 'bool', 'camioneta', None, None]), ('t_5', ['t_5', 'bool', 'camioneta', None, None])])
+None
+('Estoy intentando agregar:', 't_6')
+('voy a regresar:', 5072)
+('Constante actual:', 4)
+antes
+('l: ', 'entero')
+('r: ', 'entero')
+('op: ', '*')
+entero
+entero
+despues
+('l: ', 0)
+('r: ', 0)
+('op: ', 2)
+('voy a regresar:', 5074)
+('Constante actual:', 12)
+antes
+('l: ', 'entero')
+('r: ', 'entero')
+('op: ', '>')
+entero
+entero
+despues
+('l: ', 0)
+('r: ', 0)
+('op: ', 6)
+('resultado if:', 't_8')
+('Constante actual:', 'verdadero')
+antes
+('l: ', 'bool')
+('r: ', 'bool')
+('op: ', '&&')
+booleano
+booleano
+despues
+('l: ', 4)
+('r: ', 4)
+('op: ', 4)
+('lo:', 't_8')
+('ro:', 'verdadero')
+('op:', '&&')
+('Constante actual:', 'falso')
+antes
+('l: ', 'bool')
+('r: ', 'bool')
+('op: ', '||')
+booleano
+booleano
+despues
+('l: ', 4)
+('r: ', 4)
+('op: ', 5)
+('lo:', 't_9')
+('ro:', 'falso')
+('op:', '||')
+('Constante actual:', 5)
+('counter else:', 30)
+('Constante actual:', 10)
+('Constante actual:', 'I')
+antes
+('l: ', 'entero')
+('r: ', 'entero')
+('op: ', '<')
+entero
+entero
+despues
+('l: ', 0)
+('r: ', 0)
+('op: ', 7)
+('resultado if:', 't_11')
+('Constante actual:', 4)
+('Constante actual:', 10)
+antes
+('l: ', 'entero')
+('r: ', 'entero')
+('op: ', '+')
+entero
+entero
+despues
+('l: ', 0)
+('r: ', 0)
+('op: ', 1)
+('SCOPE ACTUAL:', 'camioneta')
+CONTENIDO DE TABLA
+vacio
+OrderedDict([('y', ['y', 'entero', 'camioneta', None, 5065]), ('t_0', ['t_0', 'entero', 'camioneta', None, 5067]), ('t_1', ['t_1', 'entero', 'camioneta', None, 5069]), ('t_2', ['t_2', 'entero', 'camioneta', None, 5071]), ('t_3', ['t_3', 'bool', 'camioneta', None, None]), ('t_4', ['t_4', 'bool', 'camioneta', None, None]), ('t_5', ['t_5', 'bool', 'camioneta', None, None]), ('t_6', ['t_6', 'entero', 'camioneta', None, 5073]), ('t_7', ['t_7', 'entero', 'camioneta', None, 5075]), ('t_8', ['t_8', 'bool', 'camioneta', None, None]), ('t_9', ['t_9', 'bool', 'camioneta', None, None]), ('t_10', ['t_10', 'bool', 'camioneta', None, None]), ('t_11', ['t_11', 'bool', 'camioneta', None, None])])
+None
+('Estoy intentando agregar:', 't_12')
+('voy a regresar:', 5076)
+('Constante actual:', 4)
+antes
+('l: ', 'entero')
+('r: ', 'entero')
+('op: ', '*')
+entero
+entero
+despues
+('l: ', 0)
+('r: ', 0)
+('op: ', 2)
+('voy a regresar:', 5078)
+('Constante actual:', 12)
+antes
+('l: ', 'entero')
+('r: ', 'entero')
+('op: ', '>')
+entero
+entero
+despues
+('l: ', 0)
+('r: ', 0)
+('op: ', 6)
+('resultado if:', 't_14')
+('Constante actual:', 'verdadero')
+antes
+('l: ', 'bool')
+('r: ', 'bool')
+('op: ', '&&')
+booleano
+booleano
+despues
+('l: ', 4)
+('r: ', 4)
+('op: ', 4)
+('lo:', 't_14')
+('ro:', 'verdadero')
+('op:', '&&')
+('Constante actual:', 'falso')
+antes
+('l: ', 'bool')
+('r: ', 'bool')
+('op: ', '||')
+booleano
+booleano
+despues
+('l: ', 4)
+('r: ', 4)
+('op: ', 5)
+('lo:', 't_15')
+('ro:', 'falso')
+('op:', '||')
+('Constante actual:', 5)
+('counter else:', 39)
+('Constante actual:', 5)
+('Constante actual:', 'I')
+('Constante actual:', 11)
+antes
+('l: ', 'entero')
+('r: ', 'entero')
+('op: ', '+')
+entero
+entero
+despues
+('l: ', 0)
+('r: ', 0)
+('op: ', 1)
+('SCOPE ACTUAL:', 'camioneta')
+CONTENIDO DE TABLA
+vacio
+OrderedDict([('y', ['y', 'entero', 'camioneta', None, 5065]), ('t_0', ['t_0', 'entero', 'camioneta', None, 5067]), ('t_1', ['t_1', 'entero', 'camioneta', None, 5069]), ('t_2', ['t_2', 'entero', 'camioneta', None, 5071]), ('t_3', ['t_3', 'bool', 'camioneta', None, None]), ('t_4', ['t_4', 'bool', 'camioneta', None, None]), ('t_5', ['t_5', 'bool', 'camioneta', None, None]), ('t_6', ['t_6', 'entero', 'camioneta', None, 5073]), ('t_7', ['t_7', 'entero', 'camioneta', None, 5075]), ('t_8', ['t_8', 'bool', 'camioneta', None, None]), ('t_9', ['t_9', 'bool', 'camioneta', None, None]), ('t_10', ['t_10', 'bool', 'camioneta', None, None]), ('t_11', ['t_11', 'bool', 'camioneta', None, None]), ('t_12', ['t_12', 'entero', 'camioneta', None, 5077]), ('t_13', ['t_13', 'entero', 'camioneta', None, 5079]), ('t_14', ['t_14', 'bool', 'camioneta', None, None]), ('t_15', ['t_15', 'bool', 'camioneta', None, None]), ('t_16', ['t_16', 'bool', 'camioneta', None, None])])
+None
+('Estoy intentando agregar:', 't_17')
+('voy a regresar:', 5080)
+antes
+('l: ', 'entero')
+('r: ', 'entero')
+('op: ', '=')
+entero
+entero
+despues
+('l: ', 0)
+('r: ', 0)
+('op: ', 12)
+('resultado final:', ['I', 'entero', 'global', 't_17', 8])
+('Constante actual:', 5)
+('Constante actual:', -1)
+antes
+('l: ', 'entero')
+('r: ', 'entero')
+('op: ', '-')
+entero
+entero
+despues
+('l: ', 0)
+('r: ', 0)
+('op: ', 0)
+('SCOPE ACTUAL:', 'camioneta')
+CONTENIDO DE TABLA
+vacio
+OrderedDict([('y', ['y', 'entero', 'camioneta', None, 5065]), ('t_0', ['t_0', 'entero', 'camioneta', None, 5067]), ('t_1', ['t_1', 'entero', 'camioneta', None, 5069]), ('t_2', ['t_2', 'entero', 'camioneta', None, 5071]), ('t_3', ['t_3', 'bool', 'camioneta', None, None]), ('t_4', ['t_4', 'bool', 'camioneta', None, None]), ('t_5', ['t_5', 'bool', 'camioneta', None, None]), ('t_6', ['t_6', 'entero', 'camioneta', None, 5073]), ('t_7', ['t_7', 'entero', 'camioneta', None, 5075]), ('t_8', ['t_8', 'bool', 'camioneta', None, None]), ('t_9', ['t_9', 'bool', 'camioneta', None, None]), ('t_10', ['t_10', 'bool', 'camioneta', None, None]), ('t_11', ['t_11', 'bool', 'camioneta', None, None]), ('t_12', ['t_12', 'entero', 'camioneta', None, 5077]), ('t_13', ['t_13', 'entero', 'camioneta', None, 5079]), ('t_14', ['t_14', 'bool', 'camioneta', None, None]), ('t_15', ['t_15', 'bool', 'camioneta', None, None]), ('t_16', ['t_16', 'bool', 'camioneta', None, None]), ('t_17', ['t_17', 'entero', 'camioneta', None, 5081])])
+None
+('Estoy intentando agregar:', 't_18')
+('voy a regresar:', 5082)
+('counter else:', 45)
+('Constante actual:', 10)
+('Constante actual:', 'I')
+antes
+('l: ', 'entero')
+('r: ', 'entero')
+('op: ', '<')
+entero
+entero
+despues
+('l: ', 0)
+('r: ', 0)
+('op: ', 7)
+('resultado if:', 't_19')
+('Constante actual:', 5)
+('Constante actual:', 'I')
+('Constante actual:', 1)
+antes
+('l: ', 'entero')
+('r: ', 'entero')
+('op: ', '+')
+entero
+entero
+despues
+('l: ', 0)
+('r: ', 0)
+('op: ', 1)
+('SCOPE ACTUAL:', 'camioneta')
+CONTENIDO DE TABLA
+vacio
+OrderedDict([('y', ['y', 'entero', 'camioneta', None, 5065]), ('t_0', ['t_0', 'entero', 'camioneta', None, 5067]), ('t_1', ['t_1', 'entero', 'camioneta', None, 5069]), ('t_2', ['t_2', 'entero', 'camioneta', None, 5071]), ('t_3', ['t_3', 'bool', 'camioneta', None, None]), ('t_4', ['t_4', 'bool', 'camioneta', None, None]), ('t_5', ['t_5', 'bool', 'camioneta', None, None]), ('t_6', ['t_6', 'entero', 'camioneta', None, 5073]), ('t_7', ['t_7', 'entero', 'camioneta', None, 5075]), ('t_8', ['t_8', 'bool', 'camioneta', None, None]), ('t_9', ['t_9', 'bool', 'camioneta', None, None]), ('t_10', ['t_10', 'bool', 'camioneta', None, None]), ('t_11', ['t_11', 'bool', 'camioneta', None, None]), ('t_12', ['t_12', 'entero', 'camioneta', None, 5077]), ('t_13', ['t_13', 'entero', 'camioneta', None, 5079]), ('t_14', ['t_14', 'bool', 'camioneta', None, None]), ('t_15', ['t_15', 'bool', 'camioneta', None, None]), ('t_16', ['t_16', 'bool', 'camioneta', None, None]), ('t_17', ['t_17', 'entero', 'camioneta', None, 5081]), ('t_18', ['t_18', 'entero', 'camioneta', None, 5083]), ('t_19', ['t_19', 'bool', 'camioneta', None, None])])
+None
+('Estoy intentando agregar:', 't_20')
+('voy a regresar:', 5084)
+antes
+('l: ', 'entero')
+('r: ', 'entero')
+('op: ', '=')
+entero
+entero
+despues
+('l: ', 0)
+('r: ', 0)
+('op: ', 12)
+('resultado final:', ['I', 'entero', 'global', 't_20', 8])

@@ -258,7 +258,7 @@ def p_functionpam2(p):
 
 # Funcion
 def p_function(p):
-    '''function : FUNCION tiporegreso ID idFunctionCheck createGlobal PARENIZQUIERDO functionpam addParamCount PARENDERECHO bloquefun finishFun resetScope function
+    '''function : FUNCION resetScope tiporegreso ID idFunctionCheck createGlobal PARENIZQUIERDO functionpam addParamCount PARENDERECHO bloquefun finishFun function
             | '''
 
 def p_createGlobal(p):
@@ -523,12 +523,13 @@ def p_setAssignment(p):
         result_type = sc.verify_type_match(left_type, right_type, operator)
 
         if result_type != -1:
+          global counter
+          global st
           result = right_op
           st.set_var_val(left_op, result)
           print("resultado final:", st.get_var(left_op))
-          global counter
-          result = right_op#'t_' + str(counter)
-          quad = [operator, result, "", left_op]
+          result = right_op
+          quad = [operator, result, "", st.get_var(left_op)[4]]
           quad_lst.append(quad)
           counter += 1
           # TODO: if any operand were a temporal space, return it to AVAIL
@@ -615,7 +616,9 @@ def p_checarLogico(p):
           global tmp_var_num
           #tipo_actual = get_type(result)
           result = 't_' + str(tmp_var_num)
-          quad = [operator, left_op, right_op, result]
+          global st
+          st.insert_variable(result_type, result)
+          quad = [operator, left_op, right_op, st.get_var(result)[4]]
           quad_lst.append(quad)
           tmp_var_num += 1
           counter += 1
@@ -668,7 +671,11 @@ def p_checkRelopTypes(p):
           global counter
           global tmp_var_num
           result = 't_' + str(tmp_var_num)
-          quad = [operator, left_op, right_op, result]
+
+          global st
+          st.insert_variable(result_type, result)
+          quad = [operator, left_op, right_op, st.get_var(result)[4]]
+
           quad_lst.append(quad)
           tmp_var_num += 1
           counter += 1
@@ -706,7 +713,15 @@ def p_checkExpTypes(p):
           global tmp_var_num
           #tipo_actual = get_type(result)
           result = 't_' + str(tmp_var_num)
-          quad = [operator, left_op, right_op, result]
+
+          global st
+          print("SCOPE ACTUAL:",st.get_scope())
+          print("CONTENIDO DE TABLA")
+          print(st.print_var_table(st.get_scope()))
+          print("Estoy intentando agregar:", result)
+          st.insert_variable(result_type, result)
+          quad = [operator, left_op, right_op, st.get_var(result)[4]]
+ 
           quad_lst.append(quad)
           counter += 1
           tmp_var_num += 1
@@ -749,8 +764,12 @@ def p_checkTermTypes(p):
           #tipo_actual = get_type(result)
           global tmp_var_num
           result = 't_' + str(tmp_var_num)
-          quad = [operator, left_op, right_op, result]
+
+          global st
+          st.insert_variable(result_type, result)
+          quad = [operator, left_op, right_op, st.get_var(result)[4]]
           quad_lst.append(quad)
+
           tmp_var_num += 1
           counter += 1
           operands_s.push(result)

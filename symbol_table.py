@@ -24,7 +24,9 @@ class symbol_table:
 		self.__quadruple_count    = {}
 
 	def add_function_as_var(self, fun_id, return_type):
-		self.__func_dic['global'][1][fun_id] = [fun_id, return_type, 'global', None]
+		global mm
+		new_dir = mm.insert_variable(return_type, fun_id, 'global', None)
+		self.__func_dic['global'][1][fun_id] = [fun_id, return_type, 'global', None, new_dir]
 
 	def print_var_table(self, fun_id):
 		table = self.__func_dic[fun_id]
@@ -99,12 +101,17 @@ class symbol_table:
 		self.__func_dic = func_dic
 
 	def set_var_val(self, var_id, val):
+		global mm
 		if self. __func_dic.get(self.__scope)[1].get(var_id) is not None:
 			self.__func_dic[self.__scope][1][var_id][3] = val
+			var_dir = self.__func_dic[self.__scope][1][var_id][4]
+			var_type = self.__func_dic[self.__scope][1][var_id][1]
+			mm.set_val(var_dir, val, var_type)
 		else:
-			for item in self.__func_dic['global'][1].iteritems():
-				print item
 			self.__func_dic['global'][1][var_id][3] = val
+			var_dir = self.__func_dic['global'][1][var_id][4]
+			var_type = self.__func_dic['global'][1][var_id][1]
+			mm.set_val(var_dir, val, var_type)
 
 	""" Sección de getters """
 	def get_scope(self):
