@@ -9,6 +9,7 @@ Martha Benavides - A01280115
 from collections import OrderedDict
 from memory_manager import memory_manager
 mm = memory_manager()
+const_counter = 0
 
 class symbol_table:
 	""" Constructor de la clase inicializa diccionario (que contiene las tablas)
@@ -78,11 +79,19 @@ class symbol_table:
 			if self.__func_dic.get(self.__scope)[1].get(var_id) is None:
 				global mm
 				new_dir = mm.insert_variable(var_type, var_id, self.__scope, None)
+				print("a",var_id,"se le asigno",new_dir)
 				self.__func_dic[self.__scope][1][var_id] = [var_id, var_type, self.__scope, None, new_dir]
 			else:
 				raise KeyError("Variable repetida: " + "'" + var_id + "'")
 		else:
 			raise KeyError('Error en estructura de funciones/scope.')
+
+	def add_constant_to_memory(self, val, val_type):
+		global mm
+		global const_counter
+		new_dir = mm.insert_variable(val_type, "const", "const_" + str(const_counter), val)
+		const_counter += 1
+		return new_dir
 
 	""" insert_function revisa si el id de esta funciónya existe en la tabla de funciones,
 	si no existe la inserta y la inicializa con vacío como valor. """
@@ -104,12 +113,15 @@ class symbol_table:
 		global mm
 		if self. __func_dic.get(self.__scope)[1].get(var_id) is not None:
 			self.__func_dic[self.__scope][1][var_id][3] = val
+			print("Estoy buscando", var_id)
 			var_dir = self.__func_dic[self.__scope][1][var_id][4]
 			var_type = self.__func_dic[self.__scope][1][var_id][1]
+			print("dentro de if id:",var_id,var_dir)
 			mm.set_val(var_dir, val, var_type)
 		else:
 			self.__func_dic['global'][1][var_id][3] = val
 			var_dir = self.__func_dic['global'][1][var_id][4]
+			print("dentro de else id:",var_id,var_dir)
 			var_type = self.__func_dic['global'][1][var_id][1]
 			mm.set_val(var_dir, val, var_type)
 
@@ -120,10 +132,20 @@ class symbol_table:
 	def get_func_dic(self):
 		return self.__func_dic
 
+	def get_val_from_dir(self, address):
+		global mm
+		return mm.get_val_from_dir(address)
+
+	def set_val_from_dir(self, address, val):
+		global mm
+		mm.set_val_from_dir(address, val)
+
 	def get_var(self, var_id):
 		if var_id  in self.__func_dic.get(self.__scope)[1]:
+			print("dir de tmp en if:", self.__func_dic.get(self.__scope)[1].get(var_id))
 			return self.__func_dic.get(self.__scope)[1].get(var_id)
 		elif var_id  in self.__func_dic.get('global')[1]:
+			print("dir de tmp en else:", self.__func_dic.get(self.__scope)[1].get(var_id))
 			return self.__func_dic.get('global')[1].get(var_id)
 
 	def get_var_type(self, var_id):

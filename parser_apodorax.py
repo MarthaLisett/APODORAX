@@ -17,7 +17,7 @@ from temporal      import Temporal
 from globs         import Globs
 from local         import Local
 from constant      import Constant
-from memory_manager import memory_manager
+from virtual_machine import virtual_machine
 import ply.yacc as yacc
 import sys
 import collections
@@ -32,7 +32,6 @@ precedence = (
     ('left', 'MULTIPLICACION', 'DIVISION'),
 )
 
-mm            = memory_manager()
 operators_s   = Stack()
 operands_s    = Stack()
 types_s       = Stack()
@@ -50,6 +49,7 @@ k             = 0
 type_pointer  = None
 fun_calling   = None
 current_id    = ""
+vm            = virtual_machine() 
 
 # Programa
 def p_program(p):
@@ -63,6 +63,9 @@ def p_generarCuadruplos(p):
   with open('cuadruplos.bigsheep', 'w') as f:
     for key, value in dic.items():
         f.write('%s:%s\n' % (key, value))
+  global vm
+  vm.start_execution(st, quad_lst)
+
 
 def p_inicializar(p):
   '''inicializar : '''
@@ -296,14 +299,16 @@ def p_cte(p):
            | FALSO'''
     
     print("Constante actual:", p[1])
+    global st
 
     if not st.function_exists(p[1]):
       p[0] = p[1]
+      const_dir = st.add_constant_to_memory(p[1], get_type(p[1]))
       if st.get_var(p[1]) is not None and get_type(p[1]) != "entero" and len(st.get_var(p[1])) >= 4:
-        operands_s.push(st.get_var(p[1])[0])
+        operands_s.push(st.get_var(p[1])[4]) #[0]
         types_s.push(st.get_var(p[1])[1])
       else:
-        operands_s.push(p[1])
+        operands_s.push(const_dir)#operands_s.push(p[1])
         types_s.push(get_type(p[1]))
 
 def p_symbol(p):
@@ -424,7 +429,7 @@ def p_generateGoSub(p):
   print("generando sub------")
   print('type:', var_type)
   print('val:', var_lst[0])
-  operands_s.push(var_lst[0])
+  operands_s.push(var_lst[4]) #[0]
   types_s.push(var_type)
   
 def p_verifyArgCount(p):
@@ -528,7 +533,12 @@ def p_setAssignment(p):
           result = right_op
           st.set_var_val(left_op, result)
           print("resultado final:", st.get_var(left_op))
-          result = right_op
+          t = str(type(right_op))[7:10]
+          # revisar que no sea ya una direccion de memoria debido a agregar constantes
+          if t != 'int':
+            result = st.get_var(right_op)[4]
+          else:
+            result = right_op
           quad = [operator, result, "", st.get_var(left_op)[4]]
           quad_lst.append(quad)
           counter += 1
@@ -600,29 +610,19 @@ def p_checarLogico(p):
           print('lo:', left_op)
           print('ro:', right_op)
           print('op:', operator)
-          '''
-          if operator == '&&':
-            result = (lo and ro)
-          elif operator == '||': 
-            print('res:', (left_op or right_op))
-            result = (lo or ro) 
-          
-          if result:
-            result = "verdadero"
-          else:
-            result = "falso"
-          '''
+
           global counter
           global tmp_var_num
           #tipo_actual = get_type(result)
           result = 't_' + str(tmp_var_num)
           global st
+
           st.insert_variable(result_type, result)
           quad = [operator, left_op, right_op, st.get_var(result)[4]]
           quad_lst.append(quad)
           tmp_var_num += 1
           counter += 1
-          operands_s.push(result)
+          operands_s.push(st.get_var(result)[4])
           types_s.push(result_type)
           # TODO: if any operand were a temporal space, return it to AVAIL
         else:
@@ -674,13 +674,14 @@ def p_checkRelopTypes(p):
 
           global st
           st.insert_variable(result_type, result)
+
           quad = [operator, left_op, right_op, st.get_var(result)[4]]
 
           quad_lst.append(quad)
           tmp_var_num += 1
           counter += 1
-          operands_s.push(result)
-          print("resultado if:", result)
+          operands_s.push(st.get_var(result)[4])
+
           types_s.push(result_type)
           # TODO: if any operand were a temporal space, return it to AVAIL
         else:
@@ -725,7 +726,7 @@ def p_checkExpTypes(p):
           quad_lst.append(quad)
           counter += 1
           tmp_var_num += 1
-          operands_s.push(result)
+          operands_s.push(st.get_var(result)[4])
           types_s.push(result_type)
           # TODO: if any operand were a temporal space, return it to AVAIL
         else:
@@ -772,7 +773,7 @@ def p_checkTermTypes(p):
 
           tmp_var_num += 1
           counter += 1
-          operands_s.push(result)
+          operands_s.push(st.get_var(result)[4])
           types_s.push(result_type)
           # TODO: if any operand were a temporal space, return it to AVAIL
         else:
@@ -916,15 +917,17 @@ def p_generarEscritura(p):
 
 # Aceptar/ingresar info del usuario
 def p_ingreso(p):
-    '''ingreso : ENTRADA PARENIZQUIERDO ID saveVarID cteid PARENDERECHO generarEntrada PUNTOYCOMA'''
+    '''ingreso : ENTRADA PARENIZQUIERDO ID saveVarID buscarId PARENDERECHO generarEntrada PUNTOYCOMA'''
 
 def p_generarEntrada(p):
   '''generarEntrada : '''
-  quad = ["entrada", "", "", p[-2]]
+  global st
+  quad = ["entrada", "", "", st.get_var(p[-4])[4]]
   quad_lst.append(quad)
   global counter
   counter += 1
 
+"""
 # Argumentos para las funciones de figura, pueden ser cualquier constante o color
 def p_args(p):
     '''args : logico args2'''
@@ -933,6 +936,7 @@ def p_args(p):
 def p_args2(p):
     '''args2 : COMA args
             | '''
+"""
 
 # Funcion para incluir texto
 def p_texto(p):

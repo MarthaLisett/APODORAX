@@ -8,61 +8,40 @@ class Memory(object):
 		self.characters = characters
 
 	def insert_integer(self, val):
-		pass
-
-	def insert_float(self, val):
-		pass
-	
-	def insert_boolean(self, val):
-		pass
-	
-	def insert_string(self, val):
-		pass
-	
-	def insert_characters(self, val):
-		pass
-	
-	def get_new_dir(self, var_type):
-		pass
-
-	def insert_integer(self, val):
 		if self.int_counter <= self.u_limit and self.int_counter >= self.l_limit:
 			if self.int_counter <= self.int_u_limit and self.int_counter >= self.int_l_limit:
 				self.integers[self.int_counter] = val
 				self.int_counter += 1
 				return self.int_counter - 1
 			else:
-				pass
-				# ERROR: ya no hay espacio
+				raise MemoryError("ERROR: ya no hay espacio para enteros.")
 		else:
-			pass
-			# ERROR: ya no hay espacio
+			raise MemoryError("ERROR: ya no hay espacio para enteros.")
 
-	def insert_float(self, val):
+	def insert_float(self, val, var_id):
+		print("en memoria con", var_id)
 		if self.float_counter <= self.u_limit and self.float_counter >= self.l_limit:
 			if self.float_counter <= self.float_u_limit and self.float_counter >= self.float_l_limit:
 				self.floats[self.float_counter] = val
 				self.float_counter += 1
 				return self.float_counter - 1
 			else:
-				pass
-				# ERROR: ya no hay espacio
+				raise MemoryError("ERROR: ya no hay espacio para flotantes.")
 		else:
-			pass
-			# ERROR: ya no hay espacio
+			raise MemoryError("ERROR: ya no hay espacio para flotantes.")
 
 	def insert_boolean(self, val):
+		print("el contador de booleanos esta en:", self.bool_counter)
 		if self.bool_counter <= self.u_limit and self.bool_counter >= self.l_limit:
 			if self.bool_counter <= self.bool_u_limit and self.bool_counter >= self.bool_l_limit:
 				self.booleans[self.bool_counter] = val
 				self.bool_counter += 1
+
 				return self.bool_counter - 1
 			else:
-				pass
-				# ERROR: ya no hay espacio
+				raise MemoryError("ERROR: ya no hay espacio para booleanos.")
 		else:
-			pass
-			# ERROR: ya no hay espacio
+			raise MemoryError("ERROR: ya no hay espacio para booleanos.")
 
 
 	def insert_string(self, val):
@@ -72,11 +51,9 @@ class Memory(object):
 				self.str_counter += 1
 				return self.str_counter - 1
 			else:
-				pass
-				# ERROR: ya no hay espacio
+				raise MemoryError("ERROR: ya no hay espacio para cadenas.")
 		else:
-			pass
-			# ERROR: ya no hay espacio
+			raise MemoryError("ERROR: ya no hay espacio para cadenas.")
 
 
 	def insert_character(self, val):
@@ -86,43 +63,67 @@ class Memory(object):
 				self.char_counter += 1
 				return self.char_counter - 1
 			else:
-				pass
-				# ERROR: ya no hay espacio
+				raise MemoryError("ERROR: ya no hay espacio para caracteres.")
 		else:
-			pass
-			# ERROR: ya no hay espacio
+			raise MemoryError("ERROR: ya no hay espacio para caracteres.")
 
 	def set_val(self, var_dir, val, var_type):
 		if var_type == "entero":
 			if var_dir <= self.int_u_limit and var_dir >= self.int_l_limit:
 				self.integers[var_dir] = val
 			else:
-				pass
-				# No se encontro la direccion
+				raise MemoryError("No se encontro la direccion.")
 		elif var_type == "flotante":
-			if var_dir <= self.float_u_limit and float_dir >= self.float_l_limit:
+			if var_dir <= self.float_u_limit and var_dir >= self.float_l_limit:
 				self.floats[var_dir] = val
 			else:
-				pass
-				# No se encontro la direccion
+				raise MemoryError("No se encontro la direccion.")
 		elif var_type == "booleano":
 			if var_dir <= self.bool_u_limit and var_dir >= self.bool_l_limit:
 				self.booleans[var_dir] = val
 			else:
-				pass
-				# No se encontro la direccion
+				raise MemoryError("No se encontro la direccion.")
 		elif var_type == "cadena":
 			if var_dir <= self.str_u_limit and var_dir >= self.str_l_limit:
 				self.strings[var_dir] = val
 			else:
-				pass
-				# No se encontro la direccion
+				raise MemoryError("No se encontro la direccion.")
 		elif var_type == "caracter":
 			if var_dir <= self.char_u_limit and var_dir >= self.char_l_limit:
 				self.characters[var_dir] = val
 			else:
-				pass
-				# No se encontro la direccion
+				raise MemoryError("No se encontro la direccion.")
+
+	def get_val_from_dir(self, address):
+		if address <= self.int_u_limit and address >= self.int_l_limit:
+			print("se encontro:", self.integers.get(address), "en:", address)
+			return self.integers.get(address)
+		elif address <= self.float_u_limit and address >= self.float_l_limit:
+			return self.floats.get(address)
+		elif address <= self.bool_u_limit and address >= self.bool_l_limit:
+			return self.booleans.get(address)
+		elif address <= self.str_u_limit and address >= self.str_l_limit:
+			return self.strings.get(address)
+		elif address <= self.char_u_limit and address >= self.char_l_limit:
+			return self.characters.get(address)
+		else:
+			raise MemoryError("No se encontro la direccion.")
+	
+
+	def set_val_from_dir(self, address, val):
+		if address <= self.int_u_limit and address >= self.int_l_limit:
+			self.integers[address] = val
+		elif address <= self.float_u_limit and address >= self.float_l_limit:
+			self.floats[address] = val
+		elif address <= self.bool_u_limit and address >= self.bool_l_limit:
+			self.booleans[address] = val
+		elif address <= self.str_u_limit and address >= self.str_l_limit:
+			self.strings[address] = val
+		elif address <= self.char_u_limit and address >= self.char_l_limit:
+			self.characters[address] = val
+		else:
+			raise MemoryError("No se encontro la direccion.")
+
 
 	"""
 	globales:       0     - 4,999
