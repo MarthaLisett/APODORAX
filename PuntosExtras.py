@@ -8,7 +8,6 @@
 #  Puntos Extras
 # ------------------------------------------------------------
 from Tkinter import *
-# from graphics import *
 import subprocess, os, re
 #from graphics import *
 
@@ -26,39 +25,221 @@ def obtenerCodigo():
 
 
 def obtenerInstruccion():
+	from graphics import *
 	linea = lineaCodigo.get()
 	# Quitar espacios en blanco
 	linea = linea.replace(" ", "")
 	# Separar parametros
 	linea = re.split('[(),]', linea)
+	nombreFuncion = linea[0]
     
-    # insertaTexto(2.0, 3.0, "rojo", "hola mundo", 12);
-	# insertaTriangulo(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, "rojo", "amarillo", 12);
-	# insertaRectangulo(1.0, 2.0, 3.0, 4.0, "rojo", "amarillo", 12);
-	# insertaCirculo(1.0, 4.0, 8.0, "rojo", "amarillo", 12);
+    # insertaTexto(300.0, 300.0, "rojo", "hola mundo", 12);
+	# insertaTriangulo(600, 200, 500, 300, 700, 300, "rojo", "amarillo", 12);
+	# insertaRectangulo(500, 400, 780, 500, "rojo", "amarillo", 12);
+	# insertaCirculo(300, 300, 50.3, "rojo", "amarillo", 4);
 	# insertaOvalo(1.0, 4.0, 8.0, 9.0, "rojo", "amarillo", 12);
 	# insertaPunto(1.0, 2.0, "azul");
 	# insertaLinea(1.0, 2.0, 3.0, 4.0, "azul", 13);
 	# insertaCurva(1.0, 2.0, 3.0, 4.0, "verde");
 
-	nombreFuncion = linea[0]
-	print (nombreFuncion)
-	parametro1 = linea[1]
-	print (parametro1)
-	parametro2 = linea[2]
-	print (parametro2)
-	radio = linea[3]
-	print (radio)
-	color1 = linea[4]
-	print (color1)
-	color2 = linea[5]
-	print (color2)
-	grosor = linea[6]
-	print (grosor)
-
 	if (nombreFuncion == "insertaCirculo"):
-		print (nombreFuncion)
+		parametro1 = float(linea[1])
+		parametro2 = float(linea[2])
+		radio = float(linea[3])
+		color1 = str(linea[4])
+		color1 = color1.replace('"', "")
+		
+		if color1 == "rojo":
+			color1 = "red"
+		elif color1 == "amarillo":
+			color1 = "yellow"
+		elif color1 == "azul":
+			color1 = "blue"
+		elif color1 == "rosa":
+			color1 = "pink"
+		elif color1 == "naranja":
+			color1 = "orange"
+		elif color1 == "negro":
+			color1 = "black"
+		elif color1 == "verde":
+			color1 = "green"
+		elif color1 == "gris":
+			color1 = "gray"
 
+		color2 = linea[5]
+		color2 = color2.replace('"', "")
+
+		if color2 == "rojo":
+			color2 = "red"
+		elif color2 == "amarillo":
+			color2 = "yellow"
+		elif color2 == "azul":
+			color2 = "blue"
+		elif color2 == "rosa":
+			color2 = "pink"
+		elif color2 == "naranja":
+			color2 = "orange"
+		elif color2 == "negro":
+			color2 = "black"
+		elif color2 == "verde":
+			color2 = "green"
+		elif color2 == "gris":
+			color2 = "gray"
+		
+		grosor = linea[6]
+		win = GraphWin("APODORAX", 800, 600)
+		c = Circle(Point(parametro1,parametro2), radio)
+		c.setFill(str(color1))
+		c.setOutline(str(color2))
+		c.setWidth(str(grosor))
+		c.draw(win)
+
+	elif (nombreFuncion == "insertaTexto"):
+		parametro1 = float(linea[1])
+		parametro2 = float(linea[2])
+		color1 = str(linea[3])
+		color1 = color1.replace('"', "")
+		
+		if color1 == "rojo":
+			color1 = "red"
+		elif color1 == "amarillo":
+			color1 = "yellow"
+		elif color1 == "azul":
+			color1 = "blue"
+		elif color1 == "rosa":
+			color1 = "pink"
+		elif color1 == "naranja":
+			color1 = "orange"
+		elif color1 == "negro":
+			color1 = "black"
+		elif color1 == "verde":
+			color1 = "green"
+		elif color1 == "gris":
+			color1 = "gray"
+
+		texto = linea[4]
+		texto = texto.replace('"', "")
+		grosor = int(linea[5])
+
+		win = GraphWin("APODORAX", 800, 600)
+		t = Text(Point(parametro1,parametro2), str(texto))
+		# Tamano de la letra
+		t.setSize(grosor)
+		# Font (helvetica, courier, times roman, arial)
+		t.setFace("courier")
+		t.setFill(str(color1))
+		# Style (normal, bold, italic, bold italic)
+		t.setStyle("bold italic")
+		t.draw(win)
+
+	elif (nombreFuncion == "insertaTriangulo"):
+		coordx1 = float(linea[1])
+		coordy1 = float(linea[2])
+		coordx2 = float(linea[3])
+		coordy2 = float(linea[4])
+		coordx3 = float(linea[5])
+		coordy3 = float(linea[6])
+		color1 = str(linea[7])
+		color1 = color1.replace('"', "")
+		
+		if color1 == "rojo":
+			color1 = "red"
+		elif color1 == "amarillo":
+			color1 = "yellow"
+		elif color1 == "azul":
+			color1 = "blue"
+		elif color1 == "rosa":
+			color1 = "pink"
+		elif color1 == "naranja":
+			color1 = "orange"
+		elif color1 == "negro":
+			color1 = "black"
+		elif color1 == "verde":
+			color1 = "green"
+		elif color1 == "gris":
+			color1 = "gray"
+
+		color2 = linea[8]
+		color2 = color2.replace('"', "")
+
+		if color2 == "rojo":
+			color2 = "red"
+		elif color2 == "amarillo":
+			color2 = "yellow"
+		elif color2 == "azul":
+			color2 = "blue"
+		elif color2 == "rosa":
+			color2 = "pink"
+		elif color2 == "naranja":
+			color2 = "orange"
+		elif color2 == "negro":
+			color2 = "black"
+		elif color2 == "verde":
+			color2 = "green"
+		elif color2 == "gris":
+			color2 = "gray"
+		
+		grosor = int(linea[9])
+		win = GraphWin("APODORAX", 800, 600)
+   		tri = Polygon(Point(coordx1,coordy1), Point(coordx2,coordy2), Point(coordx3,coordy3))
+    	tri.setFill(str(color1))
+    	tri.setWidth(grosor)
+    	tri.setOutline(str(color2))
+    	tri.draw(win)
+
+'''	
+    elif (nombreFuncion == "insertaRectangulo"):
+    	coordx1 = float(linea[1])
+    	coordy1 = float(linea[2])
+    	coordx2 = float(linea[3])
+    	coordy2 = float(linea[4])
+    	color1 = str(linea[5])
+    	color1 = color1.replace('"', "")
+		
+		if color1 == "rojo":
+			color1 = "red"
+		elif color1 == "amarillo":
+			color1 = "yellow"
+		elif color1 == "azul":
+			color1 = "blue"
+		elif color1 == "rosa":
+			color1 = "pink"
+		elif color1 == "naranja":
+			color1 = "orange"
+		elif color1 == "negro":
+			color1 = "black"
+		elif color1 == "verde":
+			color1 = "green"
+		elif color1 == "gris":
+			color1 = "gray"
+
+		color2 = linea[6]
+		color2 = color2.replace('"', "")
+
+		if color2 == "rojo":
+			color2 = "red"
+		elif color2 == "amarillo":
+			color2 = "yellow"
+		elif color2 == "azul":
+			color2 = "blue"
+		elif color2 == "rosa":
+			color2 = "pink"
+		elif color2 == "naranja":
+			color2 = "orange"
+		elif color2 == "negro":
+			color2 = "black"
+		elif color2 == "verde":
+			color2 = "green"
+		elif color2 == "gris":
+			color2 = "gray"
+		
+		grosor = int(linea[7])
+		win = GraphWin("APODORAX", 800, 600)
+		r.setFill(str(color1))
+		r.setWidth(grosor)
+		r.setOutline(str(color2))
+		r.draw(win)
+'''	
 
 lblApodorax = Label(text="APODORAX",font=("Times New Roman",24,"bold"), fg = "red").place(x=260,y=10)
 run = Button(ventana, text ="Compilar",font=("Times New Roman",14,"bold"), relief=RAISED, cursor="arrow", command = obtenerCodigo).place(x=300,y=50)
