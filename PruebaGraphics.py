@@ -4,7 +4,8 @@ def main():
     win = GraphWin("APODORAX", 800, 600)
 
     # Circulo
-    c = Circle(Point(300,100), 52)
+    # insertaCirculo(1.0, 4.0, 8.0, "rojo", "amarillo", 12);
+    c = Circle(Point(1.0,4.0), 8.0)
     c.setFill("red")
     c.setOutline("yellow")
     c.setWidth("5")
@@ -31,7 +32,7 @@ def main():
     t.setSize(12)
     # Font (helvetica, courier, times roman, arial )
     t.setFace("courier")
-    t.setFill("red")
+    t.setFill("orange")
     # Style (normal, bold, italic, bold italic)
     t.setStyle("bold italic")
     t.draw(win)
@@ -54,7 +55,7 @@ def main():
 
     # Triangulo
     tri = Polygon(Point(600,200), Point(500,300), Point(700,300))
-    tri.setFill("black")
+    tri.setFill("pink")
     tri.setWidth("20")
     tri.setOutline("green")
     tri.draw(win)
