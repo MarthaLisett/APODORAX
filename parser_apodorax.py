@@ -50,13 +50,33 @@ type_pointer  = None
 fun_calling   = None
 current_id    = ""
 vm            = virtual_machine() 
-
+main_quad     = 0
 # Programa
 def p_program(p):
-  '''program : PROGRAMA ID inicializar DOSPUNTOS declaracion function INICIO bloque FIN generarCuadruplos '''
+  '''program : PROGRAMA ID inicializar DOSPUNTOS declaracion createMainQuad function INICIO fillMainQuad insertMainFun bloque FIN generarCuadruplos '''
+
+def p_crateMainQuad(p):
+  '''createMainQuad : '''
+  global quad_lst
+  global counter
+  quad = ["Goto", "", "", ""]
+  quad_lst.append(quad)
+  counter += 1
+
+def p_fillMainQuad(p):
+  '''fillMainQuad : '''
+  global quad_lst
+  quad_lst[0][3] = counter
+
+def p_insertMainFun(p):
+  '''insertMainFun : '''
+  global st
+  st.insert_function("inicio", "vacio")
+  st.set_scope("inicio")
 
 def p_generarCuadruplos(p):
   '''generarCuadruplos : '''
+  global quad_lst
   archivo = open('cuadruplos.bigsheep', 'w')
   dic = { key : value  for key, value in enumerate(quad_lst)}
   od = collections.OrderedDict(sorted(dic.items()))
@@ -69,6 +89,7 @@ def p_generarCuadruplos(p):
 
 def p_inicializar(p):
   '''inicializar : '''
+  
   global st
   st.insert_function("insertaTexto", "vacio")
   st.set_scope("insertaTexto")

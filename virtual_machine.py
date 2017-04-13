@@ -8,7 +8,9 @@ class virtual_machine:
 		print("buscando:", dir_der)
 		print("buscando:", dir_res)
 		"""
+		arg_dirs = []
 		actual_quad = 0
+		return_quad = 0
 		while actual_quad < len(quadruples):
 			if quadruples[actual_quad][0] == '=':
 				dir_izq = quadruples[actual_quad][1]
@@ -154,7 +156,6 @@ class virtual_machine:
 
 			elif quadruples[actual_quad][0] == "GotoF":
 				result = st.get_val_from_dir(quadruples[actual_quad][1])
-				print("estoy evaluando:", result)
 				if result == "falso":
 					step = int(str(quadruples[actual_quad][3])) - actual_quad - 1
 					actual_quad += step
@@ -163,8 +164,39 @@ class virtual_machine:
 
 				step = int(str(quadruples[actual_quad][3])) - actual_quad - 1
 				actual_quad += step
-				print("quiero ir a: ", actual_quad+1)
 
+
+			elif quadruples[actual_quad][0] == "ERA":
+				scope = quadruples[actual_quad][1]
+				var_table = st.get_func_dic().get(scope)[1]
+				
+				for var_id, var_lst in var_table.iteritems():
+					arg_dirs.append(var_lst[4])
+
+				"""
+				for p_dir in arg_dirs:
+					print(p_dir)
+
+				print("diccioanrio con variables:")
+				for k, v in var_table.iteritems():
+					print("var", k)
+					for e in v:
+						print(e)
+				"""
+
+			elif quadruples[actual_quad][0] == "PARAMETER":
+				val_dir = st.get_val_from_dir(quadruples[actual_quad][1])
+				param_position = quadruples[actual_quad][3][5:]
+				st.set_val_from_dir(arg_dirs[int(param_position)], val_dir)
+
+			elif quadruples[actual_quad][0] == "GOSUB":
+				return_quad = actual_quad + 1
+				actual_quad = st.get_quadruple_count(quadruples[actual_quad][1]) - 1
+				print("ire al cuadruplo:", actual_quad + 1)
+
+			elif quadruples[actual_quad][0] == "ENDPROC":
+				actual_quad = return_quad
+				arg_dirs = []
 
 			actual_quad += 1
 

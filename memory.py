@@ -96,7 +96,6 @@ class Memory(object):
 
 	def get_val_from_dir(self, address):
 		if address <= self.int_u_limit and address >= self.int_l_limit:
-			print("se encontro:", self.integers.get(address), "en:", address)
 			return self.integers.get(address)
 		elif address <= self.float_u_limit and address >= self.float_l_limit:
 			return self.floats.get(address)

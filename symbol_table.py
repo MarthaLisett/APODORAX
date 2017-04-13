@@ -41,8 +41,8 @@ class symbol_table:
 	def add_quadruple_count(self, counter):
 		self.__quadruple_count[self.__scope] = counter
 
-	def get_quadruple_count(self):
-		return self.__quadruple_count.get(self.__scope)
+	def get_quadruple_count(self, scope):
+		return self.__quadruple_count.get(scope)
 
 	def add_var_count(self, var_count):
 		self.__var_count[self.__scope] = var_count

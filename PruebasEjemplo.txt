@@ -10,7 +10,17 @@ var flotante I;
 var flotante resultado;
 var flotante flores;
 
-funcion entero carro (var entero x, var flotante y) {
+
+funcion vacio carro (var entero x, var flotante y) {
+	desplegar("con dinero compro comida!");
+	#regresar 1;
+}
+
+inicio {
+	desplegar("antes de llamada");
+	carro(2,3.0);
+
+
 	I = 1;
 	si(I > 0 && 13 == 0) entonces {
 		desplegar("verdadero");
@@ -22,11 +32,6 @@ funcion entero carro (var entero x, var flotante y) {
 		desplegar(I);
 		I = I + 1;
 	}
-
-	regresar 1;
-}
-
-inicio {
 
 	# insertaTexto(2.0, 3.0, "rojo", "hola mundo", 12);
 	# insertaTriangulo(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, "rojo", "amarillo", 12);
