@@ -13,13 +13,14 @@ var flotante flores;
 
 funcion vacio carro (var entero x, var flotante y) {
 	desplegar("con dinero compro comida!");
+	desplegar(x*y);
 	#regresar 1;
 }
 
 inicio {
 	desplegar("antes de llamada");
 	carro(2,3.0);
-
+	insertaCirculo(1.0, 4.0, 8.0, "rojo", "amarillo", 5);
 
 	I = 1;
 	si(I > 0 && 13 == 0) entonces {

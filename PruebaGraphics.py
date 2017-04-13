@@ -4,7 +4,7 @@ def main():
     win = GraphWin("APODORAX", 800, 600)
 
     # Circulo
-    # insertaCirculo(1.0, 4.0, 8.0, "rojo", "amarillo", 12);
+    # insertaCirculo(1.0, 4.0, 8.0, "rojo", "amarillo", 5);
     c = Circle(Point(1.0,4.0), 8.0)
     c.setFill("red")
     c.setOutline("yellow")
