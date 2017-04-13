@@ -79,7 +79,7 @@ def main():
     cont = 0.0
     while cont < 1:
     	x = (1-cont)*(1-cont)*c1x + 2*(1-cont)*cont*curvx+cont*cont*c2x
-    	y = (1-cont)*(1-cont)*c2x + 2*(1-cont)*cont*curvy+cont*cont*c2y
+    	y = (1-cont)*(1-cont)*c1y + 2*(1-cont)*cont*curvy+cont*cont*c2y
     	auxc = Point(x,y)
     	auxc.setOutline("red")
     	auxc.draw(win)	
