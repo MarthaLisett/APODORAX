@@ -8,13 +8,22 @@
 #  Puntos Extras
 # ------------------------------------------------------------
 from Tkinter import *
+import subprocess, os
 
 ventana = Tk()
 ventana.geometry("700x600")
 ventana.title("Compilador APODORAX")
 
+def obtenerCodigo():
+    codigoAgregado = codigo.get("1.0",'end-1c')
+    with open("codigoUsuario.txt", "w") as f:
+    	f.write(codigoAgregado) 
+	subprocess.Popen('python parser_apodorax.py codigoUsuario.txt')
+    #os.chmod('python parser_apodorax.py codigoUsuario.txt',0755)
+    #print (codigoAgregado)
+
 lblApodorax = Label(text="APODORAX",font=("Times New Roman",24,"bold"), fg = "red").place(x=260,y=10)
-run = Button(ventana, text ="Compilar",font=("Times New Roman",14,"bold"), relief=RAISED, cursor="arrow").place(x=300,y=50)
+run = Button(ventana, text ="Compilar",font=("Times New Roman",14,"bold"), relief=RAISED, cursor="arrow", command = obtenerCodigo).place(x=300,y=50)
 
 codigo = Text(width = 78, height = 25, wrap = WORD,  bg ="black", fg = "white", insertbackground = "white")
 codigo.place(x = 30, y = 95)
