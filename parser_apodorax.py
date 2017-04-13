@@ -12,8 +12,15 @@ from symbol_table  import symbol_table
 from stack         import Stack
 from semantic_cube import semantic_cube
 from queue         import Queue
+from memory        import Memory
+from temporal      import Temporal
+from globs         import Globs
+from local         import Local
+from constant      import Constant
+from virtual_machine import virtual_machine
 import ply.yacc as yacc
 import sys
+import collections
 # obtenemos la lista de tokens generadas por el analizador lexico
 from scanner_apodorax import tokens
 
@@ -36,30 +43,153 @@ st            = symbol_table()
 sc            = semantic_cube()
 relops        = ["&&", "||", ">", "<", ">=", "<=", "!=", "=="]
 args_count    = 0
-tmp_var_num   = 0
+tmp_var_num   = 1
 fun_var_count = 0
 k             = 0
 type_pointer  = None
 fun_calling   = None
+current_id    = ""
+vm            = virtual_machine() 
+main_quad     = 0
 # Programa
 def p_program(p):
-  '''program : PROGRAMA ID inicializar DOSPUNTOS declaracion function INICIO bloque FIN generarCuadruplos '''
+  '''program : PROGRAMA ID inicializar DOSPUNTOS declaracion createMainQuad function INICIO fillMainQuad insertMainFun bloque FIN generarCuadruplos '''
+
+def p_crateMainQuad(p):
+  '''createMainQuad : '''
+  global quad_lst
+  global counter
+  quad = ["Goto", "", "", ""]
+  quad_lst.append(quad)
+  counter += 1
+
+def p_fillMainQuad(p):
+  '''fillMainQuad : '''
+  global quad_lst
+  quad_lst[0][3] = counter
+
+def p_insertMainFun(p):
+  '''insertMainFun : '''
+  global st
+  st.insert_function("inicio", "vacio")
+  st.set_scope("inicio")
 
 def p_generarCuadruplos(p):
   '''generarCuadruplos : '''
+  global quad_lst
   archivo = open('cuadruplos.bigsheep', 'w')
-  for cuadruplo in quad_lst:
-    archivo.write("%s\n" % cuadruplo)
+  dic = { key : value  for key, value in enumerate(quad_lst)}
+  od = collections.OrderedDict(sorted(dic.items()))
+  with open('cuadruplos.bigsheep', 'w') as f:
+    for key, value in dic.items():
+        f.write('%s:%s\n' % (key, value))
+  global vm
+  vm.start_execution(st, quad_lst)
+
 
 def p_inicializar(p):
   '''inicializar : '''
-  pass
-  p[0]="Interpretado Correctamente."
+  
+  global st
+  st.insert_function("insertaTexto", "vacio")
+  st.set_scope("insertaTexto")
+  st.insert_variable("flotante", "x")
+  st.insert_variable("flotante", "y")
+  st.insert_variable("cadena", "color")
+  st.insert_variable("cadena", "texto")
+  st.insert_variable("entero", "tamanio")
+  st.add_no_params(5)
+  st.add_var_count(5)
+  st.add_function_as_var("insertaTexto", "vacio")
 
-# Constante ID
-def p_cteid(p):
-    '''cteid : ID buscarId cteidaux'''
-    p[0] = p[1]
+  st.insert_function("insertaTriangulo", "vacio")
+  st.set_scope("insertaTriangulo")
+  st.insert_variable("flotante", "x1")
+  st.insert_variable("flotante", "x2")
+  st.insert_variable("flotante", "y1")
+  st.insert_variable("flotante", "y2")
+  st.insert_variable("flotante", "z1")
+  st.insert_variable("flotante", "z2")
+  st.insert_variable("cadena", "relleno")
+  st.insert_variable("cadena", "linea")
+  st.insert_variable("entero", "grosor")
+  st.add_no_params(9)
+  st.add_var_count(9)
+  st.add_function_as_var("insertaTriangulo", "vacio")
+
+  st.insert_function("insertaRectangulo", "vacio")
+  st.set_scope("insertaRectangulo")
+  st.insert_variable("flotante", "x")
+  st.insert_variable("flotante", "y")
+  st.insert_variable("flotante", "z")
+  st.insert_variable("flotante", "w")
+  st.insert_variable("cadena", "relleno")
+  st.insert_variable("cadena", "linea")
+  st.insert_variable("entero", "grosor")
+  st.add_no_params(7)
+  st.add_var_count(7)
+  st.add_function_as_var("insertaRectangulo", "vacio")
+
+  st.insert_function("insertaCirculo", "vacio")
+  st.set_scope("insertaCirculo")
+  st.insert_variable("flotante", "x")
+  st.insert_variable("flotante", "y")
+  st.insert_variable("flotante", "radio")
+  st.insert_variable("cadena", "relleno")
+  st.insert_variable("cadena", "linea")
+  st.insert_variable("entero", "grosor")
+  st.add_no_params(6)
+  st.add_var_count(6)
+  st.add_function_as_var("insertaCirculo", "vacio")
+
+  st.insert_function("insertaOvalo", "vacio")
+  st.set_scope("insertaOvalo")
+  st.insert_variable("flotante", "x1")
+  st.insert_variable("flotante", "y1")
+  st.insert_variable("flotante", "x2")
+  st.insert_variable("flotante", "y2")
+  st.insert_variable("cadena", "relleno")
+  st.insert_variable("cadena", "linea")
+  st.insert_variable("entero", "grosor")
+  st.add_no_params(7)
+  st.add_var_count(7)
+  st.add_function_as_var("insertaOvalo", "vacio")
+
+  st.insert_function("insertaPunto", "vacio")
+  st.set_scope("insertaPunto")
+  st.insert_variable("flotante", "x")
+  st.insert_variable("flotante", "y")
+  st.insert_variable("cadena", "relleno")
+  st.add_no_params(3)
+  st.add_var_count(3)
+  st.add_function_as_var("insertaPunto", "vacio")
+  
+  st.insert_function("insertaLinea", "vacio")
+  st.set_scope("insertaLinea")
+  st.insert_variable("flotante", "x1")
+  st.insert_variable("flotante", "y1")
+  st.insert_variable("flotante", "x2")
+  st.insert_variable("flotante", "y2")
+  st.insert_variable("cadena", "relleno")
+  st.insert_variable("entero", "grosor")
+  st.add_no_params(6)
+  st.add_var_count(6)
+  st.add_function_as_var("insertaLinea", "vacio")
+
+  st.insert_function("insertaCurva", "vacio")
+  st.set_scope("insertaCurva")
+  st.insert_variable("flotante", "x1")
+  st.insert_variable("flotante", "y1")
+  st.insert_variable("flotante", "x2")
+  st.insert_variable("flotante", "y2")
+  st.insert_variable("cadena", "relleno")
+  st.add_no_params(5)
+  st.add_var_count(5)
+  st.add_function_as_var("insertaCurva", "vacio")
+
+  st.set_scope("global")
+
+  p[0]="Interpretado Correctamente."
 
 def p_guardarId(p):
   ''' guardarId : '''
@@ -69,22 +199,22 @@ def p_guardarId(p):
         while not operands_s.isEmpty():
           operands_s.pop()
           types_s.pop()
-        operands_s.push(p[-2])
-        if st.get_var(p[-2]) is not None:
-          types_s.push(st.get_var(p[-2])[1])
+        operands_s.push(p[-3])
+        if st.get_var(p[-3]) is not None:
+          types_s.push(st.get_var(p[-3])[1])
       else:
-        operands_s.push(st.get_var(p[-2])[0])
+        operands_s.push(st.get_var(p[-3])[0])
     else:
-      operands_s.push(st.get_var(p[-2])[0])
-      types_s.push(st.get_var(p[-2])[1])
+      operands_s.push(st.get_var(p[-3])[0])
+      types_s.push(st.get_var(p[-3])[1])
 
 
 def p_buscarId(p):
   '''buscarId : '''
-  pass
   if len(p) >= 1:
     global st
-    st.search_variable(p[-1])
+    global current_var_id
+    st.search_variable(current_var_id)
 
  # Constante ID declaracion
 def p_cteid_declaracion(p):
@@ -94,15 +224,14 @@ def p_cteid_declaracion(p):
 # Auxiliar Constante ID
 def p_cteidaux(p):
     '''cteidaux : CORCHETEIZQ exp CORCHETEDER
-               | PARENIZQUIERDO exp PARENDERECHO
                | '''
 
 def p_buscarFuncion(p):
   ''' buscarFuncion : '''
-  pass
   if len(p) >= 1:
     global st
-    st.search_function(p[-1]) #tendria que cambiar a -2
+    global current_id
+    st.search_function(current_id) #tendria que cambiar a -2
 
 # Instrucciones de las funciones
 def p_bloquefun(p):
@@ -122,14 +251,15 @@ def p_insertVarCount(p):
 def p_tiporegreso(p):
     '''tiporegreso : tipo
                    | VACIO'''
+    p[0] = p[1]
 
 # Parametros de las funciones
 def p_functionpam(p):
     '''functionpam : VAR tipo ID agregarParam functionpam2
                  | '''
 
-def p_icrementParamCounter(p):
-  '''icrementParamCounter : '''
+def p_incrementParamCounter(p):
+  '''incrementParamCounter : '''
   global args_count
   args_count += 1
 
@@ -147,20 +277,18 @@ def p_agregarParam(p):
 
 # Auxiliar Parametros de las funciones
 def p_functionpam2(p):
-  '''functionpam2 : COMA icrementParamCounter functionpam
-                    | icrementParamCounter '''
+  '''functionpam2 : COMA incrementParamCounter functionpam
+                    | incrementParamCounter '''
 
 # Funcion
 def p_function(p):
-    '''function : FUNCION tiporegreso ID idFunctionCheck createGlobal PARENIZQUIERDO functionpam addParamCount PARENDERECHO bloquefun finishFun resetScope function
+    '''function : FUNCION resetScope tiporegreso ID idFunctionCheck createGlobal PARENIZQUIERDO functionpam addParamCount PARENDERECHO bloquefun finishFun function
             | '''
 
 def p_createGlobal(p):
   '''createGlobal : '''
   if len(p) > 0:
-    if p[-3] != "vacio":
-      st.add_function_as_var(p[-2], p[-3]);
-
+    st.add_function_as_var(p[-2], p[-3])
 
 def p_finishFun(p):
   '''finishFun : '''
@@ -183,20 +311,39 @@ def p_idFunctionCheck(p):
 
 # Valores constantes
 def p_cte(p):
-    '''cte : cteid
+    '''cte : ID getCurrentID symbol
            | CENTERO
            | CFLOTANTE
            | CCADENA
            | CCARACTER
            | VERDADERO
            | FALSO'''
-    p[0] = p[1]
-    if st.get_var(p[1]) is not None and get_type(p[1]) != "entero" and len(st.get_var(p[1])) >= 4:
-      operands_s.push(st.get_var(p[1])[3])
-      types_s.push(st.get_var(p[1])[1])
-    else:
-      operands_s.push(p[1])
-      types_s.push(get_type(p[1]))
+    
+    print("Constante actual:", p[1])
+    global st
+
+    if not st.function_exists(p[1]):
+      p[0] = p[1]
+      const_dir = st.add_constant_to_memory(p[1], get_type(p[1]))
+      if st.get_var(p[1]) is not None and get_type(p[1]) != "entero" and len(st.get_var(p[1])) >= 4:
+        operands_s.push(st.get_var(p[1])[4]) #[0]
+        types_s.push(st.get_var(p[1])[1])
+      else:
+        operands_s.push(const_dir)#operands_s.push(p[1])
+        types_s.push(get_type(p[1]))
+
+def p_symbol(p):
+  '''symbol : cteid
+          |  verifyNullAssignment llamada '''
+  p[0] = p[-2]
+
+def p_verifyNullAssignment(p):
+  '''verifyNullAssignment : '''
+  global st
+  current_return_type = st.get_var(p[-2])[1]
+  if operators_s.peek() == '=' and current_return_type == "vacio":
+    raise TypeError("No se puede obtener un valor de la funcion '" + p[-2] + "'.")
+
 
 # Tipo de dato
 def p_tipo(p):
@@ -226,13 +373,38 @@ def p_revisarId(p):
 
 # Return de las funciones
 def p_regreso(p):
-    '''regreso : REGRESAR exp PUNTOYCOMA addReturn
-              | '''
+    '''regreso : REGRESAR returnExp
+              | nullReturn '''
+
+def p_returnExp(p):
+  '''returnExp : exp verifyReturnType PUNTOYCOMA addReturn 
+              | VACIO verifyReturnType PUNTOYCOMA addReturn '''
+
+def p_verifyReturnType(p):
+    '''verifyReturnType : '''
+    if len(p) > 0:
+      written_type = types_s.peek() if p[-1] != "vacio" else "vacio"
+      func_lst = st.get_var(st.get_scope()) 
+      if written_type != func_lst[1]:
+        if func_lst[1] == "vacio":
+          raise TypeError("La funcion '" + func_lst[0] + "' no puede regresar un valor.")
+        else:
+          raise TypeError("La funcion '" + func_lst[0] + "' debe regresar " + func_lst[1] + ".")
+
+def p_voidReturn(p):
+  '''nullReturn : '''
+  global st
+  func_lst = st.get_var(st.get_scope()) 
+  if func_lst[1] != "vacio":
+    raise TypeError("La funcion '" + func_lst[0] + "' debe regresar " + func_lst[1] + ".")
 
 def p_addReturn(p):
   '''addReturn : '''
   global counter
-  quad = ['RETURN', operands_s.pop(), "", ""]
+  global st
+  return_val = operands_s.pop() if p[-3] != "vacio" else "NULL"
+  quad = ['RETURN', return_val, "", ""]
+  st.set_var_val(st.get_scope(), return_val)
   quad_lst.append(quad)
   counter += 1;
 
@@ -245,78 +417,63 @@ def p_bloqueaux(p):
   '''bloqueaux : estatuto bloqueaux
               | '''
 
-# Llamada a funcion
-def p_llamada(p):
-    '''llamada : ID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub'''
+# Expresion que permite la comparacion
+def p_expresion(p): 
+    '''expresion : negacion exp expresionaux
+                | color'''  
+
+# Exp suma y resta
+def p_exp(p):
+    '''exp : termino checkExpTypes exp2 '''
 
 def p_saveFunID(p):
   '''saveFunID : '''
-  global fun_calling 
-  fun_calling = p[-2]
+  global fun_calling
+  global current_id 
+  fun_calling = current_id
 
 def p_generateGoSub(p):
   '''generateGoSub : '''
-  quad = ['GOSUB', p[-8], '', 'dir']
-  quad_lst.append(quad)
+  global current_id
   global type_pointer
   global k
+  global counter
+  quad = ['GOSUB', current_id, '', 'dir']
+  quad_lst.append(quad)
   k = 0
   type_pointer = None
-  """
-  var_id = st.get_var(p[-8])
-  var_type = st.get_var_type()
-  operands_s.push(var_id)
+  counter += 1
+
+  var_lst = st.get_var(current_id)
+  var_type = st.get_var_type(var_lst[0])
+
+  print("generando sub------")
+  print('type:', var_type)
+  print('val:', var_lst[0])
+  operands_s.push(var_lst[4]) #[0]
   types_s.push(var_type)
-  """
-  """
-  if not operands_s.isEmpty():
-    print("DENTRO DE GOSUB")
-    right_op = st.get_var(p[-8])
-    left_op  = operands_s.pop()
-    right_type = st.get_var_type()
-    left_type   = types_s.pop()
-    operator    = operators_s.pop()
-    result_type = sc.verify_type_match(left_type, right_type, operator)
-
-    if result_type != -1:
-      result = right_op
-      st.set_var_val(left_op, result)
-      print("resultado final:", st.get_var(left_op))
-      global counter
-      result = right_op
-      quad = [operator, result, "", left_op]
-      quad_lst.append(quad)
-      counter += 1
-      # TODO: if any operand were a temporal space, return it to AVAIL
-    else:
-      raise TypeError("Tipos incompatibles.")
-    """
-
-
-
+  
 def p_verifyArgCount(p):
   '''verifyArgCount : '''
   global type_pointer
   global k
   type_pointer = None
-  print('k en comparacion:', k)
-  print('cantidad real:',st.get_no_params(fun_calling))
   if k != st.get_no_params(fun_calling):
     raise AttributeError('La función recibe una cantidad distinta de argumentos.')
 
 def p_generateERA(p):
   '''generateERA : '''
   if len(p) > 0:
-    quad = ['era', p[-4], '', '']
+    global current_id
+    quad = ['ERA', current_id, '', '']
     quad_lst.append(quad)
     global k
     global type_pointer
     global counter
-    print('varlo k era', k)
     if st.get_no_params(fun_calling) > 0:
-      type_pointer = st.get_param_type(p[-4], k)
-    print('type of var is:', type_pointer)
+      type_pointer = st.get_param_type(current_id, k)
     counter += 1
+
 
 # Parametros de la llamada
 def p_llamadapar(p):
@@ -330,14 +487,14 @@ def p_validateArgs(p):
   global type_pointer
   argument = operands_s.pop()
   arg_type = types_s.pop()
-  print('arg->',arg_type)
-  print('type_p->',type_pointer)
-  print('operando:',argument)
-  print('valor K:', k)
+
+  print("mandando: " + str(argument) + " con tipo:" +  str(arg_type))
+  print("esperando:", type_pointer)
+
   if arg_type != type_pointer:
     raise TypeError("Los tipos en la llamada y la función no coinciden.")
   else:
-    quad = ['PARAMETER', argument, 'arg #' + str(k)]
+    quad = ['PARAMETER', argument, '', 'arg #' + str(k)]
     quad_lst.append(quad)
     counter += 1
 
@@ -350,17 +507,21 @@ def p_incrementK(p):
   '''incrementK : '''
   global k
   global fun_calling
-  print('HERE!! fc:', fun_calling)
   global type_pointer
   k += 1
-  print("k despues de incrementar:",k)
   if k != st.get_no_params(fun_calling):
     type_pointer = st.get_param_type(fun_calling, k)
 
 # Lado izquierdo de la asignacion para saber si es id normal o arreglo
 def p_asignacionizq(p):
-  '''asignacionizq : ID buscarId guardarId asignacionizqaux'''
+  '''asignacionizq : ID saveVarID buscarId guardarId asignacionizqaux'''
   p[0] = p[1]
+
+def p_saveVarID(p):
+  '''saveVarID : '''
+  global current_var_id
+  current_var_id = p[-1]
+
 # Auxiliar asignacionizq
 def p_asignacionizqaux(p):
   '''asignacionizqaux : CORCHETEIZQ exp CORCHETEDER
@@ -368,7 +529,8 @@ def p_asignacionizqaux(p):
 
 # Asignacion de valores
 def p_asignacion(p):
-  '''asignacion : asignacionizq ASIGNACION insertarAsignacion asignacionaux setAssignment PUNTOYCOMA'''
+  '''asignacion : asignacionizq ASIGNACION insertarAsignacion exp setAssignment PUNTOYCOMA'''
+
 
 def p_insertarAsignacion(p):
   '''insertarAsignacion : '''
@@ -387,22 +549,24 @@ def p_setAssignment(p):
         result_type = sc.verify_type_match(left_type, right_type, operator)
 
         if result_type != -1:
+          global counter
+          global st
           result = right_op
           st.set_var_val(left_op, result)
           print("resultado final:", st.get_var(left_op))
-          global counter
-          result = right_op#'t_' + str(counter)
-          quad = [operator, result, "", left_op]
+          t = str(type(right_op))[7:10]
+          # revisar que no sea ya una direccion de memoria debido a agregar constantes
+          if t != 'int':
+            result = st.get_var(right_op)[4]
+          else:
+            result = right_op
+          quad = [operator, result, "", st.get_var(left_op)[4]]
           quad_lst.append(quad)
           counter += 1
           # TODO: if any operand were a temporal space, return it to AVAIL
         else:
           raise TypeError("Tipos incompatibles.")
 
-# Auxiliar de asignacion
-def p_asignacionaux(p):
-  '''asignacionaux : exp
-                  | llamada'''
 
 # Estatutos a estar dentro de los bloques
 def p_estatuto(p):
@@ -416,10 +580,15 @@ def p_estatuto(p):
               | punto
               | linea
               | curva
-              | llamada PUNTOYCOMA
+              | ID getCurrentID llamada PUNTOYCOMA
               | asignacion
               | condicion
               | ciclo'''
+
+def p_getCurrentID(p):
+  '''getCurrentID : saveVarID'''
+  global current_id
+  current_id = p[-1]
 
 # Negar la expresion
 def p_negacion(p):
@@ -435,11 +604,6 @@ def p_comparacion(p):
                   | IGUAL
                   | DIFERENTE '''
     p[0] = p[1]
-
-# Expresion que permite la comparacion
-def p_expresion(p): 
-    '''expresion : negacion exp expresionaux
-                | color'''  
 
 def p_logico(p):
   '''logico : expresion checarLogico logicoAux '''
@@ -467,32 +631,20 @@ def p_checarLogico(p):
           print('lo:', left_op)
           print('ro:', right_op)
           print('op:', operator)
-          '''
-          if operator == '&&':
-            result = (lo and ro)
-          elif operator == '||': 
-            print('res:', (left_op or right_op))
-            result = (lo or ro) 
-          
-          if result:
-            result = "verdadero"
-          else:
-            result = "falso"
-          '''
+
           global counter
           global tmp_var_num
           #tipo_actual = get_type(result)
           result = 't_' + str(tmp_var_num)
-          quad = [operator, left_op, right_op, result]
+          global st
+
+          st.insert_variable(result_type, result)
+          quad = [operator, left_op, right_op, st.get_var(result)[4]]
           quad_lst.append(quad)
-          print('counter en logico:', counter)
-          for c in quad_lst:
-            print(c)
           tmp_var_num += 1
           counter += 1
-          operands_s.push(result)
+          operands_s.push(st.get_var(result)[4])
           types_s.push(result_type)
-          print("resultado bool:", result)
           # TODO: if any operand were a temporal space, return it to AVAIL
         else:
           raise TypeError("Tipos incompatibles.")
@@ -540,12 +692,17 @@ def p_checkRelopTypes(p):
           global counter
           global tmp_var_num
           result = 't_' + str(tmp_var_num)
-          quad = [operator, left_op, right_op, result]
+
+          global st
+          st.insert_variable(result_type, result)
+
+          quad = [operator, left_op, right_op, st.get_var(result)[4]]
+
           quad_lst.append(quad)
           tmp_var_num += 1
           counter += 1
-          operands_s.push(result)
-          print("resultado if:", result)
+          operands_s.push(st.get_var(result)[4])
+
           types_s.push(result_type)
           # TODO: if any operand were a temporal space, return it to AVAIL
         else:
@@ -561,20 +718,14 @@ def p_addRelop(p):
   if len(p) >= 0:
     operators_s.push(p[-1])
 
-# Exp suma y resta
-def p_exp(p):
-    '''exp : termino checkExpTypes exp2 '''
-
 def p_checkExpTypes(p):
   '''checkExpTypes : '''
   if len(p) >= 1:
     if operators_s.size() > 0:
       if operators_s.peek() == '+' or operators_s.peek() == '-':
         right_op    = operands_s.pop()
-        print('DERECHO:', right_op)
         right_type  = types_s.pop()
         left_op     = operands_s.pop()
-        print('IZQUIERDO:', right_op)
         left_type   = types_s.pop()
         operator    = operators_s.pop()
         result_type = sc.verify_type_match(left_type, right_type, operator)
@@ -584,13 +735,20 @@ def p_checkExpTypes(p):
           global tmp_var_num
           #tipo_actual = get_type(result)
           result = 't_' + str(tmp_var_num)
-          quad = [operator, left_op, right_op, result]
+
+          global st
+          print("SCOPE ACTUAL:",st.get_scope())
+          print("CONTENIDO DE TABLA")
+          print(st.print_var_table(st.get_scope()))
+          print("Estoy intentando agregar:", result)
+          st.insert_variable(result_type, result)
+          quad = [operator, left_op, right_op, st.get_var(result)[4]]
+ 
           quad_lst.append(quad)
           counter += 1
           tmp_var_num += 1
-          operands_s.push(result)
+          operands_s.push(st.get_var(result)[4])
           types_s.push(result_type)
-          print(result)
           # TODO: if any operand were a temporal space, return it to AVAIL
         else:
           raise TypeError("Tipos incompatibles.")
@@ -628,12 +786,15 @@ def p_checkTermTypes(p):
           #tipo_actual = get_type(result)
           global tmp_var_num
           result = 't_' + str(tmp_var_num)
-          quad = [operator, left_op, right_op, result]
+
+          global st
+          st.insert_variable(result_type, result)
+          quad = [operator, left_op, right_op, st.get_var(result)[4]]
           quad_lst.append(quad)
+
           tmp_var_num += 1
           counter += 1
-          operands_s.push(result)
-          print("resultado parcial:", result)
+          operands_s.push(st.get_var(result)[4])
           types_s.push(result_type)
           # TODO: if any operand were a temporal space, return it to AVAIL
         else:
@@ -654,7 +815,17 @@ def p_addFactor(p):
 # Factor numerico o mediante IDs
 def p_factor(p):
     '''factor : PARENIZQUIERDO crearFondoFalso logico PARENDERECHO quitarFondoFalso
-            | cte'''
+            | cte 
+            '''
+# Llamada a funcion
+def p_llamada(p):
+    '''llamada : buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub'''
+
+# Constante ID
+def p_cteid(p):
+    '''cteid : buscarId cteidaux'''
+    p[0] = p[-1]
+
 
 def p_crearFondoFalso(p):
   '''crearFondoFalso : '''
@@ -679,13 +850,9 @@ def p_generarCond(p):
     else:
       result = operands_s.pop()
       global counter
-      global tmp_var_num
-      #result = 't_' + str(tmp_var_num)
       quad = ['GotoF', result, "", ""]
       quad_lst.append(quad)
-      tmp_var_num += 1
       counter += 1
-      print('contador actual:', counter)
       jumps_s.push(counter - 1)
 
 # Auxiliar de condicion que maneja el sino
@@ -710,7 +877,9 @@ def p_rellenarCond(p):
   global counter
   # fill
   print("counter else:", counter)
-  quad_lst[jumps_s.pop()][3] = counter
+  end = jumps_s.pop()
+  quad_lst[end][3] = counter
+
 # Colores a usar en las figuras
 def p_color(p):
     '''color : NEGRO
@@ -718,7 +887,9 @@ def p_color(p):
             | AZUL
             | AMARILLO
             | VERDE
-            | ROJO'''
+            | ROJO
+            | ROSA
+            | NARANJA'''
 
 # Mientras (while)
 def p_ciclo(p):
@@ -740,6 +911,7 @@ def p_crearCiclo(p):
   if len(p) > 0:
     exp_type = types_s.pop()
     if (exp_type != 'bool'):
+      print('tipo exp en condicion:', exp_type)
       raise TypeError('Tipos incompatibles en ciclo.')
     else:
       result = operands_s.pop()
@@ -766,15 +938,17 @@ def p_generarEscritura(p):
 
 # Aceptar/ingresar info del usuario
 def p_ingreso(p):
-    '''ingreso : ENTRADA PARENIZQUIERDO cteid PARENDERECHO generarEntrada PUNTOYCOMA'''
+    '''ingreso : ENTRADA PARENIZQUIERDO ID saveVarID buscarId PARENDERECHO generarEntrada PUNTOYCOMA'''
 
 def p_generarEntrada(p):
   '''generarEntrada : '''
-  quad = ["entrada", "", "", p[-2]]
+  global st
+  quad = ["entrada", "", "", st.get_var(p[-4])[4]]
   quad_lst.append(quad)
   global counter
   counter += 1
 
+"""
 # Argumentos para las funciones de figura, pueden ser cualquier constante o color
 def p_args(p):
     '''args : logico args2'''
@@ -783,38 +957,39 @@ def p_args(p):
 def p_args2(p):
     '''args2 : COMA args
             | '''
+"""
 
 # Funcion para incluir texto
 def p_texto(p):
-    '''texto : INSERTATEXTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA'''
+    '''texto : INSERTATEXTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA'''
 
 # Funcion para incluir un rectangulo
 def p_rectangulo(p):
-    '''rectangulo : INSERTARECTANGULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA'''
+    '''rectangulo : INSERTARECTANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA'''
 
 # Funcion para incluir un triangulo
 def p_triangulo(p):
-    '''triangulo :  INSERTATRIANGULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA'''
+    '''triangulo :  INSERTATRIANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA'''
 
 # Funcion para incluir un circulo
 def p_circulo(p):
-    '''circulo : INSERTACIRCULO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA'''
+    '''circulo : INSERTACIRCULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA'''
 
 # Funcion para incluir un ovalo
 def p_ovalo(p):
-    '''ovalo : INSERTAOVALO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA'''
+    '''ovalo : INSERTAOVALO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA'''
 
 # Funcion para incluir un punto
 def p_punto(p):
-    '''punto : INSERTAPUNTO PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA'''
+    '''punto : INSERTAPUNTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA'''
 
 # Funcion para incluir una linea
 def p_linea(p):
-    '''linea : INSERTALINEA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA'''
+    '''linea : INSERTALINEA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA'''
 
 # Funcion para incluir una curva
 def p_curva(p):
-    '''curva : INSERTACURVA PARENIZQUIERDO args PARENDERECHO PUNTOYCOMA'''
+    '''curva : INSERTACURVA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA'''
 
 def p_error(p):
   print("Error de sintaxis: '%s' en línea: %s."  % (p.value, p.lineno))

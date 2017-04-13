@@ -7,6 +7,9 @@ José González Ayerdi - A01036121
 Martha Benavides - A01280115
 10/03/2017 """
 from collections import OrderedDict
+from memory_manager import memory_manager
+mm = memory_manager()
+const_counter = 0
 
 class symbol_table:
 	""" Constructor de la clase inicializa diccionario (que contiene las tablas)
@@ -22,22 +25,24 @@ class symbol_table:
 		self.__quadruple_count    = {}
 
 	def add_function_as_var(self, fun_id, return_type):
-		self.__func_dic["global"][1][fun_id] = [fun_id, return_type, "global"]
+		global mm
+		new_dir = mm.insert_variable(return_type, fun_id, 'global', None)
+		self.__func_dic['global'][1][fun_id] = [fun_id, return_type, 'global', None, new_dir]
+
+	def print_var_table(self, fun_id):
+		table = self.__func_dic[fun_id]
+		for var_table in table:
+			print(var_table)
 
 	def get_param_type(self, fun_id, k):
-		print('el valor de k es:',k)
 		key = self.__func_dic[fun_id][1].keys()[k]
-		#for val in self.__func_dic[fun_id][1].keys():
-		#	print val
-		print('nombre variable:',key)
-		print("con tipo:",self.__func_dic[fun_id][1][key][1])
 		return self.__func_dic[fun_id][1][key][1]
 
 	def add_quadruple_count(self, counter):
 		self.__quadruple_count[self.__scope] = counter
 
-	def get_quadruple_count(self):
-		return self.__quadruple_count.get(self.__scope)
+	def get_quadruple_count(self, scope):
+		return self.__quadruple_count.get(scope)
 
 	def add_var_count(self, var_count):
 		self.__var_count[self.__scope] = var_count
@@ -57,6 +62,9 @@ class symbol_table:
 		if fun_id not in self.__func_dic:
 			raise KeyError("La funcion '" + fun_id + "' no esta declarada.")
 
+	def function_exists(self, fun_id):
+		return fun_id in self.__func_dic
+
 	""" search_variable busca el id de una vairable primero dentro del scope actual,
 	si no la encuentra busca en el scope global, si no la encuentra despliega un error. """
 	def search_variable(self, var_id):
@@ -69,12 +77,21 @@ class symbol_table:
 	def insert_variable(self, var_type, var_id):
 		if self.__func_dic.get(self.__scope) is not None:
 			if self.__func_dic.get(self.__scope)[1].get(var_id) is None:
-				print('DENTRO DE ST:',var_id)
-				self.__func_dic[self.__scope][1][var_id] = [var_id, var_type, self.__scope]
+				global mm
+				new_dir = mm.insert_variable(var_type, var_id, self.__scope, None)
+				print("a",var_id,"se le asigno",new_dir)
+				self.__func_dic[self.__scope][1][var_id] = [var_id, var_type, self.__scope, None, new_dir]
 			else:
 				raise KeyError("Variable repetida: " + "'" + var_id + "'")
 		else:
 			raise KeyError('Error en estructura de funciones/scope.')
+
+	def add_constant_to_memory(self, val, val_type):
+		global mm
+		global const_counter
+		new_dir = mm.insert_variable(val_type, "const", "const_" + str(const_counter), val)
+		const_counter += 1
+		return new_dir
 
 	""" insert_function revisa si el id de esta funciónya existe en la tabla de funciones,
 	si no existe la inserta y la inicializa con vacío como valor. """
@@ -93,10 +110,20 @@ class symbol_table:
 		self.__func_dic = func_dic
 
 	def set_var_val(self, var_id, val):
+		global mm
 		if self. __func_dic.get(self.__scope)[1].get(var_id) is not None:
-			self.__func_dic[self.__scope][1][var_id].append(val)
+			self.__func_dic[self.__scope][1][var_id][3] = val
+			print("Estoy buscando", var_id)
+			var_dir = self.__func_dic[self.__scope][1][var_id][4]
+			var_type = self.__func_dic[self.__scope][1][var_id][1]
+			print("dentro de if id:",var_id,var_dir)
+			mm.set_val(var_dir, val, var_type)
 		else:
-			self.__func_dic['global'][1][var_id].append(val)
+			self.__func_dic['global'][1][var_id][3] = val
+			var_dir = self.__func_dic['global'][1][var_id][4]
+			print("dentro de else id:",var_id,var_dir)
+			var_type = self.__func_dic['global'][1][var_id][1]
+			mm.set_val(var_dir, val, var_type)
 
 	""" Sección de getters """
 	def get_scope(self):
@@ -105,16 +132,26 @@ class symbol_table:
 	def get_func_dic(self):
 		return self.__func_dic
 
+	def get_val_from_dir(self, address):
+		global mm
+		return mm.get_val_from_dir(address)
+
+	def set_val_from_dir(self, address, val):
+		global mm
+		mm.set_val_from_dir(address, val)
+
 	def get_var(self, var_id):
 		if var_id  in self.__func_dic.get(self.__scope)[1]:
+			print("dir de tmp en if:", self.__func_dic.get(self.__scope)[1].get(var_id))
 			return self.__func_dic.get(self.__scope)[1].get(var_id)
 		elif var_id  in self.__func_dic.get('global')[1]:
+			print("dir de tmp en else:", self.__func_dic.get(self.__scope)[1].get(var_id))
 			return self.__func_dic.get('global')[1].get(var_id)
 
 	def get_var_type(self, var_id):
-		if var_id  in self.__func_dic.get(self.__scope)[1]:
+		if var_id in self.__func_dic.get(self.__scope)[1]:
 			return self.__func_dic.get(self.__scope)[1].get(var_id)[1]
-		elif var_id  in self.__func_dic.get('global')[1]:
+		elif var_id in self.__func_dic.get('global')[1]:
 			return self.__func_dic.get('global')[1].get(var_id)[1]
 
 	""" Sección para declarar propiedades de la clase. """

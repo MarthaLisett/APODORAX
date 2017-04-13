@@ -1,0 +1,48 @@
+programa Martha0295:
+
+var flotante hola;
+var flotante crayola; 
+var cadena hello;
+var caracter letra ;
+var entero arrs[10]; 
+var bool Pregunta;
+var flotante I;
+var flotante resultado;
+var flotante flores;
+
+
+funcion vacio carro (var entero x, var flotante y) {
+	desplegar("con dinero compro comida!");
+	#regresar 1;
+}
+
+inicio {
+	desplegar("antes de llamada");
+	carro(2,3.0);
+
+
+	I = 1;
+	si(I > 0 && 13 == 0) entonces {
+		desplegar("verdadero");
+	} sino entonces {
+		desplegar("alternativa");
+	}
+
+	mientras(10 > I) {
+		desplegar(I);
+		I = I + 1;
+	}
+
+	# insertaTexto(2.0, 3.0, "rojo", "hola mundo", 12);
+	# insertaTriangulo(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, "rojo", "amarillo", 12);
+	# insertaRectangulo(1.0, 2.0, 3.0, 4.0, "rojo", "amarillo", 12);
+	# insertaCirculo(1.0, 4.0, 8.0, "rojo", "amarillo", 12);
+	# insertaOvalo(1.0, 4.0, 8.0, 9.0, "rojo", "amarillo", 12);
+	# insertaPunto(1.0, 2.0, "azul");
+	# insertaLinea(1.0, 2.0, 3.0, 4.0, "azul", 13);
+	# insertaCurva(1.0, 2.0, 3.0, 4.0, "verde");
+}
+
+fin
+
+
