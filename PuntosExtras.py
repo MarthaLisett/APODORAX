@@ -388,7 +388,7 @@ def obtenerInstruccion():
 			y = (1-cont)*(1-cont)*coordy1 + 2*(1-cont)*cont*curvy+cont*cont*coordy2
 			auxc = Point(x,y)
 			auxc.setOutline(str(color1))
-			auxc.draw(win)	
+			auxc.draw(win)
 			cont += 0.001
 
 

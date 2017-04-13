@@ -9,8 +9,10 @@ class virtual_machine:
 		print("buscando:", dir_der)
 		print("buscando:", dir_res)
 		"""
-		predefined_functions = ["insertaTexto", "insertaTriangulo", "insertaRectangulo", "insertaLinea",
-								"insertaCirculo", "insertaOvalo", "insertaPunto", "insertaCurva"]
+		predefined_functions = [
+								"insertaTexto", "insertaTriangulo", "insertaRectangulo", "insertaLinea",
+								"insertaCirculo", "insertaOvalo", "insertaPunto", "insertaCurva",
+								]
 
 		graphics = Graphics()
 		arg_dirs = []
@@ -214,7 +216,7 @@ class virtual_machine:
 
 			actual_quad += 1
 
-
+		graphics.pause_execution();
 
 
 

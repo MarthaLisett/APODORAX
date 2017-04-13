@@ -219,6 +219,35 @@
 ('Valor args_count:', 2)
 ('Constante actual:', '"con dinero compro comida!"')
 ('llego la variable', 'const', 'de tipo', 'cadena', 'para el segmento de', <constant.Constant object at 0x1007aabd0>)
+('Constante actual:', 'x')
+('llego la variable', 'const', 'de tipo', 'caracter', 'para el segmento de', <constant.Constant object at 0x1007aabd0>)
+('dir de tmp en if:', ['x', 'entero', 'carro', None, 5006])
+('dir de tmp en if:', ['x', 'entero', 'carro', None, 5006])
+('dir de tmp en if:', ['x', 'entero', 'carro', None, 5006])
+('dir de tmp en if:', ['x', 'entero', 'carro', None, 5006])
+('Constante actual:', 'y')
+('llego la variable', 'const', 'de tipo', 'caracter', 'para el segmento de', <constant.Constant object at 0x1007aabd0>)
+('dir de tmp en if:', ['y', 'flotante', 'carro', None, 6029])
+('dir de tmp en if:', ['y', 'flotante', 'carro', None, 6029])
+('dir de tmp en if:', ['y', 'flotante', 'carro', None, 6029])
+('dir de tmp en if:', ['y', 'flotante', 'carro', None, 6029])
+antes
+('l: ', 'entero')
+('r: ', 'flotante')
+('op: ', '*')
+entero
+flotante
+despues
+('l: ', 0)
+('r: ', 1)
+('op: ', 2)
+('tenemos la variable temporal:', 't_0')
+('llego la variable', 't_0', 'de tipo', 'flotante', 'para el segmento de', <temporal.Temporal object at 0x1007aab10>)
+('t_0', 'pertenece a', <temporal.Temporal object at 0x1007aab10>, 'y es de tipo', 'flotante')
+('en memoria con', 't_0')
+('a', 't_0', 'se le asigno', 11000)
+('dir de tmp en if:', ['t_0', 'flotante', 'carro', None, 11000])
+('dir de tmp en if:', ['t_0', 'flotante', 'carro', None, 11000])
 ('dir de tmp en else:', None)
 ('Constante actual:', '"antes de llamada"')
 ('llego la variable', 'const', 'de tipo', 'cadena', 'para el segmento de', <constant.Constant object at 0x1007aabd0>)
@@ -306,12 +335,12 @@ despues
 ('l: ', 1)
 ('r: ', 0)
 ('op: ', 6)
-('tenemos la variable temporal:', 't_0')
-('llego la variable', 't_0', 'de tipo', 'bool', 'para el segmento de', <temporal.Temporal object at 0x1007aab10>)
+('tenemos la variable temporal:', 't_1')
+('llego la variable', 't_1', 'de tipo', 'bool', 'para el segmento de', <temporal.Temporal object at 0x1007aab10>)
 ('el contador de booleanos esta en:', 12000)
-('a', 't_0', 'se le asigno', 12000)
-('dir de tmp en if:', ['t_0', 'bool', 'inicio', None, 12000])
-('dir de tmp en if:', ['t_0', 'bool', 'inicio', None, 12000])
+('a', 't_1', 'se le asigno', 12000)
+('dir de tmp en if:', ['t_1', 'bool', 'inicio', None, 12000])
+('dir de tmp en if:', ['t_1', 'bool', 'inicio', None, 12000])
 ('Constante actual:', 13)
 ('llego la variable', 'const', 'de tipo', 'entero', 'para el segmento de', <constant.Constant object at 0x1007aabd0>)
 ('Constante actual:', 0)
@@ -326,12 +355,12 @@ despues
 ('l: ', 0)
 ('r: ', 0)
 ('op: ', 11)
-('tenemos la variable temporal:', 't_1')
-('llego la variable', 't_1', 'de tipo', 'bool', 'para el segmento de', <temporal.Temporal object at 0x1007aab10>)
+('tenemos la variable temporal:', 't_2')
+('llego la variable', 't_2', 'de tipo', 'bool', 'para el segmento de', <temporal.Temporal object at 0x1007aab10>)
 ('el contador de booleanos esta en:', 12001)
-('a', 't_1', 'se le asigno', 12001)
-('dir de tmp en if:', ['t_1', 'bool', 'inicio', None, 12001])
-('dir de tmp en if:', ['t_1', 'bool', 'inicio', None, 12001])
+('a', 't_2', 'se le asigno', 12001)
+('dir de tmp en if:', ['t_2', 'bool', 'inicio', None, 12001])
+('dir de tmp en if:', ['t_2', 'bool', 'inicio', None, 12001])
 antes
 ('l: ', 'bool')
 ('r: ', 'bool')
@@ -345,17 +374,17 @@ despues
 ('lo:', 12000)
 ('ro:', 12001)
 ('op:', '&&')
-('tenemos la variable temporal:', 't_2')
-('llego la variable', 't_2', 'de tipo', 'bool', 'para el segmento de', <temporal.Temporal object at 0x1007aab10>)
+('tenemos la variable temporal:', 't_3')
+('llego la variable', 't_3', 'de tipo', 'bool', 'para el segmento de', <temporal.Temporal object at 0x1007aab10>)
 ('el contador de booleanos esta en:', 12002)
-('a', 't_2', 'se le asigno', 12002)
-('dir de tmp en if:', ['t_2', 'bool', 'inicio', None, 12002])
-('dir de tmp en if:', ['t_2', 'bool', 'inicio', None, 12002])
+('a', 't_3', 'se le asigno', 12002)
+('dir de tmp en if:', ['t_3', 'bool', 'inicio', None, 12002])
+('dir de tmp en if:', ['t_3', 'bool', 'inicio', None, 12002])
 ('Constante actual:', '"verdadero"')
 ('llego la variable', 'const', 'de tipo', 'cadena', 'para el segmento de', <constant.Constant object at 0x1007aabd0>)
 ('Constante actual:', '"alternativa"')
 ('llego la variable', 'const', 'de tipo', 'cadena', 'para el segmento de', <constant.Constant object at 0x1007aabd0>)
-('counter else:', 24)
+('counter else:', 26)
 ('Constante actual:', 10)
 ('llego la variable', 'const', 'de tipo', 'entero', 'para el segmento de', <constant.Constant object at 0x1007aabd0>)
 ('Constante actual:', 'I')
@@ -374,12 +403,12 @@ despues
 ('l: ', 0)
 ('r: ', 1)
 ('op: ', 6)
-('tenemos la variable temporal:', 't_3')
-('llego la variable', 't_3', 'de tipo', 'bool', 'para el segmento de', <temporal.Temporal object at 0x1007aab10>)
+('tenemos la variable temporal:', 't_4')
+('llego la variable', 't_4', 'de tipo', 'bool', 'para el segmento de', <temporal.Temporal object at 0x1007aab10>)
 ('el contador de booleanos esta en:', 12003)
-('a', 't_3', 'se le asigno', 12003)
-('dir de tmp en if:', ['t_3', 'bool', 'inicio', None, 12003])
-('dir de tmp en if:', ['t_3', 'bool', 'inicio', None, 12003])
+('a', 't_4', 'se le asigno', 12003)
+('dir de tmp en if:', ['t_4', 'bool', 'inicio', None, 12003])
+('dir de tmp en if:', ['t_4', 'bool', 'inicio', None, 12003])
 ('Constante actual:', 'I')
 ('llego la variable', 'const', 'de tipo', 'caracter', 'para el segmento de', <constant.Constant object at 0x1007aabd0>)
 ('dir de tmp en else:', None)
@@ -409,16 +438,16 @@ despues
 ('SCOPE ACTUAL:', 'inicio')
 CONTENIDO DE TABLA
 vacio
-OrderedDict([('t_0', ['t_0', 'bool', 'inicio', None, 12000]), ('t_1', ['t_1', 'bool', 'inicio', None, 12001]), ('t_2', ['t_2', 'bool', 'inicio', None, 12002]), ('t_3', ['t_3', 'bool', 'inicio', None, 12003])])
+OrderedDict([('t_1', ['t_1', 'bool', 'inicio', None, 12000]), ('t_2', ['t_2', 'bool', 'inicio', None, 12001]), ('t_3', ['t_3', 'bool', 'inicio', None, 12002]), ('t_4', ['t_4', 'bool', 'inicio', None, 12003])])
 None
-('Estoy intentando agregar:', 't_4')
-('tenemos la variable temporal:', 't_4')
-('llego la variable', 't_4', 'de tipo', 'flotante', 'para el segmento de', <temporal.Temporal object at 0x1007aab10>)
-('t_4', 'pertenece a', <temporal.Temporal object at 0x1007aab10>, 'y es de tipo', 'flotante')
-('en memoria con', 't_4')
-('a', 't_4', 'se le asigno', 11000)
-('dir de tmp en if:', ['t_4', 'flotante', 'inicio', None, 11000])
-('dir de tmp en if:', ['t_4', 'flotante', 'inicio', None, 11000])
+('Estoy intentando agregar:', 't_5')
+('tenemos la variable temporal:', 't_5')
+('llego la variable', 't_5', 'de tipo', 'flotante', 'para el segmento de', <temporal.Temporal object at 0x1007aab10>)
+('t_5', 'pertenece a', <temporal.Temporal object at 0x1007aab10>, 'y es de tipo', 'flotante')
+('en memoria con', 't_5')
+('a', 't_5', 'se le asigno', 11001)
+('dir de tmp en if:', ['t_5', 'flotante', 'inicio', None, 11001])
+('dir de tmp en if:', ['t_5', 'flotante', 'inicio', None, 11001])
 antes
 ('l: ', 'flotante')
 ('r: ', 'flotante')
@@ -431,7 +460,107 @@ despues
 ('op: ', 12)
 ('dentro de else id:', 'I', 1002)
 ('dir de tmp en else:', None)
-('resultado final:', ['I', 'flotante', 'global', 11000, 1002])
+('resultado final:', ['I', 'flotante', 'global', 11001, 1002])
 ('dir de tmp en else:', None)
 "antes de llamada"
+5006
+6029
+11000
+diccionario con variables:
+('var', 'x')
+x
+entero
+carro
+None
+5006
+('var', 'y')
+y
+flotante
+carro
+None
+6029
+('var', 't_0')
+t_0
+flotante
+carro
+None
+11000
+('val', 2)
+('param_pos:', '0')
+('dirs:', [5006, 6029, 11000])
+('val', 3.0)
+('param_pos:', '1')
+('dirs:', [5006, 6029, 11000])
 "con dinero compro comida!"
+6.0
+6012
+6013
+6014
+8006
+8007
+5003
+diccionario con variables:
+('var', 'x')
+x
+flotante
+insertaCirculo
+None
+6012
+('var', 'y')
+y
+flotante
+insertaCirculo
+None
+6013
+('var', 'radio')
+radio
+flotante
+insertaCirculo
+None
+6014
+('var', 'relleno')
+relleno
+cadena
+insertaCirculo
+None
+8006
+('var', 'linea')
+linea
+cadena
+insertaCirculo
+None
+8007
+('var', 'grosor')
+grosor
+entero
+insertaCirculo
+None
+5003
+('val', 1.0)
+('param_pos:', '0')
+('dirs:', [6012, 6013, 6014, 8006, 8007, 5003])
+('val', 4.0)
+('param_pos:', '1')
+('dirs:', [6012, 6013, 6014, 8006, 8007, 5003])
+('val', 8.0)
+('param_pos:', '2')
+('dirs:', [6012, 6013, 6014, 8006, 8007, 5003])
+('val', '"rojo"')
+('param_pos:', '3')
+('dirs:', [6012, 6013, 6014, 8006, 8007, 5003])
+('val', '"amarillo"')
+('param_pos:', '4')
+('dirs:', [6012, 6013, 6014, 8006, 8007, 5003])
+('val', 5)
+('param_pos:', '5')
+('dirs:', [6012, 6013, 6014, 8006, 8007, 5003])
+"alternativa"
+1
+2
+3
+4
+5
+6
+7
+8
+9
