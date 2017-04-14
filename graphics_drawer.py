@@ -75,7 +75,7 @@ class Graphics():
 			c1 = Point(float(parameter_lst[0]), float(parameter_lst[1]))
 			c1x = c1.getX()
 			c1y = c1.getY()
-			c2 = Point(parameter_lst[2], parameter_lst[3])
+			c2 = Point(float(parameter_lst[2]), float(parameter_lst[3]))
 			c2x = c2.getX()
 			c2y = c2.getY()
 
@@ -89,10 +89,10 @@ class Graphics():
 				y = (1-cont)*(1-cont)*c1y + 2*(1-cont)*cont*curvy+cont*cont*c2y
 				self.auxc = Point(x,y)
 				self.auxc.setOutline(self.get_color_name(parameter_lst[4]))
-		    	self.auxc.draw(self.win)	
-		    	cont += 0.001
+				self.auxc.draw(self.win)	
+				cont += 0.001
 
-
+			self.win.getKey()
 
 	def display_graphics(self):
 		self.win.getKey()
@@ -106,17 +106,3 @@ class Graphics():
 			'"negro"'  : "black" , '"gris"'   : "gray"  ,
 		}
 		return colors_eng.get(color_esp)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
