@@ -59,7 +59,7 @@ inicio {
 
 	mientras (10 < I)
 	{
-		desplegar (5);
+		desplegar (":)))");
 		I = I + 1;
 	}
 }

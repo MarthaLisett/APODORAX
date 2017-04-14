@@ -4,7 +4,7 @@ var flotante hola;
 var flotante crayola; 
 var cadena hello;
 var caracter letra ;
-var entero arrs[10]; 
+var entero arrs[11]; 
 var bool Pregunta;
 var flotante I;
 var flotante resultado;
@@ -19,16 +19,16 @@ funcion vacio carro (var entero x, var flotante y) {
 
 inicio {
 
-	insertaTexto(300.0, 500.0, "rojo", "hola mundo", 12);
-	insertaTriangulo(600.0, 200.0, 500.0, 300.0, 700.0, 300.0, "rojo", "amarillo", 12);
-	insertaRectangulo(500.0, 400.0, 780.0, 500.0, "rojo", "amarillo", 12);
-	insertaCirculo(300.0, 300.0, 50.3, "rojo", "amarillo", 4);
-	insertaOvalo(100.0, 500.0, 250.0, 300.0, "gris", "rosa", 12);
-	insertaPunto(290.0, 75.0, "azul");
-	insertaLinea(300.0, 300.0, 500.0, 100.0, "azul", 5);
-	insertaCurva(10.0, 100.0, 400.0, 200.0, "verde");
+	#insertaTexto(300.0, 500.0, "rojo", "hola mundo", 12);
+	#insertaTriangulo(600.0, 200.0, 500.0, 300.0, 700.0, 300.0, "rojo", "amarillo", 12);
+	#insertaRectangulo(500.0, 400.0, 780.0, 500.0, "rojo", "amarillo", 12);
+	#insertaCirculo(300.0, 300.0, 50.3, "rojo", "amarillo", 4);
+	#insertaOvalo(100.0, 500.0, 250.0, 300.0, "gris", "rosa", 12);
+	#insertaPunto(290.0, 75.0, "azul");
+	#insertaLinea(300.0, 300.0, 500.0, 100.0, "azul", 5);
+	#insertaCurva(10.0, 100.0, 400.0, 200.0, "verde");
 
-	desplegar("antes de llamada");
+	#desplegar("antes de llamada");
 	carro(2,3.0);
 	#insertaCirculo(300.0, 300.0, 8.0, "rojo", "amarillo", 5);
 	

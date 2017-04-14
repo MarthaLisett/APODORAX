@@ -48,12 +48,15 @@ fun_var_count = 0
 k             = 0
 type_pointer  = None
 fun_calling   = None
-current_id    = ""
+current_id    = None
+current_type  = None
+#current_var_id = None
+current_vec_id = None
 vm            = virtual_machine() 
 main_quad     = 0
 # Programa
 def p_program(p):
-  '''program : PROGRAMA ID inicializar DOSPUNTOS declaracion createMainQuad function INICIO fillMainQuad insertMainFun bloque FIN generarCuadruplos '''
+  '''program : PROGRAMA ID inicializar DOSPUNTOS declaracion insertVarCount createMainQuad function INICIO fillMainQuad insertMainFun bloque FIN generarCuadruplos '''
 
 def p_crateMainQuad(p):
   '''createMainQuad : '''
@@ -218,13 +221,37 @@ def p_buscarId(p):
 
  # Constante ID declaracion
 def p_cteid_declaracion(p):
-    '''cteid_declaracion : ID cteidaux'''
+    '''cteid_declaracion : ID saveVecID revisarId cteidaux'''
     p[0] = p[1]
 
 # Auxiliar Constante ID
 def p_cteidaux(p):
-    '''cteidaux : CORCHETEIZQ exp CORCHETEDER
+    '''cteidaux : CORCHETEIZQ setDimFlag exp setLimits CORCHETEDER calculateK
                | '''
+
+def p_saveVecID(p):
+  '''saveVecID : '''
+  global current_vec_id
+  current_vec_id = p[-1]
+
+def p_setDimFlag(p):
+  '''setDimFlag : '''
+  global st
+  global current_vec_id
+  st.set_dim_flag(current_vec_id)
+
+def p_setLimits(p):
+  '''setLimits : '''
+  global st
+  global current_var_id
+  global operands_s
+  st.set_vector_limits(st.get_val_from_dir(operands_s.pop()), current_vec_id)
+
+def p_calculateK(p):
+  '''calculateK : '''
+  global st
+  st.calculate_k(current_vec_id)
+
 
 def p_buscarFuncion(p):
   ''' buscarFuncion : '''
@@ -356,8 +383,13 @@ def p_tipo(p):
     p[0] = p[1]
 # Declaracion de variables
 def p_declaracion(p):
-    '''declaracion : VAR tipo cteid_declaracion revisarId PUNTOYCOMA countVar declaracion
+    '''declaracion : VAR tipo getVarType cteid_declaracion PUNTOYCOMA countVar declaracion
                 | '''
+
+def p_getVarType(p):
+  '''getVarType : '''
+  global current_type
+  current_type = p[-1]
 
 def p_countVar(p):
   '''countVar : '''
@@ -369,7 +401,10 @@ def p_revisarId(p):
   pass
   if len(p) >= 1:
     global st
-    st.insert_variable(p[-2], p[-1])
+    global current_vec_id
+    global current_type
+    print("estoy regresando p[-1]", p[-1])
+    st.insert_variable(current_type, current_vec_id)
 
 # Return de las funciones
 def p_regreso(p):
@@ -425,6 +460,7 @@ def p_expresion(p):
 # Exp suma y resta
 def p_exp(p):
     '''exp : termino checkExpTypes exp2 '''
+    p[0] = p[1]
 
 def p_saveFunID(p):
   '''saveFunID : '''
@@ -768,6 +804,7 @@ def p_exp2(p):
 # Termino multiplicacion y division
 def p_termino(p):
   '''termino : factor checkTermTypes termino2'''
+  p[0] = p[1]
 
 def p_checkTermTypes(p):
   '''checkTermTypes : '''
@@ -823,9 +860,8 @@ def p_llamada(p):
 
 # Constante ID
 def p_cteid(p):
-    '''cteid : buscarId cteidaux'''
+    '''cteid : buscarId cteidaux'''    
     p[0] = p[-1]
-
 
 def p_crearFondoFalso(p):
   '''crearFondoFalso : '''

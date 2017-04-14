@@ -19,7 +19,6 @@ class Memory(object):
 			raise MemoryError("ERROR: ya no hay espacio para enteros.")
 
 	def insert_float(self, val, var_id):
-		print("en memoria con", var_id)
 		if self.float_counter <= self.u_limit and self.float_counter >= self.l_limit:
 			if self.float_counter <= self.float_u_limit and self.float_counter >= self.float_l_limit:
 				self.floats[self.float_counter] = val
@@ -66,6 +65,33 @@ class Memory(object):
 				raise MemoryError("ERROR: ya no hay espacio para caracteres.")
 		else:
 			raise MemoryError("ERROR: ya no hay espacio para caracteres.")
+
+	def increment_address_pointer(self, var_dir, var_type, offset):
+		if var_type == "entero":
+			if var_dir <= self.int_u_limit and var_dir >= self.int_l_limit:
+				self.int_counter += offset - 1
+			else:
+				raise MemoryError("No se encontro la direccion.")
+		elif var_type == "flotante":
+			if var_dir <= self.float_u_limit and var_dir >= self.float_l_limit:
+				self.float_counter += offset - 1
+			else:
+				raise MemoryError("No se encontro la direccion.")
+		elif var_type == "booleano":
+			if var_dir <= self.bool_u_limit and var_dir >= self.bool_l_limit:
+				self.bool_counter += offset - 1
+			else:
+				raise MemoryError("No se encontro la direccion.")
+		elif var_type == "cadena":
+			if var_dir <= self.str_u_limit and var_dir >= self.str_l_limit:
+				self.str_counter += offset - 1
+			else:
+				raise MemoryError("No se encontro la direccion.")
+		elif var_type == "caracter":
+			if var_dir <= self.char_u_limit and var_dir >= self.char_l_limit:
+				self.char_counter += offset - 1
+			else:
+				raise MemoryError("No se encontro la direccion.")
 
 	def set_val(self, var_dir, val, var_type):
 		if var_type == "entero":

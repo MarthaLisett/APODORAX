@@ -23,11 +23,12 @@ class symbol_table:
 		self.__no_params          = {}
 		self.__var_count          = {}
 		self.__quadruple_count    = {}
+		self.__dim_vars           = {}
 
 	def add_function_as_var(self, fun_id, return_type):
 		global mm
 		new_dir = mm.insert_variable(return_type, fun_id, 'global', None)
-		self.__func_dic['global'][1][fun_id] = [fun_id, return_type, 'global', None, new_dir]
+		self.__func_dic['global'][1][fun_id] = [fun_id, return_type, 'global', None, new_dir, False]
 
 	def print_var_table(self, fun_id):
 		table = self.__func_dic[fun_id]
@@ -45,10 +46,14 @@ class symbol_table:
 		return self.__quadruple_count.get(scope)
 
 	def add_var_count(self, var_count):
-		self.__var_count[self.__scope] = var_count
+		print("la funcion:", self.__scope, "tiene:", var_count, "locales !=")
+		param_count = 0
+		if self.__scope != "main" and self.__scope != "global":
+			param_count = self.get_no_params(self.__scope)
+		self.__var_count[self.__scope] = var_count + param_count
 
-	def get_var_count(self):
-		return self.__var_count.get(self.__scope)
+	def get_var_count(self, scope):
+		return self.__var_count.get(scope)
 
 	def add_no_params(self, num_args):
 		self.__no_params[self.__scope] = num_args
@@ -80,11 +85,43 @@ class symbol_table:
 				global mm
 				new_dir = mm.insert_variable(var_type, var_id, self.__scope, None)
 				print("a",var_id,"se le asigno",new_dir)
-				self.__func_dic[self.__scope][1][var_id] = [var_id, var_type, self.__scope, None, new_dir]
+				self.__func_dic[self.__scope][1][var_id] = [var_id, var_type, self.__scope, None, new_dir, False]
 			else:
 				raise KeyError("Variable repetida: " + "'" + var_id + "'")
 		else:
 			raise KeyError('Error en estructura de funciones/scope.')
+
+	""" metodos para arreglos """
+	def set_dim_flag(self, var_id):
+		self.__func_dic[self.__scope][1][var_id][5] = True
+		# dim, l_inf, l_sup, k, r, aux, base_dir
+		self.__dim_vars[var_id] = [1, 0, None, None, 1, None, None]
+
+	def set_vector_limits(self, u_limit, var_id):
+		print("u_limit:-", u_limit)
+		self.__dim_vars[var_id][2] = u_limit - 1
+		u_limit = self.__dim_vars.get(var_id)[2]
+		l_limit = self.__dim_vars.get(var_id)[1]
+		r = self.__dim_vars.get(var_id)[4]
+		r = (u_limit - l_limit + 1) * r
+		self.__dim_vars[var_id][4] = r
+		self.__dim_vars[var_id][5] = r
+		global mm
+		base_dir = self.__func_dic[self.__scope][1][var_id][4]
+		var_type = self.__func_dic[self.__scope][1][var_id][1]
+		aux = self.__dim_vars.get(var_id)[5]
+		mm.increment_address_pointer(var_type, base_dir, aux)
+		print("el arreglo cubre desde:", base_dir, "hasta", base_dir+aux)
+
+	def calculate_k(self, var_id):
+		k = 0
+		u_limit = self.__dim_vars.get(var_id)[2]
+		l_limit = self.__dim_vars.get(var_id)[1]
+		r = self.__dim_vars.get(var_id)[4]
+		r = r / (u_limit - l_limit + 1)
+		k += l_limit * r
+		self.__dim_vars[var_id][3] = k * (-1)
+		print("el valor de k es:", k)
 
 	def add_constant_to_memory(self, val, val_type):
 		global mm

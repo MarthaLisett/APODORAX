@@ -12,6 +12,17 @@ class memory_manager():
 		self.loc   = Local()
 		self.const = Constant()
 
+
+	def increment_address_pointer(self, var_type, var_dir, offset):
+		if var_dir >= self.tmp.l_limit and var_dir <= self.tmp.u_limit:
+			self.tmp.increment_address_pointer(var_dir, var_type, offset)
+		elif var_dir >= self.glob.l_limit and var_dir <= self.glob.u_limit:
+			self.glob.increment_address_pointer(var_dir, var_type, offset)
+		elif var_dir >= self.loc.l_limit and var_dir <= self.loc.u_limit:
+			self.loc.increment_address_pointer(var_dir, var_type, offset)
+		elif var_dir >= self.const.l_limit and var_dir <= self.const.u_limit:
+			self.const.increment_address_pointer(var_dir, var_type, offset)
+
 	def set_val(self, var_dir, val, var_type):
 		if var_dir >= self.tmp.l_limit and var_dir <= self.tmp.u_limit:
 			self.tmp.set_val(var_dir, val, var_type)

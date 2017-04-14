@@ -92,7 +92,7 @@ class Graphics():
 				self.auxc.draw(self.win)	
 				cont += 0.001
 
-			self.win.getKey()
+			#self.win.getKey()
 
 	def display_graphics(self):
 		self.win.getKey()

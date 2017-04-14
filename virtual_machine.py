@@ -14,10 +14,11 @@ class virtual_machine:
 								"insertaCirculo", "insertaOvalo", "insertaPunto", "insertaCurva",
 								]
 
-		graphics = Graphics()
+		graphics = None
 		arg_dirs = []
 		actual_quad = 0
 		return_quad = 0
+		called_predefined_fun = False
 		while actual_quad < len(quadruples):
 			if quadruples[actual_quad][0] == '=':
 				dir_izq = quadruples[actual_quad][1]
@@ -176,7 +177,11 @@ class virtual_machine:
 				del arg_dirs[:]
 				scope = quadruples[actual_quad][1]
 				var_table = st.get_func_dic().get(scope)[1]
-				# TODO: obtener unicamente parametros por medio de la var n
+
+				no_vars = st.get_var_count(scope)
+				if scope == "carro":
+					print("CANTIDAD:", no_vars)
+
 				for var_id, var_lst in var_table.iteritems():
 					arg_dirs.append(var_lst[4])
 				
@@ -202,6 +207,9 @@ class virtual_machine:
 			elif quadruples[actual_quad][0] == "GOSUB":
 				fun_name = quadruples[actual_quad][1]
 				if fun_name in predefined_functions:
+					called_predefined_fun = True
+					if graphics is None:
+					 	graphics = Graphics()
 					argument_lst = []
 					for arg_dir in arg_dirs:
 						arg = st.get_val_from_dir(arg_dir)
@@ -216,7 +224,8 @@ class virtual_machine:
 
 			actual_quad += 1
 
-		graphics.display_graphics();
+		if called_predefined_fun:
+			graphics.display_graphics();
 
 
 
