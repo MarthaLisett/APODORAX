@@ -249,56 +249,102 @@ despues
 ('dir de tmp en if:', ['t_0', 'flotante', 'carro', None, 11000])
 ('dir de tmp en if:', ['t_0', 'flotante', 'carro', None, 11000])
 ('dir de tmp en else:', None)
-('Constante actual:', '"antes de llamada"')
-('llego la variable', 'const', 'de tipo', 'cadena', 'para el segmento de', <constant.Constant object at 0x1007aabd0>)
-('Constante actual:', 2)
-('llego la variable', 'const', 'de tipo', 'entero', 'para el segmento de', <constant.Constant object at 0x1007aabd0>)
-mandando: 15001 con tipo:entero
-('esperando:', 'entero')
-('Constante actual:', 3.0)
+('Constante actual:', 300.0)
 ('llego la variable', 'const', 'de tipo', 'flotante', 'para el segmento de', <constant.Constant object at 0x1007aabd0>)
 ('const', 'pertenece a', <constant.Constant object at 0x1007aabd0>, 'y es de tipo', 'flotante')
 ('en memoria con', 'const')
 mandando: 16000 con tipo:flotante
 ('esperando:', 'flotante')
-('dir de tmp en else:', None)
-generando sub------
-('type:', 'vacio')
-('val:', 'carro')
-('Constante actual:', 1.0)
+('Constante actual:', 300.0)
 ('llego la variable', 'const', 'de tipo', 'flotante', 'para el segmento de', <constant.Constant object at 0x1007aabd0>)
 ('const', 'pertenece a', <constant.Constant object at 0x1007aabd0>, 'y es de tipo', 'flotante')
 ('en memoria con', 'const')
 mandando: 16001 con tipo:flotante
 ('esperando:', 'flotante')
-('Constante actual:', 4.0)
+('Constante actual:', '"rojo"')
+('llego la variable', 'const', 'de tipo', 'cadena', 'para el segmento de', <constant.Constant object at 0x1007aabd0>)
+mandando: 18001 con tipo:cadena
+('esperando:', 'cadena')
+('Constante actual:', '"hola mundo"')
+('llego la variable', 'const', 'de tipo', 'cadena', 'para el segmento de', <constant.Constant object at 0x1007aabd0>)
+mandando: 18002 con tipo:cadena
+('esperando:', 'cadena')
+('Constante actual:', 12)
+('llego la variable', 'const', 'de tipo', 'entero', 'para el segmento de', <constant.Constant object at 0x1007aabd0>)
+mandando: 15001 con tipo:entero
+('esperando:', 'entero')
+('dir de tmp en else:', None)
+generando sub------
+('type:', 'vacio')
+('val:', 'insertaTexto')
+('Constante actual:', 600.0)
 ('llego la variable', 'const', 'de tipo', 'flotante', 'para el segmento de', <constant.Constant object at 0x1007aabd0>)
 ('const', 'pertenece a', <constant.Constant object at 0x1007aabd0>, 'y es de tipo', 'flotante')
 ('en memoria con', 'const')
 mandando: 16002 con tipo:flotante
 ('esperando:', 'flotante')
-('Constante actual:', 8.0)
+('Constante actual:', 200.0)
 ('llego la variable', 'const', 'de tipo', 'flotante', 'para el segmento de', <constant.Constant object at 0x1007aabd0>)
 ('const', 'pertenece a', <constant.Constant object at 0x1007aabd0>, 'y es de tipo', 'flotante')
 ('en memoria con', 'const')
 mandando: 16003 con tipo:flotante
 ('esperando:', 'flotante')
+('Constante actual:', 500.0)
+('llego la variable', 'const', 'de tipo', 'flotante', 'para el segmento de', <constant.Constant object at 0x1007aabd0>)
+('const', 'pertenece a', <constant.Constant object at 0x1007aabd0>, 'y es de tipo', 'flotante')
+('en memoria con', 'const')
+mandando: 16004 con tipo:flotante
+('esperando:', 'flotante')
+('Constante actual:', 300.0)
+('llego la variable', 'const', 'de tipo', 'flotante', 'para el segmento de', <constant.Constant object at 0x1007aabd0>)
+('const', 'pertenece a', <constant.Constant object at 0x1007aabd0>, 'y es de tipo', 'flotante')
+('en memoria con', 'const')
+mandando: 16005 con tipo:flotante
+('esperando:', 'flotante')
+('Constante actual:', 700.0)
+('llego la variable', 'const', 'de tipo', 'flotante', 'para el segmento de', <constant.Constant object at 0x1007aabd0>)
+('const', 'pertenece a', <constant.Constant object at 0x1007aabd0>, 'y es de tipo', 'flotante')
+('en memoria con', 'const')
+mandando: 16006 con tipo:flotante
+('esperando:', 'flotante')
+('Constante actual:', 300.0)
+('llego la variable', 'const', 'de tipo', 'flotante', 'para el segmento de', <constant.Constant object at 0x1007aabd0>)
+('const', 'pertenece a', <constant.Constant object at 0x1007aabd0>, 'y es de tipo', 'flotante')
+('en memoria con', 'const')
+mandando: 16007 con tipo:flotante
+('esperando:', 'flotante')
 ('Constante actual:', '"rojo"')
-('llego la variable', 'const', 'de tipo', 'cadena', 'para el segmento de', <constant.Constant object at 0x1007aabd0>)
-mandando: 18002 con tipo:cadena
-('esperando:', 'cadena')
-('Constante actual:', '"amarillo"')
 ('llego la variable', 'const', 'de tipo', 'cadena', 'para el segmento de', <constant.Constant object at 0x1007aabd0>)
 mandando: 18003 con tipo:cadena
 ('esperando:', 'cadena')
-('Constante actual:', 5)
+('Constante actual:', '"amarillo"')
+('llego la variable', 'const', 'de tipo', 'cadena', 'para el segmento de', <constant.Constant object at 0x1007aabd0>)
+mandando: 18004 con tipo:cadena
+('esperando:', 'cadena')
+('Constante actual:', 12)
 ('llego la variable', 'const', 'de tipo', 'entero', 'para el segmento de', <constant.Constant object at 0x1007aabd0>)
 mandando: 15002 con tipo:entero
 ('esperando:', 'entero')
 ('dir de tmp en else:', None)
 generando sub------
 ('type:', 'vacio')
-('val:', 'insertaCirculo')
+('val:', 'insertaTriangulo')
+('Constante actual:', '"antes de llamada"')
+('llego la variable', 'const', 'de tipo', 'cadena', 'para el segmento de', <constant.Constant object at 0x1007aabd0>)
+('Constante actual:', 2)
+('llego la variable', 'const', 'de tipo', 'entero', 'para el segmento de', <constant.Constant object at 0x1007aabd0>)
+mandando: 15003 con tipo:entero
+('esperando:', 'entero')
+('Constante actual:', 3.0)
+('llego la variable', 'const', 'de tipo', 'flotante', 'para el segmento de', <constant.Constant object at 0x1007aabd0>)
+('const', 'pertenece a', <constant.Constant object at 0x1007aabd0>, 'y es de tipo', 'flotante')
+('en memoria con', 'const')
+mandando: 16008 con tipo:flotante
+('esperando:', 'flotante')
+('dir de tmp en else:', None)
+generando sub------
+('type:', 'vacio')
+('val:', 'carro')
 ('dir de tmp en else:', None)
 ('dir de tmp en else:', None)
 ('Constante actual:', 1)
@@ -315,7 +361,7 @@ despues
 ('op: ', 12)
 ('dentro de else id:', 'I', 1002)
 ('dir de tmp en else:', None)
-('resultado final:', ['I', 'flotante', 'global', 15003, 1002])
+('resultado final:', ['I', 'flotante', 'global', 15004, 1002])
 ('dir de tmp en else:', None)
 ('Constante actual:', 'I')
 ('llego la variable', 'const', 'de tipo', 'caracter', 'para el segmento de', <constant.Constant object at 0x1007aabd0>)
@@ -384,7 +430,7 @@ despues
 ('llego la variable', 'const', 'de tipo', 'cadena', 'para el segmento de', <constant.Constant object at 0x1007aabd0>)
 ('Constante actual:', '"alternativa"')
 ('llego la variable', 'const', 'de tipo', 'cadena', 'para el segmento de', <constant.Constant object at 0x1007aabd0>)
-('counter else:', 26)
+('counter else:', 36)
 ('Constante actual:', 10)
 ('llego la variable', 'const', 'de tipo', 'entero', 'para el segmento de', <constant.Constant object at 0x1007aabd0>)
 ('Constante actual:', 'I')
@@ -462,29 +508,49 @@ despues
 ('dir de tmp en else:', None)
 ('resultado final:', ['I', 'flotante', 'global', 11001, 1002])
 ('dir de tmp en else:', None)
+('val', 300.0)
+('param_pos:', '0')
+('dirs:', [6000, 6001, 8000, 8001, 5000])
+('val', 300.0)
+('param_pos:', '1')
+('dirs:', [6000, 6001, 8000, 8001, 5000])
+('val', '"rojo"')
+('param_pos:', '2')
+('dirs:', [6000, 6001, 8000, 8001, 5000])
+('val', '"hola mundo"')
+('param_pos:', '3')
+('dirs:', [6000, 6001, 8000, 8001, 5000])
+('val', 12)
+('param_pos:', '4')
+('dirs:', [6000, 6001, 8000, 8001, 5000])
+('val', 600.0)
+('param_pos:', '0')
+('dirs:', [6002, 6003, 6004, 6005, 6006, 6007, 8002, 8003, 5001])
+('val', 200.0)
+('param_pos:', '1')
+('dirs:', [6002, 6003, 6004, 6005, 6006, 6007, 8002, 8003, 5001])
+('val', 500.0)
+('param_pos:', '2')
+('dirs:', [6002, 6003, 6004, 6005, 6006, 6007, 8002, 8003, 5001])
+('val', 300.0)
+('param_pos:', '3')
+('dirs:', [6002, 6003, 6004, 6005, 6006, 6007, 8002, 8003, 5001])
+('val', 700.0)
+('param_pos:', '4')
+('dirs:', [6002, 6003, 6004, 6005, 6006, 6007, 8002, 8003, 5001])
+('val', 300.0)
+('param_pos:', '5')
+('dirs:', [6002, 6003, 6004, 6005, 6006, 6007, 8002, 8003, 5001])
+('val', '"rojo"')
+('param_pos:', '6')
+('dirs:', [6002, 6003, 6004, 6005, 6006, 6007, 8002, 8003, 5001])
+('val', '"amarillo"')
+('param_pos:', '7')
+('dirs:', [6002, 6003, 6004, 6005, 6006, 6007, 8002, 8003, 5001])
+('val', 12)
+('param_pos:', '8')
+('dirs:', [6002, 6003, 6004, 6005, 6006, 6007, 8002, 8003, 5001])
 "antes de llamada"
-5006
-6029
-11000
-diccionario con variables:
-('var', 'x')
-x
-entero
-carro
-None
-5006
-('var', 'y')
-y
-flotante
-carro
-None
-6029
-('var', 't_0')
-t_0
-flotante
-carro
-None
-11000
 ('val', 2)
 ('param_pos:', '0')
 ('dirs:', [5006, 6029, 11000])
@@ -493,67 +559,6 @@ None
 ('dirs:', [5006, 6029, 11000])
 "con dinero compro comida!"
 6.0
-6012
-6013
-6014
-8006
-8007
-5003
-diccionario con variables:
-('var', 'x')
-x
-flotante
-insertaCirculo
-None
-6012
-('var', 'y')
-y
-flotante
-insertaCirculo
-None
-6013
-('var', 'radio')
-radio
-flotante
-insertaCirculo
-None
-6014
-('var', 'relleno')
-relleno
-cadena
-insertaCirculo
-None
-8006
-('var', 'linea')
-linea
-cadena
-insertaCirculo
-None
-8007
-('var', 'grosor')
-grosor
-entero
-insertaCirculo
-None
-5003
-('val', 1.0)
-('param_pos:', '0')
-('dirs:', [6012, 6013, 6014, 8006, 8007, 5003])
-('val', 4.0)
-('param_pos:', '1')
-('dirs:', [6012, 6013, 6014, 8006, 8007, 5003])
-('val', 8.0)
-('param_pos:', '2')
-('dirs:', [6012, 6013, 6014, 8006, 8007, 5003])
-('val', '"rojo"')
-('param_pos:', '3')
-('dirs:', [6012, 6013, 6014, 8006, 8007, 5003])
-('val', '"amarillo"')
-('param_pos:', '4')
-('dirs:', [6012, 6013, 6014, 8006, 8007, 5003])
-('val', 5)
-('param_pos:', '5')
-('dirs:', [6012, 6013, 6014, 8006, 8007, 5003])
 "alternativa"
 1
 2

@@ -172,7 +172,6 @@ class virtual_machine:
 				step = int(str(quadruples[actual_quad][3])) - actual_quad - 1
 				actual_quad += step
 
-
 			elif quadruples[actual_quad][0] == "ERA":
 				del arg_dirs[:]
 				scope = quadruples[actual_quad][1]
@@ -180,17 +179,18 @@ class virtual_machine:
 				# TODO: obtener unicamente parametros por medio de la var n
 				for var_id, var_lst in var_table.iteritems():
 					arg_dirs.append(var_lst[4])
-
 				
+				"""
 				for p_dir in arg_dirs:
 					print(p_dir)
-
+				
 				print("diccionario con variables:")
 				for k, v in var_table.iteritems():
 					print("var", k)
 					for e in v:
 						print(e)
-	
+				"""
+				
 			elif quadruples[actual_quad][0] == "PARAMETER":
 				val = st.get_val_from_dir(quadruples[actual_quad][1])
 				print("val",val)
@@ -216,7 +216,7 @@ class virtual_machine:
 
 			actual_quad += 1
 
-		graphics.pause_execution();
+		graphics.display_graphics();
 
 
 
