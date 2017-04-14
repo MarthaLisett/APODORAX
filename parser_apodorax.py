@@ -470,17 +470,17 @@ def p_saveFunID(p):
 
 def p_generateGoSub(p):
   '''generateGoSub : '''
-  global current_id
+  global fun_calling
   global type_pointer
   global k
   global counter
-  quad = ['GOSUB', current_id, '', 'dir']
+  quad = ['GOSUB', fun_calling, '', 'dir']
   quad_lst.append(quad)
   k = 0
   type_pointer = None
   counter += 1
 
-  var_lst = st.get_var(current_id)
+  var_lst = st.get_var(fun_calling)
   var_type = st.get_var_type(var_lst[0])
 
   print("generando sub------")

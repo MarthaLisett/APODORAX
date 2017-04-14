@@ -205,7 +205,9 @@ class virtual_machine:
 				st.set_val_from_dir(arg_dirs[int(param_position)], val)
 
 			elif quadruples[actual_quad][0] == "GOSUB":
+
 				fun_name = quadruples[actual_quad][1]
+				print("el nombre de la funcion es:", fun_name)
 				if fun_name in predefined_functions:
 					called_predefined_fun = True
 					if graphics is None:
