@@ -13,7 +13,7 @@ var bool Pregunta;
 var flotante I;
 var flotante resultado;
 var flotante flores;
-
+var entero ent;
 
 funcion flotante carro (var entero x, var flotante y) {
 	desplegar("con dinero compro comida!");
@@ -21,23 +21,31 @@ funcion flotante carro (var entero x, var flotante y) {
 	regresar 200.0;
 }
 
-inicio {
+funcion vacio camioneta(var cadena c1) {
+	desplegar(c1);
+}
 
-	I = carro(1,1.0);
-	insertaTexto(I, 500.0, "rojo", "hola mundo", 12);
-	insertaTriangulo(600.0, 200.0, 500.0, 300.0, 700.0, 300.0, "rojo", "amarillo", 12);
-	insertaRectangulo(500.0, 400.0, 780.0, 500.0, "rojo", "amarillo", 12);
-	insertaCirculo(300.0, 300.0, 50.3, "rojo", "amarillo", 4);
-	insertaOvalo(100.0, 500.0, 250.0, 300.0, "gris", "rosa", 12);
-	insertaPunto(290.0, 75.0, "azul");
-	insertaLinea(300.0, 300.0, 500.0, 100.0, "azul", 5);
-	insertaCurva(10.0, 100.0, 400.0, 200.0, "verde");
+inicio {
+	ent = 11;
+	flores = 10;
+	I = 300.0;#carro(2*ent,flores+3);
+	#insertaTexto(I, 500.0, "rojo", "hola mundo", 12);
+	#insertaTriangulo(600.0, 200.0, 500.0, 300.0, 700.0, 300.0, "rojo", "amarillo", 12);
+	#insertaRectangulo(500.0, 400.0, 780.0, 500.0, "rojo", "amarillo", 12);
+	#insertaCirculo(300.0, 300.0, 50.3, "rojo", "amarillo", 4);
+	#insertaOvalo(100.0, 500.0, 250.0, 300.0, "gris", "rosa", 12);
+	#insertaPunto(290.0, 75.0, "azul");
+	#insertaLinea(300.0, 300.0, 500.0, 100.0, "azul", 5);
+	#insertaCurva(10.0, 100.0, 400.0, 200.0, "verde");
+
+	ent = 2 * flores;
+	desplegar(ent);
 
 	desplegar("antes de llamada");
 	carro(2,3.0);
 	#insertaCirculo(300.0, 300.0, 8.0, "rojo", "amarillo", 5);
 	
-	I = 1;
+	I = 1.0;
 	si(I > 0 && 13 == 0) entonces {
 		desplegar("verdadero");
 	} sino entonces {
@@ -45,19 +53,14 @@ inicio {
 	}
 
 	mientras(10 > I) {
+		desplegar("dentro");
 		desplegar(I);
 		I = I + 1;
 	}
 
-	# insertaTexto(2.0, 3.0, "rojo", "hola mundo", 12);
-	# insertaTriangulo(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, "rojo", "amarillo", 12);
-	# insertaRectangulo(1.0, 2.0, 3.0, 4.0, "rojo", "amarillo", 12);
-	# insertaCirculo(1.0, 4.0, 8.0, "rojo", "amarillo", 12);
-	# insertaOvalo(1.0, 4.0, 8.0, 9.0, "rojo", "amarillo", 12);
-	# insertaPunto(1.0, 2.0, "azul");
-	# insertaLinea(1.0, 2.0, 3.0, 4.0, "azul", 13);
-	# insertaCurva(1.0, 2.0, 3.0, 4.0, "verde");
+	camioneta("aqui estoy");
+
 }
 
 fin
->>>>>>> cd53bfaa2d1ada711f2eb90d4fef74f53b30315f
+

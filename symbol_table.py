@@ -95,10 +95,10 @@ class symbol_table:
 	def set_dim_flag(self, var_id):
 		self.__func_dic[self.__scope][1][var_id][5] = True
 		# dim, l_inf, l_sup, k, r, aux, base_dir
-		self.__dim_vars[var_id] = [1, 0, None, None, 1, None, None]
+		base_dir = self.__func_dic[self.__scope][1].get(var_id)[4]
+		self.__dim_vars[var_id] = [1, 0, None, None, 1, None, base_dir]
 
 	def set_vector_limits(self, u_limit, var_id):
-		print("u_limit:-", u_limit)
 		self.__dim_vars[var_id][2] = u_limit - 1
 		u_limit = self.__dim_vars.get(var_id)[2]
 		l_limit = self.__dim_vars.get(var_id)[1]
@@ -107,8 +107,8 @@ class symbol_table:
 		self.__dim_vars[var_id][4] = r
 		self.__dim_vars[var_id][5] = r
 		global mm
-		base_dir = self.__func_dic[self.__scope][1][var_id][4]
-		var_type = self.__func_dic[self.__scope][1][var_id][1]
+		base_dir = self.__func_dic[self.__scope][1].get(var_id)[4]
+		var_type = self.__func_dic[self.__scope][1].get(var_id)[1]
 		aux = self.__dim_vars.get(var_id)[5]
 		mm.increment_address_pointer(var_type, base_dir, aux)
 		print("el arreglo cubre desde:", base_dir, "hasta", base_dir+aux)
@@ -129,6 +129,9 @@ class symbol_table:
 		new_dir = mm.insert_variable(val_type, "const", "const_" + str(const_counter), val)
 		const_counter += 1
 		return new_dir
+
+	def get_dim_var(self, var_id):
+		return self.__dim_vars.get(var_id)
 
 	""" insert_function revisa si el id de esta funciónya existe en la tabla de funciones,
 	si no existe la inserta y la inicializa con vacío como valor. """
@@ -179,10 +182,8 @@ class symbol_table:
 
 	def get_var(self, var_id):
 		if var_id  in self.__func_dic.get(self.__scope)[1]:
-			print("dir de tmp en if:", self.__func_dic.get(self.__scope)[1].get(var_id))
 			return self.__func_dic.get(self.__scope)[1].get(var_id)
 		elif var_id  in self.__func_dic.get('global')[1]:
-			print("dir de tmp en else:", self.__func_dic.get(self.__scope)[1].get(var_id))
 			return self.__func_dic.get('global')[1].get(var_id)
 
 	def get_var_type(self, var_id):

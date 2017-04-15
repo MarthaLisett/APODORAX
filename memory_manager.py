@@ -33,7 +33,13 @@ class memory_manager():
 		elif var_dir >= self.const.l_limit and var_dir <= self.const.u_limit:
 			self.const.set_val(var_dir, val, var_type)
 
+	# '_12332' => 12332 -> dir -> val
 	def get_val_from_dir(self, address):
+		if str(address)[len(str(address)) - 1] == '_':
+			return int(address[:len(str(address)) - 1])
+		if str(address)[0] == '_':
+			meta_address = self.get_val_from_dir(int(address[1:]))
+			return self.get_val_from_dir(meta_address)
 		if address >= self.tmp.l_limit and address <= self.tmp.u_limit:
 			return self.tmp.get_val_from_dir(address)
 		elif address >= self.glob.l_limit and address <= self.glob.u_limit:
@@ -43,7 +49,10 @@ class memory_manager():
 		elif address >= self.const.l_limit and address <= self.const.u_limit:
 			return self.const.get_val_from_dir(address)
 
+	# '_12332' => 12332 -> dir -> val
 	def set_val_from_dir(self, address, val):
+		if str(address)[0] == '_':
+			address = self.get_val_from_dir(int(address[1:]))
 		if address >= self.tmp.l_limit and address <= self.tmp.u_limit:
 			self.tmp.set_val_from_dir(address, val)
 		elif address >= self.glob.l_limit and address <= self.glob.u_limit:

@@ -50,10 +50,11 @@ type_pointer  = None
 fun_calling   = None
 current_id    = None
 current_type  = None
-#current_var_id = None
 current_vec_id = None
+current_dim_var_id = None
 vm            = virtual_machine() 
 main_quad     = 0
+dim_vars_s    = Stack()
 # Programa
 def p_program(p):
   '''program : PROGRAMA ID inicializar DOSPUNTOS declaracion insertVarCount createMainQuad function INICIO fillMainQuad insertMainFun bloque FIN generarCuadruplos '''
@@ -202,15 +203,14 @@ def p_guardarId(p):
         while not operands_s.isEmpty():
           operands_s.pop()
           types_s.pop()
-        operands_s.push(p[-3])
+        operands_s.push(st.get_var(p[-3])[4])
         if st.get_var(p[-3]) is not None:
           types_s.push(st.get_var(p[-3])[1])
       else:
-        operands_s.push(st.get_var(p[-3])[0])
+        operands_s.push(st.get_var(p[-3])[4])
     else:
-      operands_s.push(st.get_var(p[-3])[0])
+      operands_s.push(st.get_var(p[-3])[4])
       types_s.push(st.get_var(p[-3])[1])
-
 
 def p_buscarId(p):
   '''buscarId : '''
@@ -221,13 +221,80 @@ def p_buscarId(p):
 
  # Constante ID declaracion
 def p_cteid_declaracion(p):
-    '''cteid_declaracion : ID saveVecID revisarId cteidaux'''
+    '''cteid_declaracion : ID saveVecID revisarId vectorSettings'''
     p[0] = p[1]
+
+def p_vectorSettings(p):
+  '''vectorSettings : CORCHETEIZQ setDimFlag exp setLimits CORCHETEDER calculateK
+             | '''
 
 # Auxiliar Constante ID
 def p_cteidaux(p):
-    '''cteidaux : CORCHETEIZQ setDimFlag exp setLimits CORCHETEDER calculateK
+    '''cteidaux : CORCHETEIZQ saveDimVarID verifyDimVar exp CORCHETEDER generateVectorQuad
                | '''
+
+def p_saveDimVarID(p):
+  '''saveDimVarID : '''
+  global current_var_id
+  global current_dim_var_id
+  global operands_s
+  current_dim_var_id = current_var_id
+
+
+def p_generateVectorQuad(p):
+  '''generateVectorQuad : '''
+  global current_dim_var_id
+  global st
+  global quad_lst
+  global types_s
+  global tmp_var_num
+  global operators_s
+  global operands_s
+  global counter
+
+  l_limit = st.get_dim_var(current_dim_var_id)[1]
+  u_limit = st.get_dim_var(current_dim_var_id)[2]
+  k       = st.get_dim_var(current_dim_var_id)[3]
+
+  quad = ['VER', operands_s.peek(), l_limit, u_limit]
+  quad_lst.append(quad)
+
+  temporal = 't_' + str(tmp_var_num)
+  tmp_var_num += 1
+  aux      = operands_s.pop()
+  aux_type = types_s.peek()
+  print("este es el ultimo tipo que llego:", aux_type)
+  st.insert_variable(aux_type, temporal)
+  tmp_dir  = st.get_var(temporal)[4]
+  base_dir = st.get_dim_var(current_dim_var_id)[6]
+  print("la direccion recuperada:", tmp_dir)
+  quad1 = ['+', aux, str(k) + "_", tmp_dir]
+  quad2 = ['+', tmp_dir, str(base_dir) + "_", tmp_dir]
+
+  quad_lst.append(quad1)
+  quad_lst.append(quad2)
+  counter += 3
+
+  operands_s.push("_" + str(tmp_dir))
+
+  operators_s.pop()
+  dim_vars_s.pop()
+
+def p_verifyDimVar(p):
+  '''verifyDimVar : '''
+  global dim_vars_s
+  global operators_s
+  global st
+  global current_dim_var_id
+  print("ultima variable dimensionada:", current_dim_var_id)
+  var_id  = current_dim_var_id #operands_s.pop()
+  var_lst = st.get_var(var_id)
+  if not var_lst[5]:
+    raise TypeError("La variable " + "'" + var_id + "' no es dimensionada.")
+  else:
+    dim_var = (var_id, 1)
+    dim_vars_s.push(dim_var)
+    operators_s.push("(")
 
 def p_saveVecID(p):
   '''saveVecID : '''
@@ -353,8 +420,9 @@ def p_cte(p):
       p[0] = p[1]
       const_dir = st.add_constant_to_memory(p[1], get_type(p[1]))
       if st.get_var(p[1]) is not None and get_type(p[1]) != "entero" and len(st.get_var(p[1])) >= 4:
-        operands_s.push(st.get_var(p[1])[4]) #[0]
-        types_s.push(st.get_var(p[1])[1])
+        if not st.get_var(p[1])[5]:
+          operands_s.push(st.get_var(p[1])[4]) #[0]
+          types_s.push(st.get_var(p[1])[1])
       else:
         operands_s.push(const_dir)#operands_s.push(p[1])
         types_s.push(get_type(p[1]))
@@ -557,10 +625,11 @@ def p_saveVarID(p):
   '''saveVarID : '''
   global current_var_id
   current_var_id = p[-1]
+  print("variable actual:", current_var_id)
 
 # Auxiliar asignacionizq
 def p_asignacionizqaux(p):
-  '''asignacionizqaux : CORCHETEIZQ exp CORCHETEDER
+  '''asignacionizqaux : CORCHETEIZQ saveDimVarID verifyDimVar exp CORCHETEDER generateVectorQuad
                      | '''
 
 # Asignacion de valores
@@ -588,15 +657,18 @@ def p_setAssignment(p):
           global counter
           global st
           result = right_op
-          st.set_var_val(left_op, result)
-          print("resultado final:", st.get_var(left_op))
-          t = str(type(right_op))[7:10]
+          print("l_op:", left_op)
+          print("r_op:", right_op)
+          #st.set_var_val(left_op, result)
+
+          #print("resultado final:", st.get_var(left_op))
+          #t = str(type(right_op))[7:10]
           # revisar que no sea ya una direccion de memoria debido a agregar constantes
-          if t != 'int':
-            result = st.get_var(right_op)[4]
-          else:
-            result = right_op
-          quad = [operator, result, "", st.get_var(left_op)[4]]
+          #if t != 'int':
+          #  result = st.get_var(right_op)[4]
+          #else:
+          result = right_op
+          quad = [operator, result, "", left_op] #st.get_var(left_op)[4]]
           quad_lst.append(quad)
           counter += 1
           # TODO: if any operand were a temporal space, return it to AVAIL
@@ -616,15 +688,29 @@ def p_estatuto(p):
               | punto
               | linea
               | curva
-              | ID getCurrentID llamada PUNTOYCOMA
+              | ID getCurrentIDStatement llamada PUNTOYCOMA
               | asignacion
               | condicion
               | ciclo'''
 
+def p_getCurrentIDStatement(p):
+  '''getCurrentIDStatement : saveVarID'''
+  global current_id
+  current_id = p[-1]
+
+def p_getCurrentIDFun(p):
+  '''getCurrentIDFun : '''
+  global current_id
+  current_id = p[-1]
+
 def p_getCurrentID(p):
   '''getCurrentID : saveVarID'''
   global current_id
+  global operands_s
   current_id = p[-1]
+  #if not st.function_exists(p[-1]) and st.get_var(p[-1])[5]:
+    #print("voy a introducir:" + st.get_var(p[-1])[0])
+    #operands_s.push(st.get_var(p[-1])[0])
 
 # Negar la expresion
 def p_negacion(p):
@@ -829,6 +915,10 @@ def p_checkTermTypes(p):
           quad = [operator, left_op, right_op, st.get_var(result)[4]]
           quad_lst.append(quad)
 
+          print("---encontre esto---")
+          print(left_op)
+          print(right_op)
+
           tmp_var_num += 1
           counter += 1
           operands_s.push(st.get_var(result)[4])
@@ -854,6 +944,7 @@ def p_factor(p):
     '''factor : PARENIZQUIERDO crearFondoFalso logico PARENDERECHO quitarFondoFalso
             | cte 
             '''
+
 # Llamada a funcion
 def p_llamada(p):
     '''llamada : buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub'''
@@ -997,35 +1088,35 @@ def p_args2(p):
 
 # Funcion para incluir texto
 def p_texto(p):
-    '''texto : INSERTATEXTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA'''
+    '''texto : INSERTATEXTO getCurrentIDFun buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA'''
 
 # Funcion para incluir un rectangulo
 def p_rectangulo(p):
-    '''rectangulo : INSERTARECTANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA'''
+    '''rectangulo : INSERTARECTANGULO getCurrentIDFun buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA'''
 
 # Funcion para incluir un triangulo
 def p_triangulo(p):
-    '''triangulo :  INSERTATRIANGULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA'''
+    '''triangulo :  INSERTATRIANGULO getCurrentIDFun buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA'''
 
 # Funcion para incluir un circulo
 def p_circulo(p):
-    '''circulo : INSERTACIRCULO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA'''
+    '''circulo : INSERTACIRCULO getCurrentIDFun buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA'''
 
 # Funcion para incluir un ovalo
 def p_ovalo(p):
-    '''ovalo : INSERTAOVALO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA'''
+    '''ovalo : INSERTAOVALO getCurrentIDFun buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA'''
 
 # Funcion para incluir un punto
 def p_punto(p):
-    '''punto : INSERTAPUNTO getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA'''
+    '''punto : INSERTAPUNTO getCurrentIDFun buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA'''
 
 # Funcion para incluir una linea
 def p_linea(p):
-    '''linea : INSERTALINEA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA'''
+    '''linea : INSERTALINEA getCurrentIDFun buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA'''
 
 # Funcion para incluir una curva
 def p_curva(p):
-    '''curva : INSERTACURVA getCurrentID buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA'''
+    '''curva : INSERTACURVA getCurrentIDFun buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA'''
 
 def p_error(p):
   print("Error de sintaxis: '%s' en línea: %s."  % (p.value, p.lineno))

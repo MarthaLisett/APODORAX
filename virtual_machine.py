@@ -13,7 +13,6 @@ class virtual_machine:
 								"insertaTexto", "insertaTriangulo", "insertaRectangulo", "insertaLinea",
 								"insertaCirculo", "insertaOvalo", "insertaPunto", "insertaCurva",
 								]
-
 		graphics = None
 		arg_dirs = []
 		actual_quad = 0
@@ -223,6 +222,14 @@ class virtual_machine:
 
 			elif quadruples[actual_quad][0] == "ENDPROC":
 				actual_quad = return_quad - 1
+
+			elif quadruples[actual_quad][0] == "VER":
+				index = quadruples[actual_quad][1]
+				l_limit = quadruples[actual_quad][2]
+				u_limit = quadruples[actual_quad][3]
+				index = st.get_val_from_dir(index)
+				if index < l_limit or index > u_limit:
+					raise IndexError("Se intento acceder a un espacio fuera del arreglo.")
 
 			actual_quad += 1
 

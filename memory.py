@@ -122,18 +122,17 @@ class Memory(object):
 
 	def get_val_from_dir(self, address):
 		if address <= self.int_u_limit and address >= self.int_l_limit:
-			return self.integers.get(address)
+			return self.integers.get(address) 
 		elif address <= self.float_u_limit and address >= self.float_l_limit:
-			return self.floats.get(address)
+			return self.floats.get(address) 
 		elif address <= self.bool_u_limit and address >= self.bool_l_limit:
-			return self.booleans.get(address)
+			return self.booleans.get(address) 
 		elif address <= self.str_u_limit and address >= self.str_l_limit:
-			return self.strings.get(address)
+			return self.strings.get(address) 
 		elif address <= self.char_u_limit and address >= self.char_l_limit:
-			return self.characters.get(address)
+			return self.characters.get(address) 
 		else:
 			raise MemoryError("No se encontro la direccion.")
-	
 
 	def set_val_from_dir(self, address, val):
 		if address <= self.int_u_limit and address >= self.int_l_limit:
