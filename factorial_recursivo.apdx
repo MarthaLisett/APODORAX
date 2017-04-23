@@ -1,0 +1,23 @@
+programa Martha0295:
+
+var entero res;
+
+funcion entero factorial(var entero x) {
+	var entero resultado;
+	var entero aux;
+
+	si (x <= 1) entonces {
+		resultado = 1;
+	} sino entonces {
+		aux = factorial(x - 1);
+		resultado = aux * x;
+	}
+	regresar resultado;
+}
+
+inicio {
+	res = factorial(5);
+	desplegar(res);
+}
+
+fin

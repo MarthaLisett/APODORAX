@@ -1,4 +1,8 @@
 from graphics_drawer import Graphics
+from stack           import Stack
+from queue           import Queue
+import copy
+
 class virtual_machine:
 	def __init__(self):
 		pass
@@ -18,6 +22,11 @@ class virtual_machine:
 		actual_quad = 0
 		return_quad = 0
 		called_predefined_fun = False
+		found_return = False
+		actual_fun = ""
+		fun_calls = Queue()
+		execution_stack = Stack()
+
 		while actual_quad < len(quadruples):
 			if quadruples[actual_quad][0] == '=':
 				dir_izq = quadruples[actual_quad][1]
@@ -173,13 +182,35 @@ class virtual_machine:
 				actual_quad += step
 
 			elif quadruples[actual_quad][0] == "ERA":
+				if not execution_stack.isEmpty():
+					var_table   = copy.deepcopy(st.get_func_dic().get(fun_calls.dequeue())[1])
+					
+					
+					"""	
+					print("ERA")		
+					if not execution_stack.peek()[0] == None:
+						print("Anteriormente")
+						for var_id, lst in execution_stack.peek()[0].iteritems():
+							print("direccion virtual:", lst[4])
+							print("valor:", lst[3])
+					"""
+					for var_id, lst in var_table.iteritems():
+						lst[3] = copy.deepcopy(st.get_val_from_dir(lst[4]))
+						#print("direccion virtual:", lst[4])
+						#print("valor:", lst[3])
+					saved_fun   = [var_table, None]
+
+					execution_stack.push(list(saved_fun))
+
+
+
+				# eliminamos lista con direcciones de argumentos
 				del arg_dirs[:]
+				
 				scope = quadruples[actual_quad][1]
 				var_table = st.get_func_dic().get(scope)[1]
-
+				fun_calls.enqueue(scope)
 				no_vars = st.get_var_count(scope)
-				if scope == "carro":
-					print("CANTIDAD:", no_vars)
 
 				for var_id, var_lst in var_table.iteritems():
 					arg_dirs.append(var_lst[4])
@@ -197,16 +228,11 @@ class virtual_machine:
 				
 			elif quadruples[actual_quad][0] == "PARAMETER":
 				val = st.get_val_from_dir(quadruples[actual_quad][1])
-				print("val",val)
 				param_position = quadruples[actual_quad][3][5:]
-				print("param_pos:",param_position)
-				print("dirs:", arg_dirs)
 				st.set_val_from_dir(arg_dirs[int(param_position)], val)
 
 			elif quadruples[actual_quad][0] == "GOSUB":
-
 				fun_name = quadruples[actual_quad][1]
-				print("el nombre de la funcion es:", fun_name)
 				if fun_name in predefined_functions:
 					called_predefined_fun = True
 					if graphics is None:
@@ -217,11 +243,43 @@ class virtual_machine:
 						argument_lst.append(arg)
 					graphics.build_figure(fun_name, argument_lst)
 				else:
-					return_quad = actual_quad + 1
-					actual_quad = st.get_quadruple_count(fun_name) - 1
+					return_quad  = actual_quad + 1
+					actual_quad  = st.get_quadruple_count(fun_name) - 1
+					if execution_stack.isEmpty():
+						saved_fun = [None, return_quad]
+					else:
+						saved_fun    = execution_stack.pop()
+						saved_fun[1] = return_quad
+					execution_stack.push(list(saved_fun))
 
 			elif quadruples[actual_quad][0] == "ENDPROC":
-				actual_quad = return_quad - 1
+				if not found_return:
+					saved_fun   = execution_stack.pop()
+					actual_quad = saved_fun[1] - 1
+					if not execution_stack.isEmpty():
+						for var_id, lst in saved_fun[0].iteritems():
+							#print("direccion virtual:", lst[4])
+							#print("valor:", lst[3])
+							st.set_val_from_dir(lst[4], lst[3])
+					else:
+						fun_calls.dequeue()
+				else:
+					found_return = False
+
+			elif quadruples[actual_quad][0] == "RETURN":
+				fun_dir = st.get_func_dic().get("global")[1].get(fun_calls.peek())[4]
+				var_dir = quadruples[actual_quad][1]
+				val     = st.get_val_from_dir(var_dir)
+				st.set_val_from_dir(fun_dir, val)
+
+				saved_fun   = execution_stack.pop()
+				actual_quad = saved_fun[1] - 1
+				if not execution_stack.isEmpty():
+					for var_id, lst in saved_fun[0].iteritems():
+						st.set_val_from_dir(lst[4], lst[3])
+				else:
+					fun_calls.dequeue()
+				found_return = True
 
 			elif quadruples[actual_quad][0] == "VER":
 				index = quadruples[actual_quad][1]

@@ -1,7 +1,7 @@
 programa Martha0295:
 
 var entero j;
-var entero arr[15];
+var entero arr[14 + 1];
 var entero k;
 
 inicio {

@@ -3,25 +3,27 @@ programa Martha0295:
 # --- variables globales
 
 
-funcion entero carro (var entero x)#, var flotante y)
-{
-	var flotante resultadofinal;
-    #var entero I;
-
-	regresar (3*5);
+funcion vacio carro() {
+	desplegar("hola mundo");
 }
 
-funcion vacio camioneta()
+funcion vacio camioneta(var entero x)
 {
-    #flor3 = flores + 1;
-	desplegar ("hola");
+	desplegar(x);
+	si (x > 0) entonces {
+		camioneta(x - 1);
+
+	}
+	desplegar("despues de llamada 2");
+	desplegar(x);
 }
+
 
 inicio
 {
-	camioneta();
+	camioneta(2);
+	desplegar("despues de llamada 1");
 
-	carro((5+1)); # dice que tipos no coinciden	
 }
 
 fin

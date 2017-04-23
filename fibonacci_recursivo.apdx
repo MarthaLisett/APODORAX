@@ -1,0 +1,32 @@
+programa Martha0295:
+
+var entero res;
+
+funcion entero fibonacci(var entero x) {
+	var entero resultado;
+	var entero aux1;
+	var entero aux2;
+
+	si (x == 0) entonces {
+		resultado = 0;
+	}
+
+	si (x == 1) entonces {
+		resultado = 1;
+	}
+
+	si (x > 1) entonces {
+		aux1 = fibonacci(x - 1);
+		aux2 = fibonacci(x - 2);
+		resultado = aux1 + aux2;
+	}
+
+	regresar resultado;
+}
+
+inicio {
+	res = fibonacci(10);
+	desplegar(res);
+}
+
+fin

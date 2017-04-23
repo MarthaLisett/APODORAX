@@ -19,3 +19,6 @@ class Queue:
     '''regresa la cantidad de elementos en la queue'''
     def size(self):
         return len(self.items)
+
+    def peek(self):
+        return self.items[len(self.items) - 1]
