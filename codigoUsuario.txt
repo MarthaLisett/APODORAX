@@ -1,0 +1,8 @@
+programa Martha0295:
+
+var entero i;
+
+inicio {
+	desplegar(5+4);
+}
+fin
