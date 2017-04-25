@@ -50,12 +50,12 @@ type_pointer  = None
 fun_calling   = None
 current_id    = None
 current_type  = None
-current_vec_id = None
-current_dim_var_id = None
 vm            = virtual_machine() 
 main_quad     = 0
-dim_vars_s    = Stack()
 debug         = False
+current_vec_id = None
+current_dim_var_id = None
+dims_s        = Stack()
 # Programa
 def p_program(p):
   '''program : PROGRAMA ID inicializar DOSPUNTOS declaracion insertVarCount createMainQuad function INICIO fillMainQuad insertMainFun bloque FIN generarCuadruplos '''
@@ -239,8 +239,9 @@ def p_saveDimVarID(p):
   global current_var_id
   global current_dim_var_id
   global operands_s
+  global dims_s
   current_dim_var_id = current_var_id
-
+  dims_s.push(current_dim_var_id)
 
 def p_generateVectorQuad(p):
   '''generateVectorQuad : '''
@@ -252,6 +253,9 @@ def p_generateVectorQuad(p):
   global operators_s
   global operands_s
   global counter
+  global dims_s
+
+  current_dim_var_id = dims_s.pop()
 
   l_limit = st.get_dim_var(current_dim_var_id)[1]
   u_limit = st.get_dim_var(current_dim_var_id)[2]
@@ -279,11 +283,9 @@ def p_generateVectorQuad(p):
   operands_s.push("_" + str(tmp_dir))
 
   operators_s.pop()
-  dim_vars_s.pop()
 
 def p_verifyDimVar(p):
   '''verifyDimVar : '''
-  global dim_vars_s
   global operators_s
   global st
   global current_dim_var_id
@@ -293,8 +295,7 @@ def p_verifyDimVar(p):
   if not var_lst[5]:
     raise TypeError("La variable " + "'" + var_id + "' no es dimensionada.")
   else:
-    dim_var = (var_id, 1)
-    dim_vars_s.push(dim_var)
+
     operators_s.push("(")
 
 def p_saveVecID(p):

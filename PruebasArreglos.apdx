@@ -1,35 +1,16 @@
 programa Martha0295:
 
 var entero j;
-var entero arr[14 + 1];
+var entero arr[14];
+var entero arr2[10];
 var entero k;
 
 inicio {
-	k = 4;
+	arr[0] = 11;
+	arr2[0] = 0;
+	j = arr[arr2[0]];
 
-	arr[0] = 10;
-	#desplegar(arr[0]);
-	arr[1] = 30;
-	#desplegar(arr[1]);
-	arr[2] = 40;
-	#desplegar(arr[2]);
-	j = 1;
-	desplegar("aqui estoy");
-	#desplegar(j);
-	desplegar(arr[j + 1]);
-
-
-	mientras(k >= 0) {
-		desplegar(arr[k]);
-		k = k - 1;
-	}
-
-	si (k > 0) entonces {
-		desplegar("dentro");
-	} sino entonces {
-		desplegar("fuera");
-	}
-
+	desplegar(j * arr[0]);
 
 }
 

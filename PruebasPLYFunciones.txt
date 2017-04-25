@@ -1,30 +1,60 @@
 programa Martha0295:
 
 # --- variables globales
-
-
-funcion vacio carro() {
+var flotante flt;
+var entero x;
+funcion entero carro() {
 	desplegar("hola mundo");
+	regresar 9;
 }
 
-funcion vacio camioneta(var entero x)
-{
+funcion vacio carro2() {
+	desplegar("hola mundo 2");
+}
+
+funcion vacio camioneta(var entero x) {
 	desplegar(x);
 	si (x > 0) entonces {
 		camioneta(x - 1);
 
 	}
 	desplegar("despues de llamada 2");
-	carro();
+
 	desplegar(x);
 }
 
 
-inicio
-{
-	camioneta(2);
-	desplegar("despues de llamada 1");
+funcion vacio fun2() {
+	x = x - 1;
+	fun1();
+}
+
+funcion vacio fun1() {
+	si (x > 0) entonces {
+		fun2();
+	}
+}
+
+
+
+
+inicio {
+	x = 3;
+	fun1();
+
+	#carro();
+	#camioneta(1);
+	#carro2();
+	#camioneta(1);
+	desplegar("despues de llamadas");
 
 }
 
 fin
+
+
+
+
+
+
+

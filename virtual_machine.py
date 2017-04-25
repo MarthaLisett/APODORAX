@@ -11,9 +11,10 @@ class virtual_machine:
 
 		debug = False
 		
-		if debug : print("buscando:", dir_izq)
-		if debug : print("buscando:", dir_der)
-		if debug : print("buscando:", dir_res)
+		if debug :
+			print("buscando:", dir_izq)
+			print("buscando:", dir_der)
+			print("buscando:", dir_res)
 		
 		predefined_functions = [
 								"insertaTexto", "insertaTriangulo", "insertaRectangulo", "insertaLinea",
@@ -184,9 +185,9 @@ class virtual_machine:
 				actual_quad += step
 
 			elif quadruples[actual_quad][0] == "ERA":
+				#print("quad actual->", actual_quad)
 				if not execution_stack.isEmpty():
 					var_table   = copy.deepcopy(st.get_func_dic().get(fun_calls.dequeue())[1])
-					
 					
 					"""	
 					if debug : print("ERA")		
@@ -212,6 +213,9 @@ class virtual_machine:
 				scope = quadruples[actual_quad][1]
 				var_table = st.get_func_dic().get(scope)[1]
 				fun_calls.enqueue(scope)
+				if debug:
+					for calls in fun_calls.items:
+						print("tengo:", calls)
 				no_vars = st.get_var_count(scope)
 
 				for var_id, var_lst in var_table.iteritems():
@@ -255,33 +259,35 @@ class virtual_machine:
 					execution_stack.push(list(saved_fun))
 
 			elif quadruples[actual_quad][0] == "ENDPROC":
-				if not found_return:
-					saved_fun   = execution_stack.pop()
-					actual_quad = saved_fun[1] - 1
-					if not execution_stack.isEmpty():
-						for var_id, lst in saved_fun[0].iteritems():
-							#if debug : print("direccion virtual:", lst[4])
-							#if debug : print("valor:", lst[3])
-							st.set_val_from_dir(lst[4], lst[3])
-					else:
-						fun_calls.dequeue()
+				saved_fun   = execution_stack.pop()
+				actual_quad = saved_fun[1] - 1
+				#if not found_return:
+				if debug : print("desde endproc voy a regresar a:", actual_quad)
+				if not execution_stack.isEmpty():
+					for var_id, lst in saved_fun[0].iteritems():
+						#if debug : print("direccion virtual:", lst[4])
+						#if debug : print("valor:", lst[3])
+						st.set_val_from_dir(lst[4], lst[3])
 				else:
-					found_return = False
+					fun_calls.dequeue()
+				#else:
+				#	found_return = False
 
 			elif quadruples[actual_quad][0] == "RETURN":
 				fun_dir = st.get_func_dic().get("global")[1].get(fun_calls.peek())[4]
 				var_dir = quadruples[actual_quad][1]
 				val     = st.get_val_from_dir(var_dir)
 				st.set_val_from_dir(fun_dir, val)
-
+				"""
 				saved_fun   = execution_stack.pop()
-				actual_quad = saved_fun[1] - 1
 				if not execution_stack.isEmpty():
 					for var_id, lst in saved_fun[0].iteritems():
 						st.set_val_from_dir(lst[4], lst[3])
 				else:
 					fun_calls.dequeue()
+				
 				found_return = True
+				"""
 
 			elif quadruples[actual_quad][0] == "VER":
 				index = quadruples[actual_quad][1]
