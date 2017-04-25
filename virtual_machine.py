@@ -8,11 +8,13 @@ class virtual_machine:
 		pass
 
 	def start_execution(self, st, quadruples):
-		"""
-		print("buscando:", dir_izq)
-		print("buscando:", dir_der)
-		print("buscando:", dir_res)
-		"""
+
+		debug = False
+		
+		if debug : print("buscando:", dir_izq)
+		if debug : print("buscando:", dir_der)
+		if debug : print("buscando:", dir_res)
+		
 		predefined_functions = [
 								"insertaTexto", "insertaTriangulo", "insertaRectangulo", "insertaLinea",
 								"insertaCirculo", "insertaOvalo", "insertaPunto", "insertaCurva",
@@ -187,17 +189,17 @@ class virtual_machine:
 					
 					
 					"""	
-					print("ERA")		
+					if debug : print("ERA")		
 					if not execution_stack.peek()[0] == None:
-						print("Anteriormente")
+						if debug : print("Anteriormente")
 						for var_id, lst in execution_stack.peek()[0].iteritems():
-							print("direccion virtual:", lst[4])
-							print("valor:", lst[3])
+							if debug : print("direccion virtual:", lst[4])
+							if debug : print("valor:", lst[3])
 					"""
 					for var_id, lst in var_table.iteritems():
 						lst[3] = copy.deepcopy(st.get_val_from_dir(lst[4]))
-						#print("direccion virtual:", lst[4])
-						#print("valor:", lst[3])
+						if debug : print("direccion virtual:", lst[4])
+						if debug : print("valor:", lst[3])
 					saved_fun   = [var_table, None]
 
 					execution_stack.push(list(saved_fun))
@@ -217,13 +219,13 @@ class virtual_machine:
 				
 				"""
 				for p_dir in arg_dirs:
-					print(p_dir)
+					if debug : print(p_dir)
 				
-				print("diccionario con variables:")
+				if debug : print("diccionario con variables:")
 				for k, v in var_table.iteritems():
-					print("var", k)
+					if debug : print("var", k)
 					for e in v:
-						print(e)
+						if debug : print(e)
 				"""
 				
 			elif quadruples[actual_quad][0] == "PARAMETER":
@@ -258,8 +260,8 @@ class virtual_machine:
 					actual_quad = saved_fun[1] - 1
 					if not execution_stack.isEmpty():
 						for var_id, lst in saved_fun[0].iteritems():
-							#print("direccion virtual:", lst[4])
-							#print("valor:", lst[3])
+							#if debug : print("direccion virtual:", lst[4])
+							#if debug : print("valor:", lst[3])
 							st.set_val_from_dir(lst[4], lst[3])
 					else:
 						fun_calls.dequeue()

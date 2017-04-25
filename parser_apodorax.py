@@ -55,6 +55,7 @@ current_dim_var_id = None
 vm            = virtual_machine() 
 main_quad     = 0
 dim_vars_s    = Stack()
+debug         = False
 # Programa
 def p_program(p):
   '''program : PROGRAMA ID inicializar DOSPUNTOS declaracion insertVarCount createMainQuad function INICIO fillMainQuad insertMainFun bloque FIN generarCuadruplos '''
@@ -263,11 +264,11 @@ def p_generateVectorQuad(p):
   tmp_var_num += 1
   aux      = operands_s.pop()
   aux_type = types_s.peek()
-  print("este es el ultimo tipo que llego:", aux_type)
+  if debug : print("este es el ultimo tipo que llego:", aux_type)
   st.insert_variable(aux_type, temporal)
   tmp_dir  = st.get_var(temporal)[4]
   base_dir = st.get_dim_var(current_dim_var_id)[6]
-  print("la direccion recuperada:", tmp_dir)
+  if debug : print("la direccion recuperada:", tmp_dir)
   quad1 = ['+', aux, str(k) + "_", tmp_dir]
   quad2 = ['+', tmp_dir, str(base_dir) + "_", tmp_dir]
 
@@ -286,7 +287,7 @@ def p_verifyDimVar(p):
   global operators_s
   global st
   global current_dim_var_id
-  print("ultima variable dimensionada:", current_dim_var_id)
+  if debug : print("ultima variable dimensionada:", current_dim_var_id)
   var_id  = current_dim_var_id #operands_s.pop()
   var_lst = st.get_var(var_id)
   if not var_lst[5]:
@@ -360,7 +361,7 @@ def p_incrementParamCounter(p):
 def p_addParamCount(p):
   '''addParamCount : '''
   global args_count
-  print("Valor args_count:", args_count)
+  if debug : print("Valor args_count:", args_count)
   st.add_no_params(args_count)
   args_count = 0
 
@@ -413,7 +414,7 @@ def p_cte(p):
            | VERDADERO
            | FALSO'''
     
-    print("Constante actual:", p[1])
+    if debug : print("Constante actual:", p[1])
     global st
 
     if not st.function_exists(p[1]):
@@ -471,7 +472,7 @@ def p_revisarId(p):
     global st
     global current_vec_id
     global current_type
-    print("estoy regresando p[-1]", p[-1])
+    if debug : print("estoy regresando p[-1]", p[-1])
     st.insert_variable(current_type, current_vec_id)
 
 # Return de las funciones
@@ -551,9 +552,9 @@ def p_generateGoSub(p):
   var_lst = st.get_var(fun_calling)
   var_type = st.get_var_type(var_lst[0])
 
-  print("generando sub------")
-  print('type:', var_type)
-  print('val:', var_lst[0])
+  if debug : print("generando sub------")
+  if debug : print('type:', var_type)
+  if debug : print('val:', var_lst[0])
   operands_s.push(var_lst[4]) #[0]
   types_s.push(var_type)
   
@@ -592,8 +593,8 @@ def p_validateArgs(p):
   argument = operands_s.pop()
   arg_type = types_s.pop()
 
-  print("mandando: " + str(argument) + " con tipo:" +  str(arg_type))
-  print("esperando:", type_pointer)
+  if debug : print("mandando: " + str(argument) + " con tipo:" +  str(arg_type))
+  if debug : print("esperando:", type_pointer)
 
   if arg_type != type_pointer:
     raise TypeError("Los tipos en la llamada y la función no coinciden.")
@@ -625,7 +626,7 @@ def p_saveVarID(p):
   '''saveVarID : '''
   global current_var_id
   current_var_id = p[-1]
-  print("variable actual:", current_var_id)
+  if debug : print("variable actual:", current_var_id)
 
 # Auxiliar asignacionizq
 def p_asignacionizqaux(p):
@@ -657,11 +658,11 @@ def p_setAssignment(p):
           global counter
           global st
           result = right_op
-          print("l_op:", left_op)
-          print("r_op:", right_op)
+          if debug : print("l_op:", left_op)
+          if debug : print("r_op:", right_op)
           #st.set_var_val(left_op, result)
 
-          #print("resultado final:", st.get_var(left_op))
+          #if debug : print("resultado final:", st.get_var(left_op))
           #t = str(type(right_op))[7:10]
           # revisar que no sea ya una direccion de memoria debido a agregar constantes
           #if t != 'int':
@@ -709,7 +710,7 @@ def p_getCurrentID(p):
   global operands_s
   current_id = p[-1]
   #if not st.function_exists(p[-1]) and st.get_var(p[-1])[5]:
-    #print("voy a introducir:" + st.get_var(p[-1])[0])
+    #if debug : print("voy a introducir:" + st.get_var(p[-1])[0])
     #operands_s.push(st.get_var(p[-1])[0])
 
 # Negar la expresion
@@ -750,9 +751,9 @@ def p_checarLogico(p):
           if right_op == 'verdadero':
             ro = True
 
-          print('lo:', left_op)
-          print('ro:', right_op)
-          print('op:', operator)
+          if debug : print('lo:', left_op)
+          if debug : print('ro:', right_op)
+          if debug : print('op:', operator)
 
           global counter
           global tmp_var_num
@@ -859,10 +860,10 @@ def p_checkExpTypes(p):
           result = 't_' + str(tmp_var_num)
 
           global st
-          print("SCOPE ACTUAL:",st.get_scope())
-          print("CONTENIDO DE TABLA")
-          print(st.print_var_table(st.get_scope()))
-          print("Estoy intentando agregar:", result)
+          if debug : print("SCOPE ACTUAL:",st.get_scope())
+          if debug : print("CONTENIDO DE TABLA")
+          if debug : print(st.print_var_table(st.get_scope()))
+          if debug : print("Estoy intentando agregar:", result)
           st.insert_variable(result_type, result)
           quad = [operator, left_op, right_op, st.get_var(result)[4]]
  
@@ -915,9 +916,9 @@ def p_checkTermTypes(p):
           quad = [operator, left_op, right_op, st.get_var(result)[4]]
           quad_lst.append(quad)
 
-          print("---encontre esto---")
-          print(left_op)
-          print(right_op)
+          if debug : print("---encontre esto---")
+          if debug : print(left_op)
+          if debug : print(right_op)
 
           tmp_var_num += 1
           counter += 1
@@ -1003,7 +1004,7 @@ def p_rellenarCond(p):
   '''rellenarCond : '''
   global counter
   # fill
-  print("counter else:", counter)
+  if debug : print("counter else:", counter)
   end = jumps_s.pop()
   quad_lst[end][3] = counter
 
@@ -1038,7 +1039,7 @@ def p_crearCiclo(p):
   if len(p) > 0:
     exp_type = types_s.pop()
     if (exp_type != 'bool'):
-      print('tipo exp en condicion:', exp_type)
+      if debug : print('tipo exp en condicion:', exp_type)
       raise TypeError('Tipos incompatibles en ciclo.')
     else:
       result = operands_s.pop()
@@ -1119,7 +1120,7 @@ def p_curva(p):
     '''curva : INSERTACURVA getCurrentIDFun buscarFuncion saveFunID PARENIZQUIERDO generateERA llamadapar PARENDERECHO verifyArgCount generateGoSub PUNTOYCOMA'''
 
 def p_error(p):
-  print("Error de sintaxis: '%s' en línea: %s."  % (p.value, p.lineno))
+  if debug : print("Error de sintaxis: '%s' en línea: %s."  % (p.value, p.lineno))
 
 def get_type(symbol):
   if symbol == "verdadero" or symbol == "falso":
@@ -1150,6 +1151,6 @@ if __name__ == '__main__':
       if (parser.parse(data, tracking=True) == 'Interpretado Correctamente'):
         print ('Interpretado Correctamente');
     except EOFError:
-        print(EOFError)
+        if debug : print(EOFError)
   else:
-    print('No existe el archivo')
+    if debug : print('No existe el archivo')

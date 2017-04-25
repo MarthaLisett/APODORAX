@@ -15,6 +15,7 @@ funcion vacio camioneta(var entero x)
 
 	}
 	desplegar("despues de llamada 2");
+	carro();
 	desplegar(x);
 }
 

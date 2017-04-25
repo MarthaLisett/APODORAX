@@ -36,22 +36,27 @@ class semantic_cube:
     def __init__(self,booleanos=[], operadores=[]):
         self.booleanos = ("verdadero", "falso")
         self.operadores = ("-", "+", "*", "/", "&&", "||", ">", "<", ">=", "<=", "!=", "==", "=")
+        global debug
+        debug = False
 
     def verify_type_match(self, left, right, operator):
-        print('antes')
-        print('l: ',  left)
-        print('r: ',  right)
-        print('op: ', operator)
+        global debug
+        if debug :
+            print('antes')
+            print('l: ',  left)
+            print('r: ',  right)
+            print('op: ', operator)
         
 
         l  = self.get_val(left)
         r  = self.get_val(right)
         op = self.get_val(operator)
 
-        print('despues')
-        print('l: ',  l)
-        print('r: ',  r)
-        print('op: ', op)
+        if debug :
+            print('despues')
+            print('l: ',  l)
+            print('r: ',  r)
+            print('op: ', op)
 
         ERROR, ENT, FLOAT, CADENA, CHAR, BOOL = 0, 1, 2, 3, 4, 5
 
@@ -105,20 +110,21 @@ class semantic_cube:
 
 
     def get_val(self, val):
+        global debug
         if val in self.operadores:
             return self.operadores.index(val)
         elif val == 'entero' :#or type(val) is int:
-            print('entero')
+            if debug : print('entero')
             return 0
         elif val == "flotante" :#or type(val) is float:
-            print('flotante')
+            if debug : print('flotante')
             return 1
         elif val == "caracter" :#or type(val) is str and len(val) is 1 and val not in self.operadores:
-            print('caracter')
+            if debug : print('caracter')
             return 3
         elif val == "bool" :#or type(val) is str and val in self.booleanos:
-            print('booleano')
+            if debug : print('booleano')
             return 4
         elif val == "cadena" :#or type(val) is str and val not in self.operadores:
-            print('cadena')
+            if debug : print('cadena')
             return 2

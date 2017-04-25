@@ -1,5 +1,4 @@
 class Memory(object):
-
 	def __init__(self, integers={}, floats={}, booleans={}, strings={}, characters={}):
 		self.integers   = integers
 		self.floats     = floats
@@ -30,7 +29,6 @@ class Memory(object):
 			raise MemoryError("ERROR: ya no hay espacio para flotantes.")
 
 	def insert_boolean(self, val):
-		print("el contador de booleanos esta en:", self.bool_counter)
 		if self.bool_counter <= self.u_limit and self.bool_counter >= self.l_limit:
 			if self.bool_counter <= self.bool_u_limit and self.bool_counter >= self.bool_l_limit:
 				self.booleans[self.bool_counter] = val

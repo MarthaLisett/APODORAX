@@ -10,7 +10,7 @@ from collections import OrderedDict
 from memory_manager import memory_manager
 mm = memory_manager()
 const_counter = 0
-
+debug = False
 class symbol_table:
 	""" Constructor de la clase inicializa diccionario (que contiene las tablas)
 	y el scope inicial. En el diccionario las llaves son los id de las variables
@@ -46,7 +46,8 @@ class symbol_table:
 		return self.__quadruple_count.get(scope)
 
 	def add_var_count(self, var_count):
-		print("la funcion:", self.__scope, "tiene:", var_count, "locales !=")
+		global debug
+		if debug : print("la funcion:", self.__scope, "tiene:", var_count, "locales !=")
 		param_count = 0
 		if self.__scope != "main" and self.__scope != "global":
 			param_count = self.get_no_params(self.__scope)
@@ -83,8 +84,9 @@ class symbol_table:
 		if self.__func_dic.get(self.__scope) is not None:
 			if self.__func_dic.get(self.__scope)[1].get(var_id) is None:
 				global mm
+				global debug
 				new_dir = mm.insert_variable(var_type, var_id, self.__scope, None)
-				print("a",var_id,"se le asigno",new_dir)
+				if debug : print("a",var_id,"se le asigno",new_dir)
 				self.__func_dic[self.__scope][1][var_id] = [var_id, var_type, self.__scope, None, new_dir, False]
 			else:
 				raise KeyError("Variable repetida: " + "'" + var_id + "'")
@@ -94,7 +96,7 @@ class symbol_table:
 	""" metodos para arreglos """
 	def set_dim_flag(self, var_id):
 		self.__func_dic[self.__scope][1][var_id][5] = True
-		# dim, l_inf, l_sup, k, r, aux, base_dir
+		# dim, l_inf, l_sup, k, r, aux, 
 		base_dir = self.__func_dic[self.__scope][1].get(var_id)[4]
 		self.__dim_vars[var_id] = [1, 0, None, None, 1, None, base_dir]
 
@@ -107,13 +109,15 @@ class symbol_table:
 		self.__dim_vars[var_id][4] = r
 		self.__dim_vars[var_id][5] = r
 		global mm
+		global debug
 		base_dir = self.__func_dic[self.__scope][1].get(var_id)[4]
 		var_type = self.__func_dic[self.__scope][1].get(var_id)[1]
 		aux = self.__dim_vars.get(var_id)[5]
 		mm.increment_address_pointer(var_type, base_dir, aux)
-		print("el arreglo cubre desde:", base_dir, "hasta", base_dir+aux)
+		if debug : print("el arreglo cubre desde:", base_dir, "hasta", base_dir+aux)
 
 	def calculate_k(self, var_id):
+		global debug
 		k = 0
 		u_limit = self.__dim_vars.get(var_id)[2]
 		l_limit = self.__dim_vars.get(var_id)[1]
@@ -121,7 +125,7 @@ class symbol_table:
 		r = r / (u_limit - l_limit + 1)
 		k += l_limit * r
 		self.__dim_vars[var_id][3] = k * (-1)
-		print("el valor de k es:", k)
+		if debug : print("el valor de k es:", k)
 
 	def add_constant_to_memory(self, val, val_type):
 		global mm
@@ -151,17 +155,18 @@ class symbol_table:
 
 	def set_var_val(self, var_id, val):
 		global mm
+		global debug
 		if self. __func_dic.get(self.__scope)[1].get(var_id) is not None:
 			self.__func_dic[self.__scope][1][var_id][3] = val
-			print("Estoy buscando", var_id)
+			if debug : print("Estoy buscando", var_id)
 			var_dir = self.__func_dic[self.__scope][1][var_id][4]
 			var_type = self.__func_dic[self.__scope][1][var_id][1]
-			print("dentro de if id:",var_id,var_dir)
+			if debug : print("dentro de if id:",var_id,var_dir)
 			mm.set_val(var_dir, val, var_type)
 		else:
 			self.__func_dic['global'][1][var_id][3] = val
 			var_dir = self.__func_dic['global'][1][var_id][4]
-			print("dentro de else id:",var_id,var_dir)
+			if debug : print("dentro de else id:",var_id,var_dir)
 			var_type = self.__func_dic['global'][1][var_id][1]
 			mm.set_val(var_dir, val, var_type)
 

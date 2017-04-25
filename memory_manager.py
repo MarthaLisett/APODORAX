@@ -4,6 +4,7 @@ from globs         import Globs
 from local         import Local
 from constant      import Constant
 
+debug = False
 class memory_manager():
 
 	def __init__(self):
@@ -91,13 +92,13 @@ class memory_manager():
 
 	"""insert_variable funcion exclusiva para agregar variables locales/globales"""
 	def insert_variable(self, var_type, var_id, var_scope, var_val):
+		global debug
 		segment = self.check_variable_functionality(var_scope, var_id)
-		print("llego la variable", var_id, "de tipo", var_type, "para el segmento de", segment)
+		if debug : print("llego la variable", var_id, "de tipo", var_type, "para el segmento de", segment)
 
 		if var_type ==  "entero":
 			return segment.insert_integer(var_val)
 		elif var_type == "flotante":
-			print(var_id,"pertenece a",segment,"y es de tipo",var_type)
 			return segment.insert_float(var_val, var_id)
 		elif var_type == "bool":
 			return segment.insert_boolean(var_val)
@@ -110,10 +111,8 @@ class memory_manager():
 		if var_id == "const":
 			return self.const
 		elif var_id[0:2] == "t_":
-			print("tenemos la variable temporal:", var_id)
 			return self.tmp
 		elif var_scope == "global":
-			print(var_id, "es global")
 			return self.glob
 		else:
 			return self.loc
