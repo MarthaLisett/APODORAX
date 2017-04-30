@@ -15,7 +15,7 @@ funcion vacio solRecursivo(var flotante radio){
 
 inicio {
     solRecursivo(9.0);
-
+    desplegar(8 *(5 - 2) * 11 / 6);
 }
 
 fin
