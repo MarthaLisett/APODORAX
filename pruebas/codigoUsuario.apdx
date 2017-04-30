@@ -1,0 +1,117 @@
+programa dibujarEscena:
+var flotante radio;
+var flotante sol;
+var cadena cTexto;
+var entero arrGrosor[5];
+var flotante lago;
+var entero cont;
+var flotante coordx;
+var flotante coordy;
+var flotante radioF;
+
+funcion vacio solRecursivo(var flotante radio) {
+   si (radio > 0) entonces {	
+   	 insertaCirculo(700.0, 100.0, radio, "amarillo", "naranja", 4);	
+         solRecursivo(radio - 10.0);	
+    }
+
+    insertaCirculo(700.0, 100.0, radio, "amarillo", "naranja", 4);	
+}
+
+funcion vacio flor (var flotante coordx, var flotante coordy, var flotante radio){
+	# Rama
+	insertaLinea(coordx, coordy, coordx, coordy + 40, "verde", 13);
+
+	# Petalos Cruz
+	insertaCirculo(coordx, coordy + 10, radio, "rosa", "rojo", 2);
+	insertaCirculo(coordx, coordy - 10, radio, "rosa", "rojo", 2);
+	insertaCirculo(coordx + 10, coordy, radio, "rosa", "rojo", 2);
+	insertaCirculo(coordx - 10, coordy, radio, "rosa", "rojo", 2);
+
+	# Petalos Diagonal
+	insertaCirculo(coordx + 10, coordy + 10, radio, "rosa", "rojo", 2);
+	insertaCirculo(coordx + 10, coordy - 10, radio, "rosa", "rojo", 2);
+	insertaCirculo(coordx - 10, coordy + 10, radio, "rosa", "rojo", 2);
+	insertaCirculo(coordx - 10, coordy - 10, radio, "rosa", "rojo", 2);
+
+	# Centro
+	insertaCirculo(coordx, coordy, radio, "rosa", "rosa", 2);
+}
+
+inicio {
+    cTexto = "TEC";
+    radio = 50.0;
+    arrGrosor[0] = 5;
+    arrGrosor[1] = 10;
+    arrGrosor[2] = 3;
+    arrGrosor[3] = 2;
+    arrGrosor[4] = 12;
+    #lago = 420.0;
+    sol = 60.0;
+    cont = 1;
+    coordx = 700.0;
+    coordy = 500.0;
+    radioF = 10.0;	
+
+    # Cielo
+    insertaRectangulo(0.0, 0.0, 1600 / 2.0, 200.0 * 2, "azul", "azul", arrGrosor[2]);
+
+    # Cesped	
+    insertaRectangulo(0.0, 400.0, 700.0 + 100.0, 600.0, "verde", "verde", arrGrosor[2]);
+
+    # Casa
+    insertaRectangulo(250.0, 400.0, 550.0, 200.0, "rosa", "rojo", arrGrosor[2]);
+
+   # Techo
+    insertaTriangulo(250.0, 200.0, 550.0, 200.0, 40 * 10.0, arrGrosor[1] * 10.0, "rojo", "negro", arrGrosor[4]);
+
+    # Puerta
+    insertaRectangulo(250.0 + 100, 400.0, 450.0, 300.0, "naranja", "gris", arrGrosor[0]);
+
+    # Camino Izquierdo
+    insertaCurva(450.0, 150.0 * 4, 700.0 / 2, 600.0 - 200, "negro");
+
+    # Camino Derecha
+    insertaCurva(600.0, 150.0 * 4, 450.0, 600.0 - 200, "negro");
+
+    # Nube1
+    insertaOvalo(30.0 , 150.0 , 80.0 * 2, 200.0, "gris", "gris", arrGrosor[1]);
+
+    # Nube2
+    insertaOvalo(100.0 , 100.0 , 80.0 * 3, 150.0, "gris", "gris", arrGrosor[1]);
+   
+    # Texto
+    insertaTexto(400.0, 250.0, "azul", cTexto, 12);
+
+    # Puntos Cielo
+    mientras (cont < 5000)	{
+       insertaPunto(100.0 + cont, 40.0, "gris");
+        cont = cont * 2;
+    }
+	
+    # Flor
+    # flor (700.0, 500.0, 10.0);	
+
+	# Rama
+	insertaLinea(coordx, coordy, coordx, coordy + 40.0, "verde", 13);
+
+	# Petalos Cruz
+	insertaCirculo(coordx, coordy + 10, radioF, "rosa", "rojo", 2);
+	insertaCirculo(coordx, coordy - 10, radioF, "rosa", "rojo", 2);
+	insertaCirculo(coordx + 10, coordy, radioF, "rosa", "rojo", 2);
+	insertaCirculo(coordx - 10, coordy, radioF, "rosa", "rojo", 2);
+
+	# Petalos Diagonal
+	insertaCirculo(coordx + 10, coordy + 10, radioF, "rosa", "rojo", 2);
+	insertaCirculo(coordx + 10, coordy - 10, radioF, "rosa", "rojo", 2);
+	insertaCirculo(coordx - 10, coordy + 10, radioF, "rosa", "rojo", 2);
+	insertaCirculo(coordx - 10, coordy - 10, radioF, "rosa", "rojo", 2);
+
+	# Centro
+	insertaCirculo(coordx, coordy, radioF, "rosa", "rosa", 2);
+    	
+    # Sol
+    solRecursivo(sol);	
+
+}
+fin

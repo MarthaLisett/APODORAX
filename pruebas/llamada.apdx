@@ -1,0 +1,21 @@
+programa bool_test:
+var bool b;
+
+funcion vacio solRecursivo2(var flotante radio) {
+    desplegar("hola mundo");
+}
+
+
+funcion vacio solRecursivo(var flotante radio){
+   mientras (radio > 0) {	
+   	 insertaCirculo(700.0, 100.0, radio, "amarillo", "naranja", 4);	
+         solRecursivo(radio - 10.0);	
+    }
+}
+
+inicio {
+    solRecursivo(9.0);
+
+}
+
+fin

@@ -18,7 +18,8 @@
                 "RedirectOutput"
             ],
             "args": [
-                "pruebas/chars_arr_test.apdx.txt"
+                //"pruebas/chars_arr_test.apdx.txt"
+                "pruebas/llamada.apdx"
             ]
         },
         {

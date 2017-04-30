@@ -190,24 +190,24 @@ class virtual_machine:
 
 			elif quadruples[actual_quad][0] == "ERA":
 				#print("quad actual->", actual_quad)
-				if not execution_stack.isEmpty():
-					var_table   = copy.deepcopy(st.get_func_dic().get(fun_calls.dequeue())[1])
-					
-					"""	
-					if debug : print("ERA")		
-					if not execution_stack.peek()[0] == None:
-						if debug : print("Anteriormente")
-						for var_id, lst in execution_stack.peek()[0].iteritems():
+				if not quadruples[actual_quad][1] in predefined_functions:
+					if not execution_stack.isEmpty():
+						var_table   = copy.deepcopy(st.get_func_dic().get(fun_calls.dequeue())[1])
+						"""	
+						if debug : print("ERA")		
+						if not execution_stack.peek()[0] == None:
+							if debug : print("Anteriormente")
+							for var_id, lst in execution_stack.peek()[0].iteritems():
+								if debug : print("direccion virtual:", lst[4])
+								if debug : print("valor:", lst[3])
+						"""
+						for var_id, lst in var_table.iteritems():
+							lst[3] = copy.deepcopy(st.get_val_from_dir(lst[4]))
 							if debug : print("direccion virtual:", lst[4])
 							if debug : print("valor:", lst[3])
-					"""
-					for var_id, lst in var_table.iteritems():
-						lst[3] = copy.deepcopy(st.get_val_from_dir(lst[4]))
-						if debug : print("direccion virtual:", lst[4])
-						if debug : print("valor:", lst[3])
-					saved_fun   = [var_table, None]
+						saved_fun   = [var_table, None]
 
-					execution_stack.push(list(saved_fun))
+						execution_stack.push(list(saved_fun))
 
 
 
@@ -244,6 +244,9 @@ class virtual_machine:
 			elif quadruples[actual_quad][0] == "GOSUB":
 				fun_name = quadruples[actual_quad][1]
 				if fun_name in predefined_functions:
+					#return_quad  = actual_quad
+					#saved_fun = [None, return_quad]
+					#execution_stack.push(list(saved_fun))
 					called_predefined_fun = True
 					if graphics is None:
 					 	graphics = Graphics()
@@ -268,10 +271,11 @@ class virtual_machine:
 				#if not found_return:
 				if debug : print("desde endproc voy a regresar a:", actual_quad)
 				if not execution_stack.isEmpty():
-					for var_id, lst in saved_fun[0].iteritems():
-						if debug : print("direccion virtual:", lst[4])
-						if debug : print("valor:", lst[3])
-						st.set_val_from_dir(lst[4], lst[3])
+					if not saved_fun[0] is None:
+						for var_id, lst in saved_fun[0].iteritems():
+							if debug : print("direccion virtual:", lst[4])
+							if debug : print("valor:", lst[3])
+							st.set_val_from_dir(lst[4], lst[3])
 				else:
 					fun_calls.dequeue()
 				#else:
