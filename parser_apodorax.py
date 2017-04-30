@@ -203,7 +203,8 @@ def p_guardarId(p):
       if operators_s.isEmpty():
         while not operands_s.isEmpty():
           operands_s.pop()
-          types_s.pop()
+        while not types_s.isEmpty():
+           types_s.pop()
         operands_s.push(st.get_var(p[-3])[4])
         if st.get_var(p[-3]) is not None:
           types_s.push(st.get_var(p[-3])[1])
@@ -231,20 +232,22 @@ def p_vectorSettings(p):
 
 # Auxiliar Constante ID
 def p_cteidaux(p):
-    '''cteidaux : CORCHETEIZQ saveDimVarID verifyDimVar exp CORCHETEDER generateVectorQuad
+    '''cteidaux : CORCHETEIZQ saveDimVarIDcte verifyDimVar exp CORCHETEDER generateVectorQuadAssignment
                | '''
-
-def p_saveDimVarID(p):
-  '''saveDimVarID : '''
+def p_saveDimVarIDcte(p):
+  ''' saveDimVarIDcte : '''
   global current_var_id
   global current_dim_var_id
   global operands_s
   global dims_s
+  global types_s
+  global st
   current_dim_var_id = current_var_id
   dims_s.push(current_dim_var_id)
+  #types_s.push(st.get_var(current_dim_var_id))
 
 def p_generateVectorQuad(p):
-  '''generateVectorQuad : '''
+  ''' generateVectorQuad : '''
   global current_dim_var_id
   global st
   global quad_lst
@@ -267,7 +270,8 @@ def p_generateVectorQuad(p):
   temporal = 't_' + str(tmp_var_num)
   tmp_var_num += 1
   aux      = operands_s.pop()
-  aux_type = types_s.peek()
+  #if types_s.size() > 1 :  types_s.pop()
+  aux_type = types_s.pop()
   if debug : print("este es el ultimo tipo que llego:", aux_type)
   st.insert_variable(aux_type, temporal)
   tmp_dir  = st.get_var(temporal)[4]
@@ -279,9 +283,58 @@ def p_generateVectorQuad(p):
   quad_lst.append(quad1)
   quad_lst.append(quad2)
   counter += 3
-
   operands_s.push("_" + str(tmp_dir))
+  operators_s.pop()
 
+def p_saveDimVarID(p):
+  '''saveDimVarID : '''
+  global current_var_id
+  global current_dim_var_id
+  global operands_s
+  global dims_s
+  global types_s
+  current_dim_var_id = current_var_id
+  dims_s.push(current_dim_var_id)
+  if not operands_s.isEmpty() : operands_s.pop()
+
+def p_generateVectorQuadAssignment(p):
+  '''generateVectorQuadAssignment : '''
+  global current_dim_var_id
+  global st
+  global quad_lst
+  global types_s
+  global tmp_var_num
+  global operators_s
+  global operands_s
+  global counter
+  global dims_s
+
+  current_dim_var_id = dims_s.pop()
+
+  l_limit = st.get_dim_var(current_dim_var_id)[1]
+  u_limit = st.get_dim_var(current_dim_var_id)[2]
+  k       = st.get_dim_var(current_dim_var_id)[3]
+
+  quad = ['VER', operands_s.peek(), l_limit, u_limit]
+  quad_lst.append(quad)
+
+  temporal = 't_' + str(tmp_var_num)
+  tmp_var_num += 1
+  aux      = operands_s.pop()
+  #if types_s.size() > 1 :  types_s.pop()
+  aux_type = types_s.pop()
+  if debug : print("este es el ultimo tipo que llego:", aux_type)
+  st.insert_variable(aux_type, temporal)
+  tmp_dir  = st.get_var(temporal)[4]
+  base_dir = st.get_dim_var(current_dim_var_id)[6]
+  if debug : print("la direccion recuperada:", tmp_dir)
+  quad1 = ['+', aux, str(k) + "_", tmp_dir]
+  quad2 = ['+', tmp_dir, str(base_dir) + "_", tmp_dir]
+
+  quad_lst.append(quad1)
+  quad_lst.append(quad2)
+  counter += 3
+  operands_s.push("_" + str(tmp_dir))
   operators_s.pop()
 
 def p_verifyDimVar(p):
@@ -295,7 +348,6 @@ def p_verifyDimVar(p):
   if not var_lst[5]:
     raise TypeError("La variable " + "'" + var_id + "' no es dimensionada.")
   else:
-
     operators_s.push("(")
 
 def p_saveVecID(p):
@@ -314,13 +366,16 @@ def p_setLimits(p):
   global st
   global current_var_id
   global operands_s
+  global types_s
+  types_s.pop()
+  #if types_s.pop() == "flotante":
+  #  raise TypeError("El indice del arreglo debe ser entero")
   st.set_vector_limits(st.get_val_from_dir(operands_s.pop()), current_vec_id)
 
 def p_calculateK(p):
   '''calculateK : '''
   global st
   st.calculate_k(current_vec_id)
-
 
 def p_buscarFuncion(p):
   ''' buscarFuncion : '''
@@ -423,11 +478,12 @@ def p_cte(p):
       const_dir = st.add_constant_to_memory(p[1], get_type(p[1]))
       if st.get_var(p[1]) is not None and get_type(p[1]) != "entero" and len(st.get_var(p[1])) >= 4:
         if not st.get_var(p[1])[5]:
-          operands_s.push(st.get_var(p[1])[4]) #[0]
-          types_s.push(st.get_var(p[1])[1])
+          operands_s.push(st.get_var(p[1])[4])
+        types_s.push(st.get_var(p[1])[1])
       else:
         operands_s.push(const_dir)#operands_s.push(p[1])
         types_s.push(get_type(p[1]))
+        if debug : print("El tipo de la variable es:", get_type(p[1]))
 
 def p_symbol(p):
   '''symbol : cteid
@@ -511,7 +567,7 @@ def p_addReturn(p):
   quad = ['RETURN', return_val, "", ""]
   st.set_var_val(st.get_scope(), return_val)
   quad_lst.append(quad)
-  counter += 1;
+  counter += 1
 
 # Bloque
 def p_bloque(p):
@@ -631,7 +687,7 @@ def p_saveVarID(p):
 
 # Auxiliar asignacionizq
 def p_asignacionizqaux(p):
-  '''asignacionizqaux : CORCHETEIZQ saveDimVarID verifyDimVar exp CORCHETEDER generateVectorQuad
+  '''asignacionizqaux : CORCHETEIZQ saveDimVarID verifyDimVar exp CORCHETEDER generateVectorQuadAssignment
                      | '''
 
 # Asignacion de valores
@@ -645,6 +701,8 @@ def p_insertarAsignacion(p):
 
 def p_setAssignment(p):
   '''setAssignment : '''
+  global operands_s
+  global types_s
   if len(p) >= 1:
     if operators_s.size() > 0:
       if operators_s.peek() == '=':
@@ -1067,12 +1125,22 @@ def p_generarEscritura(p):
 
 # Aceptar/ingresar info del usuario
 def p_ingreso(p):
-    '''ingreso : ENTRADA PARENIZQUIERDO ID saveVarID buscarId PARENDERECHO generarEntrada PUNTOYCOMA'''
+    '''ingreso : ENTRADA PARENIZQUIERDO cte PARENDERECHO generarEntrada PUNTOYCOMA'''
+
+"""
+# Lado izquierdo de la asignacion para saber si es id normal o arreglo
+def p_asignacionizq(p):
+  '''asignacionizq : ID saveVarID buscarId guardarId asignacionizqaux'''
+  p[0] = p[1]
+"""
 
 def p_generarEntrada(p):
   '''generarEntrada : '''
   global st
-  quad = ["entrada", "", "", st.get_var(p[-4])[4]]
+  global current_var_id
+  global operands_s
+  quad = ["entrada", "", "", operands_s.pop()]
+ # quad = ["entrada", "", "", st.get_var(p[-4])[4]]
   quad_lst.append(quad)
   global counter
   counter += 1
@@ -1131,7 +1199,7 @@ def get_type(symbol):
     return "entero"
   elif t == 'flo':
     return "flotante"
-  elif t == 'str' and len(symbol) == 1:
+  elif len(symbol) == 3 and type(symbol) is str:
     return "caracter"
   elif t == 'str':
     return "cadena"

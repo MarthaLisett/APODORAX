@@ -1,0 +1,37 @@
+programa producto_punto:
+
+var entero vec1[5];
+var entero vec2[5];
+var entero res[5];
+var entero acumulado;
+var entero i;
+var entero j;
+
+inicio {
+    i = 1;
+    j = 1;
+    acumulado = 0;
+
+    mientras(i < 5) {
+        vec1[i - 1] = i;
+        i = i + 1;
+    }
+    mientras(i < 10) {
+        vec2[i + -5] = i;
+        i = i + 1;
+    }
+
+    i = 1;
+    mientras(i < 5) {
+        res[i - 1] = vec1[i - 1] * vec2[i - 1];
+        i = i + 1;
+    }
+
+    i = 1;
+    mientras(i < 5) {
+        acumulado = acumulado + res[i - 1];
+        i = i + 1; 
+    }
+    desplegar(acumulado);
+}
+fin

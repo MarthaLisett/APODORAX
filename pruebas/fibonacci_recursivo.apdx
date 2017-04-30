@@ -1,6 +1,7 @@
 programa Martha0295:
 
 var entero res;
+var entero num;
 
 funcion entero fibonacci(var entero x) {
 	var entero resultado;
@@ -25,7 +26,8 @@ funcion entero fibonacci(var entero x) {
 }
 
 inicio {
-	res = fibonacci(10);
+	entrada(num);
+	res = fibonacci(num);
 	desplegar(res);
 }
 

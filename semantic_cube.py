@@ -33,7 +33,7 @@ class semantic_cube:
     # bool       caracter  ERROR   ERROR   ERROR  ERROR   ERROR    ERROR    ERROR  ERROR ERROR  ERROR ERROR ERROR ERROR 
     # bool       bool      ERROR   ERROR   ERROR  ERROR   BOOL     BOOL     ERROR  ERROR ERROR  ERROR BOOL  BOOL  BOOL
 
-    def __init__(self,booleanos=[], operadores=[]):
+    def __init__(self, booleanos=[], operadores=[]):
         self.booleanos = ("verdadero", "falso")
         self.operadores = ("-", "+", "*", "/", "&&", "||", ">", "<", ">=", "<=", "!=", "==", "=")
         global debug
@@ -47,7 +47,6 @@ class semantic_cube:
             print('r: ',  right)
             print('op: ', operator)
         
-
         l  = self.get_val(left)
         r  = self.get_val(right)
         op = self.get_val(operator)

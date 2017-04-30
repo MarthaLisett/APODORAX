@@ -1,6 +1,7 @@
 programa Martha0295:
 
 var entero res;
+var entero num;
 
 funcion entero factorial(var entero x) {
 	var entero resultado;
@@ -16,7 +17,8 @@ funcion entero factorial(var entero x) {
 }
 
 inicio {
-	res = factorial(5);
+	entrada(num);
+	res = factorial(num);
 	desplegar(res);
 }
 

@@ -1,0 +1,18 @@
+programa Martha0295:
+
+var entero num;
+var entero cont;
+var entero factorial;
+
+inicio {
+	factorial = 1;
+	cont = 1;
+	entrada(num);
+	mientras (cont <= num) {
+		factorial = factorial * cont;
+		cont = cont + 1;
+	}
+	desplegar(factorial);
+}
+
+fin

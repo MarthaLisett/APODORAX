@@ -1,0 +1,53 @@
+programa busqueda:
+
+var entero lista[3];
+var caracter opcion;
+var entero i;
+var entero objetivo;
+var entero pos;
+var bool encontrado;
+
+inicio {
+    i = 0;
+    encontrado = falso;
+    lista[0] = 1;
+    lista[1] = 2;
+    lista[2] = 3;
+    opcion = 'h';
+
+    mientras(opcion != 'v' && opcion != 'i') {
+        desplegar("¿Quiere buscar valor o indice?[v/i]");
+        entrada(opcion);
+        si (opcion != 'v'  && opcion != 'i') entonces {
+            desplegar("Ingrese un valor valido.");
+        }
+    }
+
+    si (opcion == 'i') entonces {
+        desplegar("Ingrese el valor que desea buscar:");
+        entrada(objetivo);
+        mientras(i < 3) {
+            si(lista[i] == objetivo) entonces {
+                encontrado = verdadero;
+                pos = i;
+                i = 3;
+            }
+            i = i + 1;
+        }
+        si (encontrado == verdadero) entonces {
+            desplegar(pos);
+        } sino entonces {
+            desplegar("No se encontro.");
+        }
+    } sino entonces {
+        desplegar("Ingrese la posicion que desea buscar:");
+        entrada(objetivo);
+        si (objetivo > 2 || objetivo < 0) entonces {
+            desplegar("Esa posicion no existe.");
+        } sino entonces {
+            desplegar(lista[objetivo]);
+        }
+    }
+}
+
+fin

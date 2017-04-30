@@ -80,7 +80,11 @@ class virtual_machine:
 				print(val)
 
 			elif quadruples[actual_quad][0] == "entrada":
-				val = raw_input("Introduza un valor: ")
+				val = str(raw_input("Introduzca un valor: "))
+				try: 
+					val = int(val)
+				except ValueError:
+					pass
 				var_dir = quadruples[actual_quad][3]
 				st.set_val_from_dir(var_dir, val)
 
@@ -265,8 +269,8 @@ class virtual_machine:
 				if debug : print("desde endproc voy a regresar a:", actual_quad)
 				if not execution_stack.isEmpty():
 					for var_id, lst in saved_fun[0].iteritems():
-						#if debug : print("direccion virtual:", lst[4])
-						#if debug : print("valor:", lst[3])
+						if debug : print("direccion virtual:", lst[4])
+						if debug : print("valor:", lst[3])
 						st.set_val_from_dir(lst[4], lst[3])
 				else:
 					fun_calls.dequeue()

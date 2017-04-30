@@ -1,0 +1,16 @@
+pruebas
+
+fib_iter [x]
+fib_rec [x]
+fact_iter [x]
+fact_rec [x]
+bubble sort [x]
+prod_punto [x]
+find [x] 
+dibujar escena []
+
+**
+checar uso de caracteres vs cadenas [x]
+tipos en operaciones de caracteres []
+pasar subindice como argumento      []
+

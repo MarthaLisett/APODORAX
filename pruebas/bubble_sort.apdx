@@ -1,20 +1,24 @@
-programa Martha0295:
+programa bubble_sort:
 var entero i[9];
 var entero va;
 var bool swapped;
 var entero swap;
 var entero j;
+var entero w;
+var entero z;
 
 inicio {
-	i[0] = 9;
-	i[1] = 2;
-	i[2] = 7;
-	i[3] = 6;
-	i[4] = 1;
-	i[5] = 3;
-	i[6] = 5;
-	i[7] = 4;
-	i[8] = 8;
+	# inicializacion de variables
+	w = 0;
+	z = 8;
+
+	# se piden los valores para las casillas del arreglo
+	mientras(z >= w) {
+		entrada(i[w]);
+		w = w + 1;
+	}
+
+	i[0] = 100;
 
 	va = 0;
 	swapped = verdadero;

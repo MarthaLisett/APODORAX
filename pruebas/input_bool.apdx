@@ -1,0 +1,15 @@
+programa bool_test:
+var bool b;
+
+inicio {
+
+    entrada(b);
+    si (b == verdadero) entonces {
+        desplegar(":))");
+    } sino entonces {
+        desplegar(":((");
+    }
+
+}
+
+fin
