@@ -245,7 +245,7 @@ class virtual_machine:
  
 			# # Instrucciones correspondientes a la instruccion era
 			elif quadruples[actual_quad][0] == "ERA":
-				#st.check_available_memory(st.get_var_count(quadruples[actual_quad][1]))
+				st.check_available_memory(st.get_var_count(quadruples[actual_quad][1]))
 				# Si no se trata de una llamada a una funcion predefinida
 				if not quadruples[actual_quad][1] in predefined_functions:
 					# Y si no es una llamada desde la funcion principal

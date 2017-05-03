@@ -18,29 +18,13 @@ class memory_manager():
 	def __init__(self):
 		""" Inicializa los scopes de las variables : Temporales, Globales,
 		Locales y Constantes.
-			"""
+		"""
 		self.tmp   = Temporal()
 		self.glob  = Globs()
 		self.loc   = Local()
 		self.const = Constant()
-		self.max_memory = 200000
+		self.max_memory = 20000
 		self.current_used_memory = 0
-
-	def free_memory(self, no_vars):
-		""" Libera la memoria que ha sido utilizada por una llamada a funcion.
-		Args:
-			no_vars: Cantidad de variables de una funcion. """
-		self.current_used_memory -= no_vars
-
-	def check_available_memory(self, no_vars):
-		""" Pide la memoria que sera utilizada por una llamada a funcion.
-		Args:
-			no_vars: Cantidad de variables de una funcion. """
-		if self.current_used_memory + no_vars <= self.max_memory:
-			self.current_used_memory += no_vars
-		else:
-			# muestra un error en caso de que ya no haya mas memoria.
-			raise MemoryError("ERROR: ya no hay espacio en memoria.")
 
 	def increment_address_pointer(self, var_type, var_dir, offset):
 		""" Almacenar y manejar direcciones de arreglos.
@@ -77,6 +61,22 @@ class memory_manager():
 			self.loc.set_val(var_dir, val, var_type)
 		elif var_dir >= self.const.l_limit and var_dir <= self.const.u_limit:
 			self.const.set_val(var_dir, val, var_type)
+
+	def free_memory(self, no_vars):
+		""" Libera la memoria que ha sido utilizada por una llamada a funcion.
+		Args:
+			no_vars: Cantidad de variables de una funcion. """
+		self.current_used_memory -= no_vars
+
+	def check_available_memory(self, no_vars):
+		""" Pide la memoria que sera utilizada por una llamada a funcion.
+		Args:
+			no_vars: Cantidad de variables de una funcion. """
+		if self.current_used_memory + no_vars <= self.max_memory:
+			self.current_used_memory += no_vars
+		else:
+			# muestra un error en caso de que ya no haya mas memoria.
+			raise MemoryError("ERROR: ya no hay espacio en memoria.")
 
 	
 	def get_val_from_dir(self, address):
