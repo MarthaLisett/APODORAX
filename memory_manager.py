@@ -12,8 +12,11 @@ class memory_manager():
 		self.glob  = Globs()
 		self.loc   = Local()
 		self.const = Constant()
-		self.max_memory = 20000
+		self.max_memory = 200000000
 		self.current_used_memory = 0
+
+	def free_memory(self, no_vars):
+		self.current_used_memory -= no_vars
 
 	def check_available_memory(self, no_vars):
 		if self.current_used_memory + no_vars <= self.max_memory:

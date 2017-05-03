@@ -292,6 +292,10 @@ class symbol_table:
 		global mm
 		mm.check_available_memory(no_vars)
 
+	def free_memory(self, no_vars):
+		global mm
+		mm.free_memory(no_vars);
+
 	""" Sección para declarar propiedades de la clase. """
 	scope    = property(get_scope, set_scope)
 	func_dic = property(get_func_dic, set_func_dic)

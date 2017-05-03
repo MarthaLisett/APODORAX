@@ -337,7 +337,7 @@ class virtual_machine:
 							st.set_val_from_dir(lst[4], lst[3])
 				else:
 					# Ya se termino de procesar esa funcion entonces ya no es necesario su nombre
-					fun_calls.dequeue()
+					st.free_memory(st.get_var_count(fun_calls.dequeue()))
 
 			# Instrucciones correspondientes al regreso de un valor
 			elif quadruples[actual_quad][0] == "RETURN":
