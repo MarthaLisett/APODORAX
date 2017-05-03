@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 """ Clase virtual_machine
 Implementa la funcionalidad de fase de ejecucion
 para el compilador siguiendo las instrucciones
@@ -243,7 +245,7 @@ class virtual_machine:
  
 			# # Instrucciones correspondientes a la instruccion era
 			elif quadruples[actual_quad][0] == "ERA":
-				st.check_available_memory(st.get_var_count(quadruples[actual_quad][1]))
+				#st.check_available_memory(st.get_var_count(quadruples[actual_quad][1]))
 				# Si no se trata de una llamada a una funcion predefinida
 				if not quadruples[actual_quad][1] in predefined_functions:
 					# Y si no es una llamada desde la funcion principal
@@ -359,7 +361,7 @@ class virtual_machine:
 							st.set_val_from_dir(lst[4], lst[3])
 				else:
 					# Ya se termino de procesar esa funcion entonces ya no es necesario su nombre
-					st.free_memory(st.get_var_count(fun_calls.dequeue()))
+					fun_calls.dequeue()
 
 			# Instrucciones correspondientes al regreso de un valor
 			elif quadruples[actual_quad][0] == "RETURN":

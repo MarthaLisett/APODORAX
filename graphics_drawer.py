@@ -1,4 +1,12 @@
- from graphics import *
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+""" Clase graphics
+Clase que implementa toda la funcionalidad
+de la libreria de graficos.
+José González Ayerdi - A01036121
+Martha Benavides - A01280115
+03/05/2017 """
+from graphics import *
 class Graphics():
 	def __init__(self):
 		"""Inicializacion y creacion de la ventana que servira de canvas"""

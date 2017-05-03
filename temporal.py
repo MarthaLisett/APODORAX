@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 """ Clase Temporal
 Hereda los metodos de distribucion de memoria
 de la clase Memory y cuenta con los limites

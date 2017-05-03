@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 """ Clase Globs
 Hereda los metodos de distribucion de memoria
 de la clase Memory y cuenta con los limites
@@ -42,7 +44,7 @@ class Globs(Memory):
 		self.str_l_limit = 3000
 		self.str_u_limit = 3999
 		self.str_counter = 3000
-		
+
 		# limites para caracteres
 		self.char_l_limit = 4000
 		self.char_u_limit = 4999

@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 """ Clase Local
 Hereda los metodos de distribucion de memoria
 de la clase Memory y cuenta con los limites
@@ -41,7 +43,7 @@ class Local(Memory):
 		self.str_l_limit = 8000
 		self.str_u_limit = 8999
 		self.str_counter = 8000
-		
+
 		# limites para caracteres
 		self.char_l_limit = 9000
 		self.char_u_limit = 9999

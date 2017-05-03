@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 """ Clase Memory
 Implementa funcionalidad para el manejo de las direcciones de memoria.
 Se trata de la clase padre que hereda sus metodos a las clases que

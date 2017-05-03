@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 """ Clase memory_manager
 Clase que se encarga de comunicar a la tabla de simbolos
 con la memoria y administrar las ubicaciones de las variables
@@ -21,7 +23,7 @@ class memory_manager():
 		self.glob  = Globs()
 		self.loc   = Local()
 		self.const = Constant()
-		self.max_memory = 20000
+		self.max_memory = 200000
 		self.current_used_memory = 0
 
 	def free_memory(self, no_vars):
