@@ -1,0 +1,31 @@
+programa chars_arr_test:
+var caracter c[2];
+var entero y;
+
+funcion vacio fun(var entero x) {
+    si (x > 0) entonces {
+        desplegar("hola");
+        fun(x - 1);
+    }
+}
+
+
+funcion entero fun2() {
+    desplegar("segunda funcion");
+    regresar 10;
+}
+
+inicio {
+
+    c[0] = 'a';
+    c[1] = 'b';
+
+    desplegar(c[0]);
+    desplegar(c[1]);
+
+    desplegar(c[0] == c[1]);
+    fun(5);
+    y = fun2();
+}
+
+fin
