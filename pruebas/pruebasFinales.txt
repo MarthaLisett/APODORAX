@@ -7,10 +7,10 @@ fact_rec [x]
 bubble sort [x]
 prod_punto [x]
 find [x] 
-dibujar escena []
+dibujar escena [x]
 
 **
 checar uso de caracteres vs cadenas [x]
-tipos en operaciones de caracteres []
-pasar subindice como argumento      []
+tipos en operaciones de caracteres [x]
+pasar subindice como argumento      [x]
 

@@ -12,7 +12,14 @@ class memory_manager():
 		self.glob  = Globs()
 		self.loc   = Local()
 		self.const = Constant()
+		self.max_memory = 20000
+		self.current_used_memory = 0
 
+	def check_available_memory(self, no_vars):
+		if self.current_used_memory + no_vars <= self.max_memory:
+			self.current_used_memory += no_vars
+		else:
+			raise MemoryError("ERROR: ya no hay espacio en memoria.")
 
 	def increment_address_pointer(self, var_type, var_dir, offset):
 		if var_dir >= self.tmp.l_limit and var_dir <= self.tmp.u_limit:
@@ -116,6 +123,10 @@ class memory_manager():
 			return self.glob
 		else:
 			return self.loc
+
+
+
+
 
 
 

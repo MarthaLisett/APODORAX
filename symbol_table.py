@@ -288,6 +288,15 @@ class symbol_table:
 		elif var_id in self.__func_dic.get('global')[1]:
 			return self.__func_dic.get('global')[1].get(var_id)[1]
 
+	def check_available_memory(self, no_vars):
+		global mm
+		mm.check_available_memory(no_vars)
+
 	""" Sección para declarar propiedades de la clase. """
 	scope    = property(get_scope, set_scope)
 	func_dic = property(get_func_dic, set_func_dic)
+
+
+
+
+
