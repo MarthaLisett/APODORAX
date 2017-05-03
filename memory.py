@@ -1,3 +1,10 @@
+""" Clase Memory
+Implementa funcionalidad para el manejo de las direcciones de memoria.
+Se trata de la clase padre que hereda sus metodos a las clases que
+corresponden a las distintas funcionalidades de variables.
+José González Ayerdi - A01036121
+Martha Benavides - A01280115
+03/05/2017 """
 class Memory(object):
 	def __init__(self, integers={}, floats={}, booleans={}, strings={}, characters={}):
 		""" Inicializa las variables de cada tipo de dato.
@@ -8,7 +15,7 @@ class Memory(object):
 			strings: Diccionario de strings.
 			characters: Diccionario de caracteres.
 			"""
-		# Asigna al diccionario el valor de cada tipo de dato.	
+		# Inicializacion de los diccionarios para guardar las variables de cada tipo de dato.	
 		self.integers   = integers
 		self.floats     = floats
 		self.booleans   = booleans

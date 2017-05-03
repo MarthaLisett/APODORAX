@@ -1,3 +1,9 @@
+""" Clase memory_manager
+Clase que se encarga de comunicar a la tabla de simbolos
+con la memoria y administrar las ubicaciones de las variables
+José González Ayerdi - A01036121
+Martha Benavides - A01280115
+03/05/2017 """
 from memory        import Memory
 from temporal      import Temporal
 from globs         import Globs
@@ -19,12 +25,19 @@ class memory_manager():
 		self.current_used_memory = 0
 
 	def free_memory(self, no_vars):
+		""" Libera la memoria que ha sido utilizada por una llamada a funcion.
+		Args:
+			no_vars: Cantidad de variables de una funcion. """
 		self.current_used_memory -= no_vars
 
 	def check_available_memory(self, no_vars):
+		""" Pide la memoria que sera utilizada por una llamada a funcion.
+		Args:
+			no_vars: Cantidad de variables de una funcion. """
 		if self.current_used_memory + no_vars <= self.max_memory:
 			self.current_used_memory += no_vars
 		else:
+			# muestra un error en caso de que ya no haya mas memoria.
 			raise MemoryError("ERROR: ya no hay espacio en memoria.")
 
 	def increment_address_pointer(self, var_type, var_dir, offset):
@@ -63,7 +76,7 @@ class memory_manager():
 		elif var_dir >= self.const.l_limit and var_dir <= self.const.u_limit:
 			self.const.set_val(var_dir, val, var_type)
 
-	# '_12332' => 12332 -> dir -> val
+	
 	def get_val_from_dir(self, address):
 		""" Obtener el valor de una direccion.
 		Args:
@@ -73,7 +86,7 @@ class memory_manager():
 			"""
 		# Checar si la direccion esta dentro de los limites para ver el scope 
 		# de dato que es para posteriormente obtener la direccion.
-		
+
 		# Usar en arreglos (numero)
 		if str(address)[len(str(address)) - 1] == '_':
 			return int(address[:len(str(address)) - 1])
@@ -90,7 +103,6 @@ class memory_manager():
 		elif address >= self.const.l_limit and address <= self.const.u_limit:
 			return self.const.get_val_from_dir(address)
 
-	# '_12332' => 12332 -> dir -> val
 	def set_val_from_dir(self, address, val):
 		""" Asignar el valor a una direccion. Si no se encuentra la 
 		direccion entonces mostrar un error.
@@ -112,6 +124,44 @@ class memory_manager():
 			self.loc.set_val_from_dir(address, val)
 		elif address >= self.const.l_limit and address <= self.const.u_limit:
 			self.const.set_val_from_dir(address, val)
+	
+	def insert_variable(self, var_type, var_id, var_scope, var_val):
+		""" Funcion exclusiva para agregar variables locales/globales
+		Args:
+			var_type: El tipo de la variable.
+			var_id: Id de la variable.
+			var_scope: Scope de la variable.
+			var_val: Valor de la variable.
+		"""
+		global debug
+		segment = self.check_variable_functionality(var_scope, var_id)
+		if debug : print("llego la variable", var_id, "de tipo", var_type, "para el segmento de", segment)
+		if var_type ==  "entero":
+			return segment.insert_integer(var_val)
+		elif var_type == "flotante":
+			return segment.insert_float(var_val, var_id)
+		elif var_type == "bool":
+			return segment.insert_boolean(var_val)
+		elif var_type == "caracter":
+			return segment.insert_character(var_val)
+		elif var_type == "cadena":
+			return segment.insert_string(var_val)
+
+	def check_variable_functionality(self, var_scope, var_id):
+		"""" Revisa si la variable es temporal, global o local
+		Args:
+			var_scope: Scope de la variable.
+			var_id: id de la variable
+		Regreso:
+			El objeto correspondiente a la funcionalidad de la variable."""
+		if var_id == "const":
+			return self.const
+		elif var_id[0:2] == "t_":
+			return self.tmp
+		elif var_scope == "global":
+			return self.glob
+		else:
+			return self.loc
 
 	"""
 	globales:       0     - 4,999
@@ -139,35 +189,6 @@ class memory_manager():
 		strings:    18,000 - 18,999
 		caracteres: 19,000 - 19,999
 	"""
-
-	"""insert_variable funcion exclusiva para agregar variables locales/globales"""
-	def insert_variable(self, var_type, var_id, var_scope, var_val):
-		global debug
-		segment = self.check_variable_functionality(var_scope, var_id)
-		if debug : print("llego la variable", var_id, "de tipo", var_type, "para el segmento de", segment)
- 
-		if var_type ==  "entero":
-			return segment.insert_integer(var_val)
-		elif var_type == "flotante":
-			return segment.insert_float(var_val, var_id)
-		elif var_type == "bool":
-			return segment.insert_boolean(var_val)
-		elif var_type == "caracter":
-			return segment.insert_character(var_val)
-		elif var_type == "cadena":
-			return segment.insert_string(var_val)
-
-	def check_variable_functionality(self, var_scope, var_id):
-		if var_id == "const":
-			return self.const
-		elif var_id[0:2] == "t_":
-			return self.tmp
-		elif var_scope == "global":
-			return self.glob
-		else:
-			return self.loc
-
-
 
 
 

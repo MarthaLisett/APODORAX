@@ -1,3 +1,10 @@
+""" Clase virtual_machine
+Implementa la funcionalidad de fase de ejecucion
+para el compilador siguiendo las instrucciones
+del archivo de cuadruplos generado en compilacion.
+José González Ayerdi - A01036121
+Martha Benavides - A01280115
+10/03/2017 """
 from graphics_drawer import Graphics
 from stack           import Stack
 from queue           import Queue
@@ -28,26 +35,30 @@ class virtual_machine:
 								"insertaCirculo", "insertaOvalo", "insertaPunto", "insertaCurva",
 								]
 		# Variables utiles para el recorrido de los cuadruplos
-		graphics        = None
-		arg_dirs        = []
-		actual_quad     = 0
-		return_quad     = 0
-		found_return    = False
-		actual_fun      = ""
-		fun_calls       = Queue()
-		execution_stack = Stack()
-		called_predefined_fun = False
+		graphics        = None        # referencia a la clase de manejo de graficos
+		arg_dirs        = []          # lista de argumentos de una llamada a funcion
+		actual_quad     = 0           # cuadruplo actual en el recorrido
+		return_quad     = 0           # cuadruplo al que se regresara despues de una llamada
+		found_return    = False       # bandera para saber si se ha encontrado un estatuto de retorno
+		fun_calls       = Queue()     # fila para almacenar los nombres de las funciones llamadas
+		execution_stack = Stack()     # pila de ejecucion para llamadas a funciones y recursividad  
+		called_predefined_fun = False # bandera para saber si hemos llamado a una funcion predefinida
 
 		# Comienza la lectura de los cuadruplos
 		while actual_quad < len(quadruples):
 			# Instrucciones correspondientes a la asignacion
 			if quadruples[actual_quad][0] == '=':
+				# obtenemos el valor izquierdo
 				dir_izq = quadruples[actual_quad][1]
+				# obtenemos el valor derecho
 				dir_der = quadruples[actual_quad][3]
+				# obtenemos de la memoria el valor de la variable
 				val_izq = st.get_val_from_dir(dir_izq)
+				# hacemos la asignacion poniendo el nuevo valor en la direccion
 				st.set_val_from_dir(dir_der, val_izq)
 
 			# Instrucciones correspondientes a la suma
+			# similar a la instruccion de asignacion
 			elif quadruples[actual_quad][0] == '+':
 				dir_izq = quadruples[actual_quad][1]
 				dir_der = quadruples[actual_quad][2]
@@ -58,6 +69,7 @@ class virtual_machine:
 				st.set_val_from_dir(dir_res, result)
 
 			# Instrucciones correspondientes a la resta
+			# similar a la instruccion de asignacion
 			elif quadruples[actual_quad][0] == '-':
 				dir_izq = quadruples[actual_quad][1]
 				dir_der = quadruples[actual_quad][2]
@@ -68,6 +80,7 @@ class virtual_machine:
 				st.set_val_from_dir(dir_res, result)
 
 			# Instrucciones correspondientes a la multiplicacion
+			# similar a la instruccion de asignacion
 			elif quadruples[actual_quad][0] == '*':
 				dir_izq = quadruples[actual_quad][1]
 				dir_der = quadruples[actual_quad][2]
@@ -78,6 +91,7 @@ class virtual_machine:
 				st.set_val_from_dir(dir_res, result)
 
 			# Instrucciones correspondientes a la division
+			# similar a la instruccion de asignacion
 			elif quadruples[actual_quad][0] == '/':
 				dir_izq = quadruples[actual_quad][1]
 				dir_der = quadruples[actual_quad][2]
@@ -108,6 +122,7 @@ class virtual_machine:
 				st.set_val_from_dir(var_dir, val)
 
 			# Instrucciones correspondientes a la conjuncion
+			# similar a la instruccion de asignacion
 			elif quadruples[actual_quad][0] == "&&":
 				dir_izq = quadruples[actual_quad][1]
 				dir_der = quadruples[actual_quad][2]
@@ -120,6 +135,7 @@ class virtual_machine:
 					st.set_val_from_dir(dir_res, "falso")
 
 			# Instrucciones correspondientes a la disjuncion
+			# similar a la instruccion de asignacion			
 			elif quadruples[actual_quad][0] == "||":
 				dir_izq = quadruples[actual_quad][1]
 				dir_der = quadruples[actual_quad][2]
@@ -132,6 +148,7 @@ class virtual_machine:
 					st.set_val_from_dir(dir_res, "falso")
 
 			# Instrucciones correspondientes a la diferencia
+			# similar a la instruccion de asignacion
 			elif quadruples[actual_quad][0] == "!=":
 				dir_izq = quadruples[actual_quad][1]
 				dir_der = quadruples[actual_quad][2]
@@ -144,6 +161,7 @@ class virtual_machine:
 					st.set_val_from_dir(dir_res, "falso")
 
 			# Instrucciones correspondientes a la equivalencia
+			# similar a la instruccion de asignacion
 			elif quadruples[actual_quad][0] == "==":
 				dir_izq = quadruples[actual_quad][1]
 				dir_der = quadruples[actual_quad][2]
@@ -156,6 +174,7 @@ class virtual_machine:
 					st.set_val_from_dir(dir_res, "falso")
 
 			# Instrucciones correspondientes al mayor-que
+			# similar a la instruccion de asignacion
 			elif quadruples[actual_quad][0] == ">":
 				dir_izq = quadruples[actual_quad][1]
 				dir_der = quadruples[actual_quad][2]
@@ -168,6 +187,7 @@ class virtual_machine:
 					st.set_val_from_dir(dir_res, "falso")
 
 			# Instrucciones correspondientes al menor-que
+			# similar a la instruccion de asignacion
 			elif quadruples[actual_quad][0] == "<":
 				dir_izq = quadruples[actual_quad][1]
 				dir_der = quadruples[actual_quad][2]
@@ -180,6 +200,7 @@ class virtual_machine:
 					st.set_val_from_dir(dir_res, "falso")
 
 			# Instrucciones correspondientes al mayor-o-igual-que
+			# similar a la instruccion de asignacion
 			elif quadruples[actual_quad][0] == ">=":
 				dir_izq = quadruples[actual_quad][1]
 				dir_der = quadruples[actual_quad][2]
@@ -192,6 +213,7 @@ class virtual_machine:
 					st.set_val_from_dir(dir_res, "falso")
 
 			# Instrucciones correspondientes al menor-o-igual-que
+			# similar a la instruccion de asignacion
 			elif quadruples[actual_quad][0] == "<=":
 				dir_izq = quadruples[actual_quad][1]
 				dir_der = quadruples[actual_quad][2]

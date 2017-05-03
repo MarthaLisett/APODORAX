@@ -289,10 +289,16 @@ class symbol_table:
 			return self.__func_dic.get('global')[1].get(var_id)[1]
 
 	def check_available_memory(self, no_vars):
+		""" Pide la memoria que sera utilizada por una llamada a funcion.
+		Args:
+			no_vars: Cantidad de variables de una funcion. """
 		global mm
 		mm.check_available_memory(no_vars)
 
 	def free_memory(self, no_vars):
+		""" Libera la memoria que ha sido utilizada por una llamada a funcion.
+		Args:
+			no_vars: Cantidad de variables de una funcion. """
 		global mm
 		mm.free_memory(no_vars);
 
