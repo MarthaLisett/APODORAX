@@ -8,6 +8,9 @@ debug = False
 class memory_manager():
 
 	def __init__(self):
+		""" Inicializa los scopes de las variables : Temporales, Globales,
+		Locales y Constantes.
+			"""
 		self.tmp   = Temporal()
 		self.glob  = Globs()
 		self.loc   = Local()
@@ -15,6 +18,14 @@ class memory_manager():
 
 
 	def increment_address_pointer(self, var_type, var_dir, offset):
+		""" Almacenar y manejar direcciones de arreglos.
+		Args:
+			var_dir: Diccionario del tipo de dato.
+			var_type: Tipo de dato de la variable.
+			offset: Tamanio del arreglo.
+			"""
+		# Checar la direccion y si cabe dentro de los limites de la memoria entonces
+		# incrementar el contador de ese scope en la cantidad de casillas del arreglo.		
 		if var_dir >= self.tmp.l_limit and var_dir <= self.tmp.u_limit:
 			self.tmp.increment_address_pointer(var_dir, var_type, offset)
 		elif var_dir >= self.glob.l_limit and var_dir <= self.glob.u_limit:
@@ -25,6 +36,14 @@ class memory_manager():
 			self.const.increment_address_pointer(var_dir, var_type, offset)
 
 	def set_val(self, var_dir, val, var_type):
+		""" Asignar valor a las direcciones de cada scope.
+		Args:
+		    var_dir: Direccion de la variable.
+			val: Valor de la variable.
+			var_type: Tipo de dato de la variable.
+			"""
+		# Checar la direccion y dependiendo del mismo asignarle el valor a la
+		# direccion de la variable.
 		if var_dir >= self.tmp.l_limit and var_dir <= self.tmp.u_limit:
 			self.tmp.set_val(var_dir, val, var_type)
 		elif var_dir >= self.glob.l_limit and var_dir <= self.glob.u_limit:
@@ -36,8 +55,19 @@ class memory_manager():
 
 	# '_12332' => 12332 -> dir -> val
 	def get_val_from_dir(self, address):
+		""" Obtener el valor de una direccion.
+		Args:
+		    address: Direccion de la cual se quiere obtener el valor.
+		Return:
+		    Valor de la direccion	
+			"""
+		# Checar si la direccion esta dentro de los limites para ver el scope 
+		# de dato que es para posteriormente obtener la direccion.
+		
+		# Usar en arreglos (numero)
 		if str(address)[len(str(address)) - 1] == '_':
 			return int(address[:len(str(address)) - 1])
+		# Apuntador a una direccion	
 		if str(address)[0] == '_':
 			meta_address = self.get_val_from_dir(int(address[1:]))
 			return self.get_val_from_dir(meta_address)
@@ -52,6 +82,16 @@ class memory_manager():
 
 	# '_12332' => 12332 -> dir -> val
 	def set_val_from_dir(self, address, val):
+		""" Asignar el valor a una direccion. Si no se encuentra la 
+		direccion entonces mostrar un error.
+		Args:
+		    address: Direccion de la cual se quiere asignar el valor.
+			val: Valor a asignar.
+			"""
+		# Checar si la direccion esta dentro de los limites para ver el scope
+		# del dato que es para posteriormente asignarle un valor a la direccion.	
+
+		# Apuntador a una direccion
 		if str(address)[0] == '_':
 			address = self.get_val_from_dir(int(address[1:]))
 		if address >= self.tmp.l_limit and address <= self.tmp.u_limit:
@@ -95,7 +135,7 @@ class memory_manager():
 		global debug
 		segment = self.check_variable_functionality(var_scope, var_id)
 		if debug : print("llego la variable", var_id, "de tipo", var_type, "para el segmento de", segment)
-
+ 
 		if var_type ==  "entero":
 			return segment.insert_integer(var_val)
 		elif var_type == "flotante":
