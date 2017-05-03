@@ -1,4 +1,4 @@
-from graphics import *
+ from graphics import *
 class Graphics():
 	def __init__(self):
 		"""Inicializacion y creacion de la ventana que servira de canvas"""
@@ -25,8 +25,8 @@ class Graphics():
 		self.point_list = []
 
 		# Dibujamos el circulo de acuerdo a los parametros especificados y las restricciones de la libreria
+		# Parametros: coordx, coordy, radio, colorFondo, colorOrilla, grosor
 		if name == "insertaCirculo":
-			# insertaCirculo(1.0, 4.0, 8.0, "rojo", "amarillo", 5);
 			self.c = Circle(Point(float(parameter_lst[0]), float(parameter_lst[1])), float(parameter_lst[2]))
 			self.c.setFill(self.get_color_name(parameter_lst[3]))
 			self.c.setOutline(self.get_color_name(parameter_lst[4]))
@@ -34,6 +34,7 @@ class Graphics():
 			self.c.draw(self.win)
 		
 		# Dibujamos la linea de acuerdo a los parametros especificados y las restricciones de la libreria
+		# Parametros: coordx1, coordy1, coordx2, coordy2, color, grosor
 		elif name == "insertaLinea":
 			self.l = Line(Point(float(parameter_lst[0]), float(parameter_lst[1])),
 				Point(float(parameter_lst[2]), float(parameter_lst[3])))
@@ -42,6 +43,7 @@ class Graphics():
 			self.l.draw(self.win)
 
 		# Dibujamos la linea de acuerdo a los parametros especificados y las restricciones de la libreria
+		# Parametros: coordx1, coordy1, coordx2, coordy2, colorFondo, colorOrilla, grosor
 		elif name == "insertaRectangulo":
 			self.r = Rectangle(Point(float(parameter_lst[0]), float(parameter_lst[1])),
 				Point(float(parameter_lst[2]), float(parameter_lst[3])))
@@ -51,6 +53,7 @@ class Graphics():
 			self.r.draw(self.win)
 
 		# Escribe texto en la pantalla de acuerdo a los parametros especificados y las restricciones de la libreria
+		# Parametros: coordx, coordy, color, tamanio
 		elif name == "insertaTexto":
 			texto = parameter_lst[3].replace('"', "")
 			self.t = Text(Point(float(parameter_lst[0]), float(parameter_lst[1])), texto)
@@ -61,12 +64,14 @@ class Graphics():
 			self.t.draw(self.win)
 
 		# Dibujamos un punto en la pantalla de acuerdo a los parametros especificados y las restricciones de la libreria
+		# Parametros coordx, coordy, color
 		elif name == "insertaPunto":
 			self.p = Point(float(parameter_lst[0]), float(parameter_lst[1]))
 			self.p.setFill(self.get_color_name(str(parameter_lst[2])))
 			self.p.draw(self.win)
 
 		# Dibujamos un ovalo en la pantalla de acuerdo a los parametros especificados y las restricciones de la libreria
+		# Parametros: coordx1, coordy1, coordx2, coordy2, colorFondo, colorOrilla, grosor
 		elif name == "insertaOvalo":
 			self.o = Oval(Point(float(parameter_lst[0]), float(parameter_lst[1])),
 				Point(float(parameter_lst[2]), float(parameter_lst[3])))
@@ -76,6 +81,7 @@ class Graphics():
 			self.o.draw(self.win)
 
 		# Dibujamos un triangulo en la pantalla de acuerdo a los parametros especificados y las restricciones de la libreria
+		# Parametros: coordx1, coordy1, coordx2, coordy2, coordx3, coordy3, colorFondo, colorOrilla, grosor
 		elif name == "insertaTriangulo":
 			self.tri = Polygon(Point(float(parameter_lst[0]), float(parameter_lst[1])),
 				Point(float(parameter_lst[2]), float(parameter_lst[3])),
@@ -84,7 +90,9 @@ class Graphics():
 			self.tri.setOutline(self.get_color_name(parameter_lst[7]))
 			self.tri.setWidth(str(parameter_lst[8]))
 			self.tri.draw(self.win)
+		
 		# Dibujamos una curva en la pantalla de acuerdo a los parametros especificados y las restricciones de la libreria
+		# Parametros: coordx1, coordy1, coordx2, coordy2, color
 		elif name == "insertaCurva":
 			c1 = Point(float(parameter_lst[0]), float(parameter_lst[1]))
 			c1x = c1.getX()
